@@ -35,6 +35,7 @@ class GenerateSitemap
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 function ($path) use ($baseUrl, $sitemap) {
                     $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
                 });
@@ -50,6 +51,11 @@ function ($path) use ($baseUrl, $sitemap) {
                     $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
                 });
 >>>>>>> df88c679 (Fix styling)
+=======
+                function ($path) use ($baseUrl, $sitemap) {
+                    $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
+                });
+>>>>>>> 8bdc02b6 (Fix styling)
 
         $sitemap->write();
     }
