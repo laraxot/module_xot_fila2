@@ -34,10 +34,13 @@ class GenerateSitemap
             })->each(
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
                 function ($path) use ($baseUrl, $sitemap) {
                     $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
                 });
 =======
+=======
+>>>>>>> f69fc806 (up)
 function ($path) use ($baseUrl, $sitemap) {
                 $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
             });
