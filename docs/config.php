@@ -5,9 +5,10 @@ declare(strict_types=1);
 use Illuminate\Support\Str;
 
 $moduleName = 'Xot';
+$url = 'https://laraxot.github.io/module_xot';
 
 return [
-    'baseUrl' => '',
+    'baseUrl' => $url,
     'production' => false,
     'siteName' => 'Modulo '.$moduleName,
     'siteDescription' => 'Modulo '.$moduleName,
