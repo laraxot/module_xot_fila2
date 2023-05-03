@@ -9,12 +9,13 @@ namespace Modules\Xot\Models;
 // --- TRAITS ---
 
 /**
- * Modules\Xot\Models\Feed
+ * Modules\Xot\Models\Feed.
  *
  * @method static \Modules\Xot\Database\Factories\FeedFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Feed newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feed newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feed query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feed  newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feed  newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Feed  query()
+ *
  * @mixin \Eloquent
  */
 class Feed extends BaseModel
