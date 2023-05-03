@@ -32,31 +32,9 @@ class GenerateSitemap
             ->reject(function ($path) {
                 return $this->isExcluded($path);
             })->each(
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
                 function ($path) use ($baseUrl, $sitemap) {
                     $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
                 });
-=======
-=======
->>>>>>> f69fc806 (up)
-function ($path) use ($baseUrl, $sitemap) {
-                $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
-            });
->>>>>>> 9868d112 (up)
-=======
-                function ($path) use ($baseUrl, $sitemap) {
-                    $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
-                });
->>>>>>> df88c679 (Fix styling)
-=======
-                function ($path) use ($baseUrl, $sitemap) {
-                    $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
-                });
->>>>>>> 8bdc02b6 (Fix styling)
-
         $sitemap->write();
     }
 
