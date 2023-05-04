@@ -9,9 +9,9 @@ If we have Value Object like Email in system, then we can pass it around and be 
 This decrease amount of guard logic within the system.
 */
 
-namespace Modules\Xot\VOs;
+namespace Modules\Xot\ValueObjects;
 
-class EmailVO
+class EmailValueObject
 {
     // public readonly string $email;
     public string $email;
