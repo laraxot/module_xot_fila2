@@ -10,7 +10,7 @@ section: content
 ### Clonare la base in locale nella cartella del server, scaricando i submodules, e senza la storia delle modifiche
 
 ```bash
-git clone https://base.git –recurse-submodules –depth=1
+git clone https://NOME_BASE.git --recurse-submodules --depth=1
 ```
 
 ### dalla cartella "laravel" creare il file delle variabili d'ambiente .env 
