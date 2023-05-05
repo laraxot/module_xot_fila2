@@ -43,7 +43,9 @@ Le altre configurazioni, che sovrascrivono quelle in laravel/config/, si trovano
 
 - morph_map.php che associa i percorsi dei modelli ai nomi corti. Esempio:
 
+```php
     'article' => 'Modules\Blog\Models\Article',
+```
 
 quindi le relazioni verranno create utilizzando il MorphMap, ovvero la stringa 'article' anzichè 'Modules\Blog\Models\Article'
 
@@ -59,6 +61,8 @@ quindi le relazioni verranno create utilizzando il MorphMap, ovvero la stringa '
 
 - app.php dove c'è scritta la lingua utilizzata. Esempio:
 
-    'locale' => 'it',
+```php
+'locale' => 'it',
+```
 
 - altri files

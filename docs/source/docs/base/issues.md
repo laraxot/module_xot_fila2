@@ -9,16 +9,21 @@ section: content
 
 * Errore **Secret is not set in JWTAuth**. Dalla cartella laravel:
 
-    php artisan jwt:secret
+```bash
+php artisan jwt:secret
+```
 
 * Errore: include(/var/www/base_BASE/laravel/vendor/composer/../../Modules/NOME_MODULO/Models/FILE.php): Failed to open stream: No such file or directory se il file esiste. Dalla cartella laravel:
     
-    composer dump autoload
-    alternativa: controllare se il namespace è giusto
+```bash
+composer dump autoload
+```
+
+- alternativa: controllare se il namespace del file è giusto
 
 * Target class [\Modules\BASE\Models\FILE.php] does not exist. Dalla cartella laravel:
 
-    mettere l'esensione della migrations FILE a .old
+- mettere l'esensione della migrations FILE a .old
 
 * Errore StubService riga 418 (StubService:418). 
 
@@ -29,17 +34,30 @@ Gli stub sono dei file da dove poi vengono generati i modelli, pannelli e altri 
 
 controlla le route con uno dei seguenti comandi e vedi se esistono:
 
-    VIRTUAL_HOST.EXT/?_act=artisan&cmd=routelist1
-    
-    VIRTUAL_HOST.EXT/?_act=artisan&cmd=routelist
+da url:
 
-    php artisan route:list
+```bash
+http://VIRTUAL_HOST.EXT/?_act=artisan&cmd=routelist1
+```
 
-Se vedi poche route solo di base allora devi abilitare tutti i moduli, forse anche in tutti i file modules_status.json
+oppure:
+```bash
+http://VIRTUAL_HOST.EXT/?_act=artisan&cmd=routelist
+```
 
-Se non funzionasse metti in 404.blade.php (guarda il percorso nel quale ti trovi nella debug bar) il seguente codice:
+oppure da terminale:
 
-    {{ dddx(get_defined_vars()) }}
+```bash
+php artisan route:list
+```
+
+- Se vedi poche route solo di base allora devi abilitare tutti i moduli, forse anche in tutti i file modules_status.json
+
+- Se non funzionasse metti in 404.blade.php (guarda il percorso nel quale ti trovi nella debug bar) il seguente codice:
+
+```php
+{{ dddx(get_defined_vars()) }}
+```
 
 potrebbe dare una spiegazione dell’errore nella variabile message. Ad esempio se è un nuovo modulo potrebbe mancare _ModulePanel e /Policies/_ModelPanelPolicy
 
@@ -49,9 +67,11 @@ controlla su XotBasePanelPolicy home se hai l’area abilitata.
 
 Per farlo puoi andare su pagina 403 e fare:
 
-    @php
-        dddx($profile->hasArea('NOME_AREA'));
-    @endphp
+```php
+@php
+dddx($profile->hasArea('NOME_AREA'));
+@endphp
+```
 
 * The "/var/www/html/BASE/laravel/Modules/Test/Providers/../Http/Livewire" directory does not exist
 
@@ -59,7 +79,9 @@ Aggiungere la cartella nel MODULO/Http/Livewire con dentro il file .gitkeep
 
 * file_put_contents(/var/www/html/BASE/laravel/Modules/Test/Providers/../Http/Livewire/_components.json): Failed to open stream: Permission denied 
 
-    sudo chmod PERMESSI_CORRETTI -R .
+```bash
+sudo chmod PERMESSI_CORRETTI -R .
+```
 
 * Errore: Livewire encountered corrupt data when trying to hydrate the [modules.MODULO.http.livewire.form.nexi.payment] component. 
 
@@ -78,8 +100,12 @@ Il div nella view potrebbe non essere stato chiuso correttamente, o potrebbe ess
 * Errore Cannot declare interface Modules\MODULO\Contracts\PanelContract, because the name is already in use, se non è vero che è già in uso il nome
 Dalla cartella laravel:
 
-    composer dumpautoload
+```bash
+composer dumpautoload
+```
 
 * Se lavorando con l’assegnazione dei ruoli hai l’errore “The given role or permission should use guard `` instead of `web`” a volte può essere risolto mettendo nel modello che ha il ruolo da associare:
 
-    protected $guard_name = 'web';
+```php
+protected $guard_name = 'web';
+```
