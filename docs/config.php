@@ -50,6 +50,6 @@ return [
             return $path;
         }
         // return Str::startsWith($path, 'http') ? $path : '/' . trimPath($path);
-        return url('/'.$page->lang.'/'.trimPath($path));
+        return url('/'.trimPath($path));
     },
 ];

@@ -5,7 +5,7 @@ extends: _layouts.documentation
 section: content
 ---
 
-# Struttura {#struttura}
+# Struttura {#structure}
 
 * I nostri progetti hanno una struttura modulare.
 

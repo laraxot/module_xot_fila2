@@ -1,5 +1,5 @@
 ---
-title: Issues
+title: Errori Comuni
 description: Come Risolvere gli Errori più Comuni
 extends: _layouts.documentation
 section: content

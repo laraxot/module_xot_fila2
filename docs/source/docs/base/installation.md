@@ -5,7 +5,7 @@ extends: _layouts.documentation
 section: content
 ---
 
-# Installazione {#installazione}
+# Installazione {#installation}
 
 * Clonare la base in locale nella cartella del server, scaricando i submodules, e senza la storia delle modifiche
 
