@@ -7,19 +7,19 @@ section: content
 
 # Struttura {#structure}
 
-* I nostri progetti hanno una struttura modulare.
+###  I nostri progetti hanno una struttura modulare.
 
 Questo significa che essendo progetti grossi, per tenere in ordine le basi suddividiamo i domini di funzionalità in moduli separati.
 
 Ogni base ha solamente i moduli necessari per il suo funzionamento (esempio: modulo Core, modulo UI, modulo Seo e modulo Dropshipping).
 
-* I moduli sono gestiti dal pacchetto laravel-nwidart, quindi vi invitiamo a riferirvi alla loro documentazione.
+###  I moduli sono gestiti dal pacchetto laravel-nwidart, quindi vi invitiamo a riferirvi alla loro documentazione.
 
 Ogni modulo è una repository a se stante.
 
 Quindi la base è la repository principale, e ogni modulo è un git submodule.
 
-* I moduli sono dei git submodules e dei moduli nwidart, e sono nella cartella laravel/Modules
+###  I moduli sono dei git submodules e dei moduli nwidart, e sono nella cartella laravel/Modules
 
 Il modulo che fa da core a tutto il progetto è Xot.
 
@@ -29,11 +29,11 @@ Il modulo che gestisce i temi è UI.
 
 Il modulo che gestisce l'autenticazione è LU.
 
-* I temi sono sempre dei git submodules e dei moduli nwidart, e sono nella cartella laravel/Themes.
+###  I temi sono sempre dei git submodules e dei moduli nwidart, e sono nella cartella laravel/Themes.
 
 Utilizziamo per ogni dominio un tema di backend e uno di frontend.
 
-* Nella cartella laravel/config ci sono le confgurazioni di tutti i virtual hosts
+###  Nella cartella laravel/config ci sono le confgurazioni di tutti i virtual hosts
 
 I file di configurazione del virtual host principali sono in laravel/config/
 
