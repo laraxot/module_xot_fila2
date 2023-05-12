@@ -1,28 +1,29 @@
 <?php
 
-declare(strict_types=1);
-
 use Illuminate\Support\Str;
 
 $moduleName = 'Xot';
-$url = 'https://laraxot.github.io/module_xot';
 
 return [
-    'baseUrl' => $url,
+    'baseUrl' => '',
     'production' => false,
     'siteName' => 'Modulo '.$moduleName,
     'siteDescription' => 'Modulo '.$moduleName,
-    'lang' => 'it',
+    //'lang' => 'it',
 
     'collections' => [
         'posts' => [
             'path' => function ($page) {
-                return $page->lang.'/posts/'.Str::slug($page->getFilename());
+                //return $page->lang.'/posts/'.Str::slug($page->getFilename());
+                //return 'posts/' . ($page->featured ? 'featured/' : '') . Str::slug($page->getFilename());
+
+                return 'posts/'.Str::slug($page->getFilename());
             },
         ],
         'docs' => [
             'path' => function ($page) {
-                return $page->lang.'/docs/'.Str::slug($page->getFilename());
+                //return $page->lang.'/docs/'.Str::slug($page->getFilename());
+                return 'docs/'.Str::slug($page->getFilename());
             },
         ],
     ],
@@ -44,12 +45,16 @@ return [
                 return trimPath($page->getPath()) == trimPath($child);
             });
         }
+    },/*
+    'url' => function ($page, $path) {
+        return Str::startsWith($path, 'http') ? $path : '/' . trimPath($path);
     },
+    */
     'url' => function ($page, $path) {
         if (Str::startsWith($path, 'http')) {
             return $path;
         }
-        // return Str::startsWith($path, 'http') ? $path : '/' . trimPath($path);
+         //return url('/'.$page->lang.'/'.trimPath($path));
         return url('/'.trimPath($path));
     },
 ];
