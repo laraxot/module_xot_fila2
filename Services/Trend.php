@@ -31,15 +31,15 @@ class Trend
 
     public static function query(Builder $builder): self
     {
-        return new static($builder);
+        return new self($builder);
     }
 
     public static function model(string $model): self
     {
-        return new static($model::query());
+        return new self($model::query());
     }
 
-    public function between($start, $end): self
+    public function between(Carbon $start, Carbon $end): self
     {
         $this->start = $start;
         $this->end = $end;
