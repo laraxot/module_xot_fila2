@@ -1,6 +1,10 @@
 includes:
     - phpstan-baseline.neon
+<<<<<<< HEAD
     # - ./vendor/nunomaduro/larastan/extension.neon
+=======
+    - ./vendor/nunomaduro/larastan/extension.neon
+>>>>>>> 116b5a91 (.)
 
 parameters:
     level: 4
