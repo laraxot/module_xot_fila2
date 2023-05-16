@@ -32,7 +32,8 @@ https://medium.com/@josepostiga/how-i-managed-to-control-chaos-with-laravel-d47b
 /**
  * Class CreateAllRepositoriesCommand.
  */
-class CreateAllRepositoriesCommand extends Command {
+class CreateAllRepositoriesCommand extends Command
+{
     /**
      * The console command name.
      *
@@ -50,7 +51,8 @@ class CreateAllRepositoriesCommand extends Command {
     /**
      * Create a new command instance.
      */
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
     }
 
@@ -59,7 +61,8 @@ class CreateAllRepositoriesCommand extends Command {
      *
      * @return mixed
      */
-    public function handle() {
+    public function handle()
+    {
         $modules = Module::all();
         // dddx($modules);
         // $this->info('Success ! User Created !');
@@ -78,7 +81,8 @@ class CreateAllRepositoriesCommand extends Command {
      *
      * @return array
      */
-    protected function getArguments() {
+    protected function getArguments()
+    {
         return [
             //  ['name', InputArgument::REQUIRED, 'nickname of user'],
             //  ['level', InputArgument::REQUIRED, 'level of user'],
@@ -90,7 +94,8 @@ class CreateAllRepositoriesCommand extends Command {
      *
      * @return array
      */
-    protected function getOptions() {
+    protected function getOptions()
+    {
         return [
             ['list', null, InputOption::VALUE_OPTIONAL, 'list all users.', null],
         ];
