@@ -8,12 +8,12 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Modules\UI\Models\Menu;
 use Nwidart\Modules\Facades\Module;
+use Nwidart\Modules\Laravel\Module as LaravelModule;
 
 /**
  * --.
  */
-abstract class XotBaseComposer
-{
+abstract class XotBaseComposer {
     /**
      * Undocumented variable.
      */
@@ -27,8 +27,7 @@ abstract class XotBaseComposer
      *
      * @return mixed
      */
-    public function __call($name, $arguments)
-    {
+    public function __call($name, $arguments) {
         // Note: value of $name is case sensitive.
         // echo "Calling object method '$name' "
         //     . implode(', ', $arguments). "\n";
@@ -76,8 +75,7 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      */
-    public function setModule(string $module_name): self
-    {
+    public function setModule(string $module_name): self {
         $this->module_name = $module_name;
 
         return $this;
@@ -90,8 +88,10 @@ abstract class XotBaseComposer
      *
      * @return mixed
      */
-    public function call(string $func, ...$args)
-    {
+    public function call(string $func, ...$args) {
+        /**
+         * @var LaravelModule
+         */
         $module = Module::find($this->module_name);
         if (! \is_object($module)) {
             throw new \Exception('not find ['.$this->module_name.'] on Modules ['.__LINE__.']['.__FILE__.']');

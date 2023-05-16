@@ -6,9 +6,10 @@ namespace Modules\Xot\Console;
 
 use Illuminate\Console\Command;
 use Modules\Xot\Services\StubService;
-use Symfony\Component\Console\Input\InputArgument;
+use Nwidart\Modules\Facades\Module;
 // ----------------------------------------------------
 
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /*
@@ -31,8 +32,7 @@ https://medium.com/@josepostiga/how-i-managed-to-control-chaos-with-laravel-d47b
 /**
  * Class CreateAllRepositoriesCommand.
  */
-class CreateAllRepositoriesCommand extends Command
-{
+class CreateAllRepositoriesCommand extends Command {
     /**
      * The console command name.
      *
@@ -50,8 +50,7 @@ class CreateAllRepositoriesCommand extends Command
     /**
      * Create a new command instance.
      */
-    public function __construct()
-    {
+    public function __construct() {
         parent::__construct();
     }
 
@@ -60,9 +59,8 @@ class CreateAllRepositoriesCommand extends Command
      *
      * @return mixed
      */
-    public function handle()
-    {
-        $modules = \Module::all();
+    public function handle() {
+        $modules = Module::all();
         // dddx($modules);
         // $this->info('Success ! User Created !');
         $all = [];
@@ -80,8 +78,7 @@ class CreateAllRepositoriesCommand extends Command
      *
      * @return array
      */
-    protected function getArguments()
-    {
+    protected function getArguments() {
         return [
             //  ['name', InputArgument::REQUIRED, 'nickname of user'],
             //  ['level', InputArgument::REQUIRED, 'level of user'],
@@ -93,8 +90,7 @@ class CreateAllRepositoriesCommand extends Command
      *
      * @return array
      */
-    protected function getOptions()
-    {
+    protected function getOptions() {
         return [
             ['list', null, InputOption::VALUE_OPTIONAL, 'list all users.', null],
         ];

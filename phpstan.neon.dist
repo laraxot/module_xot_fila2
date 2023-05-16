@@ -1,13 +1,9 @@
 includes:
     - phpstan-baseline.neon
-<<<<<<< HEAD
-    # - ./vendor/nunomaduro/larastan/extension.neon
-=======
     - ./vendor/nunomaduro/larastan/extension.neon
->>>>>>> 116b5a91 (.)
 
 parameters:
-    level: 4
+    level: max
     paths:
         - .
     excludePaths:
@@ -17,10 +13,12 @@ parameters:
         - ./docs/*
         - ./Tests/*
         - ./_ide_helper.php
-    
+        - ./Services/Trend.php
+
     bootstrapFiles:
         - ./Services/vendor/autoload.php
-    
+        - ./phpstan_constants.php
+
     scanFiles:
         - ./Helpers/Helper.php
 
@@ -30,4 +28,5 @@ parameters:
     checkModelProperties: false
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-   
+    checkImplicitMixed: false
+
