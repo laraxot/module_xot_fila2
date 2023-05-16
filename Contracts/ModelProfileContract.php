@@ -11,7 +11,6 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
  *
  * @property string $id
  * @property string $email
- * @property string $nexi_transaction_code
  *
  * @mixin \Eloquent
  */
