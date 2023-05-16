@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Modules\Xot\Datas;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\Data;
 
 /**
  * Undocumented class.
  */
-class XotData extends Data
-{
+class XotData extends Data {
     public string $main_module; // => 'Blog'
     public string $param_name = 'noset';
 
@@ -28,23 +28,26 @@ class XotData extends Data
     public string $verification_type = '';
     public bool $login_verified = false;
 
-    public static function make(): self
-    {
+    public static function make(): self {
         return self::from(config('xra'));
     }
 
-    public function getProfileClass(): string
-    {
+    public function getProfileClass(): string {
         $profile_class = 'Modules\\'.$this->main_module.'\Models\Profile';
 
         return $profile_class;
     }
 
-    public function getProfileModelByUserId(string $user_id): Model
-    {
+    public function getProfileModelByUserId(string $user_id): Model {
         $profile_class = $this->getProfileClass();
         $profile = app($profile_class)->firstOrCreate(['user_id' => $user_id]);
 
         return $profile;
+    }
+
+    public function getProfileModel(): Model {
+        $user_id = strval(Auth::id());
+
+        return $this->getProfileModelByUserId($user_id);
     }
 }
