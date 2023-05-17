@@ -44,7 +44,10 @@
     "autoload": {
         "psr-4": {
             "Modules\\Xot\\": ""
-        }
+        },
+        "files": [
+            "Helpers/Helper.php"
+        ]
     },
     "scripts": {
 
