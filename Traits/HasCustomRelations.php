@@ -9,6 +9,7 @@ namespace Modules\Xot\Traits;
  * https://github.com/johnnyfreeman/laravel-custom-relation
  */
 
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Modules\Xot\Relations\CustomRelation;
 
 // use Illuminate\Database\Eloquent\Builder;
@@ -19,6 +20,8 @@ use Modules\Xot\Relations\CustomRelation;
 trait HasCustomRelations
 {
     /**
+     * @param Builder $related
+     *
      * @return CustomRelation
      */
     public function customRelation($related, \Closure $baseConstraints, \Closure $eagerConstraints = null, \Closure $eagerMatcher = null)
