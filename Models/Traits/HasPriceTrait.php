@@ -24,8 +24,6 @@ namespace Modules\Xot\Models\Traits;
 trait HasPriceTrait
 {
     /**
-     * @param mixed $value
-     *
      * @return \Cknow\Money\Money
      */
     public function getPriceCurrencyAttribute($value)
@@ -34,8 +32,6 @@ trait HasPriceTrait
     }
 
     /**
-     * @param mixed $value
-     *
      * @return \Cknow\Money\Money
      */
     public function getPriceCompleteCurrencyAttribute($value)
@@ -44,8 +40,6 @@ trait HasPriceTrait
     }
 
     /**
-     * @param mixed $value
-     *
      * @return \Cknow\Money\Money
      */
     public function getSubtotalCurrencyAttribute($value)

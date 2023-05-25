@@ -170,7 +170,7 @@ class ModelService
     /**
      * Undocumented function
      * questa funzione va ad esequire e prende il risultato, buona per controllare le 2 funzioni che devono dare lo stesso numero, questa funzione molto piu' lenta (da controllare).
-
+     *
      *              https://laracasts.com/discuss/channels/eloquent/get-all-model-relationships.
      */
     public function getRelationships(): array

@@ -49,8 +49,6 @@ trait WidgetTrait
     /**
      * @param Builder $query
      * @param string  $layout_position
-     *
-     * @return mixed
      */
     public function scopeOfLayoutPosition($query, $layout_position)
     {

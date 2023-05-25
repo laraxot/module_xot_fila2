@@ -544,8 +544,6 @@ trait HasParent
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @since 2.0
      */
     public function newEloquentBuilder($query)
@@ -580,10 +578,7 @@ trait HasParent
     }
 
     /**
-     * @param mixed  $query
      * @param string $table
-     *
-     * @return mixed
      */
     public function applyNestedSetScope($query, $table = null)
     {
@@ -626,9 +621,6 @@ trait HasParent
         return $instance->newScopedQuery();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function newCollection(array $models = [])
     {
         return new Collection($models);
@@ -779,8 +771,6 @@ trait HasParent
 
     /**
      * Get the value of the model's parent id key.
-     *
-     * @return mixed
      */
     public function getParentId()
     {
@@ -874,8 +864,8 @@ trait HasParent
      */
     public function isDescendantOf(self $other)
     {
-        return $this->getLft() > $other->getLft() &&
-            $this->getLft() < $other->getRgt();
+        return $this->getLft() > $other->getLft()
+            && $this->getLft() < $other->getRgt();
     }
 
     /**
@@ -885,8 +875,8 @@ trait HasParent
      */
     public function isSelfOrDescendantOf(self $other)
     {
-        return $this->getLft() >= $other->getLft() &&
-            $this->getLft() < $other->getRgt();
+        return $this->getLft() >= $other->getLft()
+            && $this->getLft() < $other->getRgt();
     }
 
     /**
@@ -971,8 +961,6 @@ trait HasParent
     }
 
     /**
-     * @param mixed $value
-     *
      * @return $this
      */
     public function setLft($value)
@@ -983,8 +971,6 @@ trait HasParent
     }
 
     /**
-     * @param mixed $value
-     *
      * @return $this
      */
     public function setRgt($value)
@@ -995,8 +981,6 @@ trait HasParent
     }
 
     /**
-     * @param mixed $value
-     *
      * @return $this
      */
     public function setParentId($value)
