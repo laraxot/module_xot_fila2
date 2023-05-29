@@ -46,11 +46,7 @@ trait WidgetTrait
 
     // non sembra funzionare, perchè?
 
-    /**
-     * @param Builder $query
-     * @param string  $layout_position
-     */
-    public function scopeOfLayoutPosition(Builder $query,string $layout_position):Builder
+    public function scopeOfLayoutPosition(Builder $query, string $layout_position): Builder
     {
         return $query->where('layout_position', $layout_position);
     }

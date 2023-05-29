@@ -7,11 +7,13 @@ namespace Modules\Xot\Traits;
 /**
  * Trait Getter.
  */
-trait Getter {
+trait Getter
+{
     /**
      * __merge function.
      */
-    public static function __merge(string $index, array $value): array {
+    public static function __merge(string $index, array $value): array
+    {
         $tmp = self::__getStatic($index);
         if (! \is_array($tmp)) {
             $tmp = [];
@@ -22,10 +24,8 @@ trait Getter {
         return $tmp;
     }
 
-    /**
-     * @return mixed
-     */
-    public static function __getStatic(string $index) {
+    public static function __getStatic(string $index)
+    {
         if (isset(self::$vars[$index])) {
             return self::$vars[$index];
         }
@@ -49,17 +49,16 @@ trait Getter {
 
     // end __set
 
-    /**
-     * @param mixed $value
-     */
-    public static function __setStatic(string $index, $value): void {
+    public static function __setStatic(string $index, $value): void
+    {
         // echo '<br/>SET ['.get_class($this).']['.$index.']['.round(memory_get_usage()/(1024*1024),2).' MB]';
         self::$vars[$index] = $value;
     }
 
     // end __set
 
-    public static function __concatBeforeStatic(string $index, string $value): void {
+    public static function __concatBeforeStatic(string $index, string $value): void
+    {
         $tmp = self::__getStatic($index);
         $tmp = $value.$tmp;
         self::__setStatic($index, $tmp);
@@ -73,7 +72,8 @@ trait Getter {
      *
      * @return mixed|void
      */
-    public static function __callStatic($method, $args) {
+    public static function __callStatic($method, $args)
+    {
         if (preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {
             $reflector = new \ReflectionClass(__CLASS__);
             $property = mb_strtolower($match[2]).$match[3];
@@ -100,11 +100,13 @@ trait Getter {
      *
      * @return bool
      */
-    public function __isset($index) {
+    public function __isset($index)
+    {
         return isset($this->vars[$index]);
     }
 
-    public function __concat(string $index, string $value): void {
+    public function __concat(string $index, string $value): void
+    {
         $tmp = $this->__get($index);
         $tmp = $tmp.$value;
         $this->__set($index, $tmp);
@@ -112,10 +114,9 @@ trait Getter {
 
     /**
      * set undefined vars.
-     *
-     * @param mixed $value
      */
-    public function __set(string $index, $value): void {
+    public function __set(string $index, $value): void
+    {
         // echo '<br/>SET ['.get_class($this).']['.$index.']['.round(memory_get_usage()/(1024*1024),2).' MB]';
         $this->vars[$index] = $value;
     }
@@ -125,7 +126,8 @@ trait Getter {
      *
      * @return mixed|null
      */
-    public function __get($index) {
+    public function __get($index)
+    {
         if (isset($this->vars[$index])) {
             return $this->vars[$index];
         }
@@ -136,7 +138,8 @@ trait Getter {
     /**
      * @param string $index
      */
-    public function __concatBefore($index, $value): void {
+    public function __concatBefore($index, $value): void
+    {
         $tmp = $this->__get($index);
         $tmp = $value.$tmp;
         $this->__set($index, $tmp);
@@ -145,7 +148,8 @@ trait Getter {
     /**
      * @return mixed|null
      */
-    public function __getVars(array $params = []) {
+    public function __getVars(array $params = [])
+    {
         $vars = $this->vars;
         $vars['smarty'] = '';
         unset($vars['smarty']);

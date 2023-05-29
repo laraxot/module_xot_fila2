@@ -13,7 +13,8 @@ use Nwidart\Modules\Laravel\Module as LaravelModule;
 /**
  * --.
  */
-abstract class XotBaseComposer {
+abstract class XotBaseComposer
+{
     /**
      * Undocumented variable.
      */
@@ -24,10 +25,9 @@ abstract class XotBaseComposer {
      *
      * @param string $name
      * @param array  $arguments
-     *
-     * @return mixed
      */
-    public function __call($name, $arguments) {
+    public function __call($name, $arguments)
+    {
         // Note: value of $name is case sensitive.
         // echo "Calling object method '$name' "
         //     . implode(', ', $arguments). "\n";
@@ -75,7 +75,8 @@ abstract class XotBaseComposer {
     /**
      * Undocumented function.
      */
-    public function setModule(string $module_name): self {
+    public function setModule(string $module_name): self
+    {
         $this->module_name = $module_name;
 
         return $this;
@@ -86,7 +87,8 @@ abstract class XotBaseComposer {
      *
      * @param array|string|int|float|null ...$args
      */
-    public function call(string $func, ...$args) {
+    public function call(string $func, ...$args)
+    {
         /**
          * @var LaravelModule
          */

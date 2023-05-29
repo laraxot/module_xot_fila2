@@ -7,7 +7,8 @@ namespace Modules\Xot\Contracts;
 /**
  * Modules\Xot\Contracts\RowsContract.
  */
-interface RowsContract {
+interface RowsContract
+{
     /**
      * Paginate the given query.
      *
@@ -38,7 +39,6 @@ interface RowsContract {
      *
      * @param \Closure|string|array|\Illuminate\Database\Query\Expression $column
      * @param string                                                      $boolean
-     * @param mixed                                                       $operator
      *
      * @return $this
      */
