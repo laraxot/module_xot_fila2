@@ -10,13 +10,13 @@ use Modules\Xot\Presenters\JsonPanelPresenter;
 /**
  * Class SelectResponseMiddleware.
  */
-class SelectResponseMiddleware
-{
+class SelectResponseMiddleware {
     /**
      * @param \Illuminate\Http\Request $request
+     *
+     * @return mixed
      */
-    public function handle($request, \Closure $next, ...$guards)
-    {
+    public function handle($request, \Closure $next, ...$guards) {
         $responseType = $request['responseType'];
         /*
         $responses=[

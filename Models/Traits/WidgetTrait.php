@@ -18,13 +18,11 @@ use Modules\Xot\Models\Widget;
 /**
  * Trait WidgetTrait.
  */
-trait WidgetTrait
-{
+trait WidgetTrait {
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
-    public function widgets()
-    {
+    public function widgets() {
         // questo sarebbe itemWidgets, ma teniamo questo nome
         return $this->morphMany(Widget::class, 'post')
             // ->whereNull('layout_position')
@@ -37,8 +35,7 @@ trait WidgetTrait
             ->orderBy('pos');
     }
 
-    public function containerWidgets(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
+    public function containerWidgets(): \Illuminate\Database\Eloquent\Relations\HasMany {
         return $this->hasMany(Widget::class, 'post_type', 'post_type')
             ->orderBy('pos');
         // ->whereNull('post_id');
@@ -50,8 +47,7 @@ trait WidgetTrait
      * @param Builder $query
      * @param string  $layout_position
      */
-    public function scopeOfLayoutPosition($query, $layout_position)
-    {
+    public function scopeOfLayoutPosition($query, $layout_position): Builder {
         return $query->where('layout_position', $layout_position);
     }
 }

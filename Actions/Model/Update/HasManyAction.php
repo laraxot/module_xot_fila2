@@ -8,12 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\QueueableAction\QueueableAction;
 
-class HasManyAction
-{
+class HasManyAction {
     use QueueableAction;
 
-    public function __construct()
-    {
+    public function __construct() {
     }
 
     /**
@@ -21,19 +19,12 @@ class HasManyAction
      *
      * @return void
      */
-    public function execute(Model $row, \Modules\Xot\DTOs\RelationDTO $relation)
-    {
+    public function execute(Model $row, \Modules\Xot\DTOs\RelationDTO $relation) {
         if (! $relation->rows instanceof HasMany) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
 
         if (isset($relation->data['from']) && isset($relation->data['to'])) {
-            // dddx([
-            //     'row' => $row,
-            //     'relation' => $relation,
-            //     'methods' => get_class_methods($relation->rows),
-            //     'getForeignKeyName' => $relation->rows->getForeignKeyName(),
-            // ]);
             $f_key = $relation->rows->getForeignKeyName();
             $res = $relation->related->where($f_key, $row->getKey())
                 ->update([$f_key => null])
