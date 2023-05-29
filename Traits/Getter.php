@@ -24,9 +24,6 @@ trait Getter
         return $tmp;
     }
 
-    /**
-     * @return \Illuminate\Config\Repository|\Illuminate\Contracts\Foundation\Application|mixed
-     */
     public static function __getStatic(string $index)
     {
         if (isset(self::$vars[$index])) {
@@ -108,16 +105,15 @@ trait Getter
         return isset($this->vars[$index]);
     }
 
-    public function __concat(string $index, $value): void
+    public function __concat(string $index, string $value): void
     {
-        // default After
         $tmp = $this->__get($index);
         $tmp = $tmp.$value;
         $this->__set($index, $tmp);
     }
 
     /**
-     * @set undefined vars
+     * set undefined vars.
      */
     public function __set(string $index, $value): void
     {

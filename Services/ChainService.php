@@ -9,13 +9,6 @@ use Illuminate\Support\Collection;
 
 /**
  * https://github.com/Tinyportal/TinyPortal/blob/master/Sources/TPSubs.php.
- *
- * @param string     $primary_field
- * @param string     $parent_field
- * @param string     $sort_field
- * @param Collection $rows
- * @param int        $root_id
- * @param int        $maxlevel
  */
 
 /* example to use
@@ -27,10 +20,7 @@ foreach($ordered as $item){
 
 */
 
-/**
- * @return array
- */
-function chain($primary_field, $parent_field, $sort_field, $rows, $root_id = 0, $maxlevel = 25)
+function chain(string $primary_field, string $parent_field, string $sort_field, Collection $rows, int $root_id = 0, int $maxlevel = 25): array
 {
     $c = new ChainService($primary_field, $parent_field, $sort_field, $rows, $root_id, $maxlevel);
 

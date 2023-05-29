@@ -173,7 +173,9 @@ class ImportService
     }
 
     /**
-     * @return array
+     * ---.
+     *
+     * @return mixed
      */
     public function getConfig(string $x)
     {
