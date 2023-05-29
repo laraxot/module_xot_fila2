@@ -50,7 +50,7 @@ trait WidgetTrait
      * @param Builder $query
      * @param string  $layout_position
      */
-    public function scopeOfLayoutPosition($query, $layout_position)
+    public function scopeOfLayoutPosition(Builder $query,string $layout_position):Builder
     {
         return $query->where('layout_position', $layout_position);
     }
