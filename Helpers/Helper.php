@@ -741,7 +741,7 @@ if (! function_exists('transFields')) {
 }
 
 if (! function_exists('deltaTime')) {
-    function deltaTime()
+    function deltaTime(): void
     {
         echo '<h3>Time : '.(microtime(true) - LARAVEL_START).'</h3>';
     }

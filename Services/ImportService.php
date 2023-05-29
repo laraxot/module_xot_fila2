@@ -172,6 +172,9 @@ class ImportService
         $this->setClientOptions(['allow_redirects' => false]);
     }
 
+    /**
+     * ---.
+     */
     public function getConfig(string $x)
     {
         // $cookieJar = $client->getConfig('cookies');
