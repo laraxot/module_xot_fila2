@@ -30,7 +30,8 @@ foreach($ordered as $item){
 /**
  * @return array
  */
-function chain($primary_field, $parent_field, $sort_field, $rows, $root_id = 0, $maxlevel = 25) {
+function chain($primary_field, $parent_field, $sort_field, $rows, $root_id = 0, $maxlevel = 25)
+{
     $c = new ChainService($primary_field, $parent_field, $sort_field, $rows, $root_id, $maxlevel);
 
     return $c->chain_table;
@@ -39,7 +40,8 @@ function chain($primary_field, $parent_field, $sort_field, $rows, $root_id = 0, 
 /**
  * Class ChainService.
  */
-class ChainService {
+class ChainService
+{
     public array $table;
 
     /**
@@ -62,7 +64,8 @@ class ChainService {
      *
      * @return void
      */
-    public function __construct(string $primary_field, string $parent_field, string $sort_field, Collection $rows, int $root_id = 0, int $maxlevel = 25) {
+    public function __construct(string $primary_field, string $parent_field, string $sort_field, Collection $rows, int $root_id = 0, int $maxlevel = 25)
+    {
         $this->rows = $rows;
         $this->primary_field = $primary_field;
         $this->parent_field = $parent_field;
@@ -77,7 +80,8 @@ class ChainService {
      * @param int $rootcatid
      * @param int $maxlevel
      */
-    public function buildChain($rootcatid, $maxlevel): void {
+    public function buildChain($rootcatid, $maxlevel): void
+    {
         foreach ($this->rows as $row) {
             // considerando che ChainService viene utilizzato da XotBasePanel->optionsTree()
             // che a sua volta viene utilizzato in FormX\Resources\views\collective\fields\select\field_parent.blade.php
@@ -97,7 +101,8 @@ class ChainService {
      * @param int $level
      * @param int $maxlevel
      */
-    public function makeBranch($parent_id, $level, $maxlevel): void {
+    public function makeBranch($parent_id, $level, $maxlevel): void
+    {
         if (! \is_array($this->table)) {
             $this->table = [];
         }
@@ -125,7 +130,8 @@ class ChainService {
      *
      * @return int
      */
-    public function chainCMP($a, $b) {
+    public function chainCMP($a, $b)
+    {
         if ($a[$a['key']] === $b[$b['key']]) {
             return 0;
         }
