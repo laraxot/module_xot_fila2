@@ -101,13 +101,7 @@ trait Getter {
         return isset($this->vars[$index]);
     }
 
-<<<<<<< Updated upstream
-    public function __concat(string $index, $value): void
-    {
-        // default After
-=======
     public function __concat(string $index, string $value): void {
->>>>>>> Stashed changes
         $tmp = $this->__get($index);
         $tmp = $tmp.$value;
         $this->__set($index, $tmp);
