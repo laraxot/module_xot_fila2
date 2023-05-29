@@ -25,8 +25,6 @@ class Test1Notification extends Notification
     /**
      * Get the notification's delivery channels.
      *
-     * @param mixed $notifiable
-     *
      * @return array
      */
     public function via($notifiable)
@@ -36,8 +34,6 @@ class Test1Notification extends Notification
 
     /**
      * Get the mail representation of the notification.
-     *
-     * @param mixed $notifiable
      *
      * @return \Illuminate\Notifications\Messages\MailMessage
      */
@@ -51,8 +47,6 @@ class Test1Notification extends Notification
 
     /**
      * Get the array representation of the notification.
-     *
-     * @param mixed $notifiable
      *
      * @return array
      */

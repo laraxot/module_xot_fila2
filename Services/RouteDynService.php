@@ -237,7 +237,7 @@ class RouteDynService
         return $callback;
     }
 
-    public static function dynamic_route(array $array, ?string $namespace = null, ?string $namespace_start = null, ?string $curr = null): void
+    public static function dynamic_route(array $array, string $namespace = null, string $namespace_start = null, string $curr = null): void
     {
         if (null !== $namespace_start) {
             self::$namespace_start = $namespace_start;

@@ -77,9 +77,9 @@ class RouteDomTest extends TestCase
             );
             $links = collect($links)->filter(
                 function ($item) {
-                    return ! Str::startsWith($item, 'mailto:') &&
-                        ! Str::startsWith($item, 'https://mail.') &&
-                        Str::startsWith($item, '/');
+                    return ! Str::startsWith($item, 'mailto:')
+                        && ! Str::startsWith($item, 'https://mail.')
+                        && Str::startsWith($item, '/');
                 }
             )->all();
 

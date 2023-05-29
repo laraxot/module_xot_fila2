@@ -73,9 +73,6 @@ class PolicyService
         return self::getInstance();
     }
 
-    /**
-     * @return mixed
-     */
     public function getClass()
     {
         return self::$out_vars['class'];

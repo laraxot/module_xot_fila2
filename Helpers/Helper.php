@@ -368,7 +368,7 @@ if (! function_exists('params2ContainerItem')) {
      *
      * @return array[]
      */
-    function params2ContainerItem(?array $params = null)
+    function params2ContainerItem(array $params = null)
     {
         if (null === $params) {
             // Call to static method current() on an unknown class Route.
@@ -741,9 +741,6 @@ if (! function_exists('transFields')) {
 }
 
 if (! function_exists('deltaTime')) {
-    /**
-     * @return mixed
-     */
     function deltaTime()
     {
         echo '<h3>Time : '.(microtime(true) - LARAVEL_START).'</h3>';

@@ -110,8 +110,6 @@ class CustomRelation extends Relation
 
     /**
      * Get the results of the relationship.
-     *
-     * @return mixed
      */
     public function getResults()
     {

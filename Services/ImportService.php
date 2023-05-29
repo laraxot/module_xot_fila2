@@ -172,9 +172,6 @@ class ImportService
         $this->setClientOptions(['allow_redirects' => false]);
     }
 
-    /**
-     * @return mixed
-     */
     public function getConfig(string $x)
     {
         // $cookieJar = $client->getConfig('cookies');
@@ -182,9 +179,6 @@ class ImportService
         return $this->client->getConfig($x);
     }
 
-    /**
-     * @return mixed
-     */
     public function getEffectiveUrl(string $method, string $url, array $attrs = [])
     {
         $attrs['allow_redirects'] = [
@@ -278,9 +272,6 @@ class ImportService
         return $this->res->getStatusCode();
     }
 
-    /**
-     * @return mixed
-     */
     public function getRedirectHistory()
     {
         return $this->res->getHeaderLine('X-Guzzle-Redirect-History'); // http://first-redirect, http://second-redirect, etc...
@@ -289,13 +280,6 @@ class ImportService
 
     // ret \Exception|GuzzleException|string|Crawler
 
-    /**
-     * @param mixed $form
-     * @param mixed $out
-     * @param mixed $method
-     * @param mixed $url
-     * @param mixed $attrs
-     */
     /*
     public function submit($form, array $vars, $out): ?string {
         $vars = \array_merge($form->getValues(), $vars);

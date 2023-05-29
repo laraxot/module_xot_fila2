@@ -16,8 +16,6 @@ use Illuminate\Support\Collection;
  * @param Collection $rows
  * @param int        $root_id
  * @param int        $maxlevel
- *
- * @return mixed
  */
 
 /* example to use

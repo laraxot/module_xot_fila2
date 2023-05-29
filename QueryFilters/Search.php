@@ -55,7 +55,7 @@ class Search
                                 }
                             );
 
-                        // dddx($subquery);
+                            // dddx($subquery);
                         } else {
                             $subquery = $subquery->orWhere($v, 'like', '%'.$q.'%');
                         }

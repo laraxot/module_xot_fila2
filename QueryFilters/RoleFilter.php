@@ -1,6 +1,6 @@
 <?php
 /**
- https://whysoawesome.com/posts/pipelines-in-laravel
+ * https://whysoawesome.com/posts/pipelines-in-laravel.
  */
 declare(strict_types=1);
 

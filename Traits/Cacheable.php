@@ -66,8 +66,6 @@ trait Cacheable
     /**
      * Get Cache key for the method.
      *
-     * @param mixed $args
-     *
      * @return string
      */
     public function getCacheKey(string $method, $args, string $tag)
@@ -95,8 +93,6 @@ trait Cacheable
      * Get an item from the cache, or store the default value.
      *
      * @param mixed|null $time
-     *
-     * @return mixed
      */
     public function cacheCallback(string $method, array $args, \Closure $callback, $time = null)
     {

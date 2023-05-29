@@ -164,7 +164,6 @@ class TranslatorService extends BaseTranslator
 
     /**
      * @param string $key
-     * @param mixed  $value
      *
      * @return void
      */
