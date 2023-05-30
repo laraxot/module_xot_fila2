@@ -70,21 +70,11 @@ class PolicyService {
         return self::getInstance();
     }
 
-<<<<<<< HEAD
-    public function getClass(): string
-    {
-        return self::$out_vars['class'];
-    }
-
-    public function exists(): bool
-    {
-=======
     public function getClass(): string {
         return self::$out_vars['class'];
     }
 
     public function exists(): bool {
->>>>>>> 1f813971 (up)
         return File::exists(self::$out_vars['filename']);
     }
 

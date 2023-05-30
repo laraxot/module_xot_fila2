@@ -172,15 +172,10 @@ class ImportService {
         return $this->client->getConfig($x);
     }
 
-<<<<<<< HEAD
     /**
      * @return string
      */
-    public function getEffectiveUrl(string $method, string $url, array $attrs = [])
-    {
-=======
     public function getEffectiveUrl(string $method, string $url, array $attrs = []) {
->>>>>>> 1f813971 (up)
         $attrs['allow_redirects'] = [
             'max' => 10,        // allow at most 10 redirects.
             'strict' => true,      // use "strict" RFC compliant redirects.
