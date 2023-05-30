@@ -7,7 +7,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-class Memoization {
+class Memoization
+{
     private static ?self $_instance = null;
 
     protected array $memoized = [];
@@ -15,7 +16,8 @@ class Memoization {
     /**
      * Undocumented function.
      */
-    public function __construct() {
+    public function __construct()
+    {
     }
 
     /**
@@ -23,7 +25,8 @@ class Memoization {
      *
      * this method will return instance of the class
      */
-    public static function getInstance(): self {
+    public static function getInstance(): self
+    {
         if (! self::$_instance) {
             self::$_instance = new self();
         }
@@ -34,16 +37,16 @@ class Memoization {
     /**
      * Undocumented function.
      */
-    public static function make(): self {
+    public static function make(): self
+    {
         return static::getInstance();
     }
 
     /**
      * Undocumented function.
-     *
-     * @return mixed
      */
-    public function memoize(string $key, \Closure $callback) {
+    public function memoize(string $key, \Closure $callback)
+    {
         if (! isset($this->memoized[$key])) {
             return $this->memoized[$key] = $callback();
         }
