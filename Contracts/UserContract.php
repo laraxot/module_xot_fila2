@@ -26,8 +26,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @mixin    \Eloquent
  */
-interface UserContract extends MustVerifyEmail
-{
+interface UserContract extends MustVerifyEmail {
     /*
     public function isSuperAdmin();
     public function name();
@@ -47,6 +46,8 @@ interface UserContract extends MustVerifyEmail
      * Get a relationship.
      *
      * @param string $key
+     *
+     * @return mixed
      */
     public function getRelationValue($key);
 

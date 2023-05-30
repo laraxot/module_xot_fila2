@@ -28,8 +28,7 @@ use Symfony\Component\DomCrawler\Crawler;
 /**
  * Class ImportService.
  */
-class ImportService
-{
+class ImportService {
     protected ClientInterface $client;
     protected ?CookieJarInterface $cookieJar = null;
     protected ResponseInterface $res;
@@ -38,13 +37,11 @@ class ImportService
 
     private static ?self $instance = null;
 
-    public function __construct()
-    {
+    public function __construct() {
         // ---
     }
 
-    public static function getInstance(): self
-    {
+    public static function getInstance(): self {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -52,27 +49,23 @@ class ImportService
         return self::$instance;
     }
 
-    public static function make(): self
-    {
+    public static function make(): self {
         return static::getInstance();
     }
 
-    public function setClientOptions(array $data = []): void
-    {
+    public function setClientOptions(array $data = []): void {
         $this->client_options = array_merge($this->client_options, $data);
         // dddx($this->client_options);
     }
 
-    public function initCookieJar(): CookieJarInterface
-    {
+    public function initCookieJar(): CookieJarInterface {
         $cookieFile = base_path('../jar.txt');
         $this->cookieJar = new FileCookieJar($cookieFile, true);
 
         return $this->cookieJar;
     }
 
-    public function importInit(): void
-    {
+    public function importInit(): void {
         ini_set('max_execution_time', '3000');
 
         $route_current = \Route::current();
@@ -105,8 +98,7 @@ class ImportService
     // google trend example
     // https://hotexamples.com/examples/guzzlehttp.cookie/CookieJar/setCookie/php-cookiejar-setcookie-method-examples.html
 
-    public function enableCharles(): void
-    {
+    public function enableCharles(): void {
         $proxy = [
             // 'http'  => 'tcp://127.0.0.1:8888', // Use this proxy with "http"
             // 'https' => 'tcp://127.0.0.1:8888', // Use this proxy with "https",
@@ -124,8 +116,7 @@ class ImportService
         // senza verify false errore = #message: "cURL error 60: SSL certificate problem: self signed certificate in certificate chain (see http://curl.haxx.se/libcurl/c/libcurl-errors.html)"
     }
 
-    public function enableCookie(array $cookies): void
-    {
+    public function enableCookie(array $cookies): void {
         // $cookieJar->setCookie(SetCookie::fromString('SID="AuthKey 23ec5d03-86db-4d80-a378-6059139a7ead"; expires=Thu, 24 Nov 2016 13:52:20 GMT; path=/; domain=.sketchup.com'));
         if (null === $this->cookieJar) {
             $this->cookieJar = $this->initCookieJar();
@@ -150,8 +141,7 @@ class ImportService
         $this->client_options['cookies'] = $this->cookieJar;
     }
 
-    public function enableRedirect(): void
-    {
+    public function enableRedirect(): void {
         $onRedirect = function (RequestInterface $request, ResponseInterface $response, UriInterface $uri) {
             echo '<hr/>Redirecting! '.$request->getUri().' to '.$uri."\n";
         };
@@ -167,23 +157,22 @@ class ImportService
         // $client->followRedirects(true);
     }
 
-    public function disableRedirect(): void
-    {
+    public function disableRedirect(): void {
         $this->setClientOptions(['allow_redirects' => false]);
     }
 
     /**
      * ---.
+     *
+     * @return mixed
      */
-    public function getConfig(string $x)
-    {
+    public function getConfig(string $x) {
         // $cookieJar = $client->getConfig('cookies');
         // $cookieJar->toArray();
         return $this->client->getConfig($x);
     }
 
-    public function getEffectiveUrl(string $method, string $url, array $attrs = [])
-    {
+    public function getEffectiveUrl(string $method, string $url, array $attrs = []) {
         $attrs['allow_redirects'] = [
             'max' => 10,        // allow at most 10 redirects.
             'strict' => true,      // use "strict" RFC compliant redirects.
@@ -200,15 +189,13 @@ class ImportService
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function jqueryRequest(string $method, string $url, array $attrs = [])
-    {
+    public function jqueryRequest(string $method, string $url, array $attrs = []) {
         return view()->make('ui::jquery_request');
     }
 
     // ret \Exception|GuzzleException|string|Crawler
 
-    public function gRequest(string $method, string $url, array $attrs = [], string $out = 'res'): ?string
-    {
+    public function gRequest(string $method, string $url, array $attrs = [], string $out = 'res'): ?string {
         if (null == $this->client) {
             $this->importInit();
         }
@@ -270,13 +257,11 @@ class ImportService
         */
     }
 
-    public function getStatusCode(): int
-    {
+    public function getStatusCode(): int {
         return $this->res->getStatusCode();
     }
 
-    public function getRedirectHistory()
-    {
+    public function getRedirectHistory() {
         return $this->res->getHeaderLine('X-Guzzle-Redirect-History'); // http://first-redirect, http://second-redirect, etc...
         // echo $res->getHeaderLine('X-Guzzle-Redirect-Status-History');// 301, 302, etc...
     }
@@ -298,16 +283,14 @@ class ImportService
      *
      * @return string
      */
-    public function getCacheKey($method, $url, $attrs = [])
-    {
+    public function getCacheKey($method, $url, $attrs = []) {
         $key = json_encode(['method' => $method, 'url' => $url, 'attrs' => $attrs]);
         $key .= '_1';
 
         return $key;
     }
 
-    public function cacheRequest(string $method, string $url, array $attrs = []): string
-    {
+    public function cacheRequest(string $method, string $url, array $attrs = []): string {
         $key = $this->getCacheKey($method, $url, $attrs = []);
         $value = Cache::store('file')->rememberForever(
             $key,
@@ -328,8 +311,7 @@ class ImportService
     /**
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function cacheRequestFile(string $method, string $url, array $attrs = []): string
-    {
+    public function cacheRequestFile(string $method, string $url, array $attrs = []): string {
         // --- uguale ma al posto di usare il sistema cache usa i file
         if (! isset($this->client_options['base_uri'])) {
             /**
@@ -376,8 +358,7 @@ class ImportService
     /**
      * @throws \Exception
      */
-    public function getAddressFields(array $params): array
-    {
+    public function getAddressFields(array $params): array {
         extract($params);
         if (! isset($address)) {
             dddx(['err' => 'address is missing']);
@@ -450,8 +431,7 @@ class ImportService
 
     // https://phpnews.io/feeditem/chunked-transfer-encoding-in-php-with-guzzle
 
-    public function download(array $params): void
-    {
+    public function download(array $params): void {
         // $url
         // $filename
         extract($params);
@@ -511,8 +491,7 @@ class ImportService
     /**
      * @return mixed|null
      */
-    public function pixabay(array $params)
-    {
+    public function pixabay(array $params) {
         $lang = app()->getLocale();
         $image_type = 'photo';
         $q = 'necessary';
@@ -544,8 +523,7 @@ class ImportService
     /**
      * @return mixed|null
      */
-    public function pexels(array $params)
-    {
+    public function pexels(array $params) {
         $lang = app()->getLocale();
         $q = 'necessary';
         extract($params);
@@ -559,8 +537,7 @@ class ImportService
     /**
      * @return mixed|string|void
      */
-    public function trans(array $params)
-    {
+    public function trans(array $params) {
         $i = rand(0, 20);
         if ($i > 0 && $i < 10) {
             return $this->googleTrans($params);
@@ -572,8 +549,7 @@ class ImportService
     /**
      * @return mixed|null
      */
-    public function apertiumTrans(array $params)
-    {
+    public function apertiumTrans(array $params) {
         // https://github.com/24aitor/Laralang/blob/master/src/Builder/ApertiumTrans.php
         // $host = 'api.apertium.org';
         // $urldata = file_get_contents("http://$host/json/translate?q=$urlString&langpair=$this->from|$this->to");
@@ -583,8 +559,7 @@ class ImportService
     /**
      * @return string
      */
-    public function googleTrans(array $params)
-    {
+    public function googleTrans(array $params) {
         $host = 'translate.googleapis.com';
         $q = 'necessary';
         $from = 'en';
@@ -608,8 +583,7 @@ class ImportService
     /**
      * @return mixed|void
      */
-    public function mymemoryTrans(array $params)
-    {
+    public function mymemoryTrans(array $params) {
         $host = 'api.mymemory.translated.net';
         $q = 'necessary';
         $from = 'en';
@@ -647,8 +621,7 @@ class ImportService
     /**
      * @return array
      */
-    public function getForms(array $params)
-    {
+    public function getForms(array $params) {
         $html = '';
         $node_tag = '';
         extract($params);
@@ -679,8 +652,7 @@ class ImportService
 
     // ret \Exception|GuzzleException|string|Crawler
 
-    public function formRequest(array $params): ?string
-    {
+    public function formRequest(array $params): ?string {
         $form = ['method' => '?', 'action' => '?', 'fields' => '?'];
         extract($params);
 

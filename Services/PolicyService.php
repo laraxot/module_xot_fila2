@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\File;
 /**
  * Class PolicyService.
  */
-class PolicyService
-{
+class PolicyService {
     private static ?PolicyService $instance = null;
 
     // protected static $obj;
@@ -19,8 +18,7 @@ class PolicyService
 
     protected static array $out_vars = [];
 
-    public static function getInstance(): self
-    {
+    public static function getInstance(): self {
         if (null === self::$instance) {
             self::$instance = new self();
         }
@@ -36,8 +34,7 @@ class PolicyService
      * @throws \ReflectionException
      */
     // ret PolicyService|null
-    public static function get(object $obj): self
-    {
+    public static function get(object $obj): self {
         // self::$obj = $obj;
         $class = \get_class($obj);
         $class_name = class_basename($obj);
@@ -73,21 +70,15 @@ class PolicyService
         return self::getInstance();
     }
 
-    public function getClass()
-    {
+    public function getClass(): string {
         return self::$out_vars['class'];
     }
 
-    /**
-     * @return bool
-     */
-    public function exists()
-    {
+    public function exists(): bool {
         return File::exists(self::$out_vars['filename']);
     }
 
-    public static function replaces(array $params = []): array
-    {
+    public static function replaces(array $params = []): array {
         extract(self::$out_vars);
         if (! isset($namespace)) {
             throw new \Exception('namespace is missing');
@@ -115,8 +106,7 @@ class PolicyService
     /**
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function createIfNotExists(): self
-    {
+    public function createIfNotExists(): self {
         if ($this->exists()) {
             return self::getInstance(); // se esiste esce;
         }
