@@ -5,7 +5,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use NamespacedDummyUserModel as User;
 use NamespacedDummyModel as Post; 
 
-use Modules\Cms\Models\Panels\Policies\XotBasePanelPolicy;
+use Modules\Cms\Models\Panels\Policies\XotBasePanelPermissionPolicy;
 
-class DummyClass extends XotBasePanelPolicy {
+class DummyClass extends XotBasePanelPermissionPolicy {
 }
