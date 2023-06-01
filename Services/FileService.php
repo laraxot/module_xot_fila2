@@ -6,13 +6,13 @@ namespace Modules\Xot\Services;
 
 use Exception;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Nwidart\Modules\Facades\Module;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Vite;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\NamespacedItemResolver;
+use Illuminate\Support\Str;
+use Nwidart\Modules\Facades\Module;
 
 /**
  * Class FileService.
@@ -955,9 +955,6 @@ class FileService
         return $a->getFileName();
     }
 
-    /**
-     * 
-     */
     public static function url2Path(string $url): string
     {
         $path = Str::after($url, url('/'));
@@ -965,9 +962,6 @@ class FileService
         return public_path($path);
     }
 
-    /**
-     * 
-     */
     public static function vitePath(string $path): string
     {
         $url = Vite::asset($path);
@@ -975,9 +969,6 @@ class FileService
         return self::url2Path($url);
     }
 
-        /**
-     * 
-     */
     public static function viteCopy(string $from, string $to): bool
     {
         $url = Vite::asset($from);
