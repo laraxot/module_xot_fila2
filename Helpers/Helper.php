@@ -961,8 +961,10 @@ if (! function_exists('url_queries')) {
         if (! $url) {
             $url = \Request::fullUrl();
         }
+
         // Split the URL down into an array with all the parts separated out
         $url_parsed = parse_url($url);
+
         if (false === $url_parsed) {
             throw new \Exception('error parsing url ['.$url.']');
         }
@@ -973,8 +975,10 @@ if (! function_exists('url_queries')) {
             // if (in_array('query', array_keys($url_parsed))) {
             parse_str($url_parsed['query'], $url_params);
         }
+
         // Merge the existing URL's query parameters with our new ones
         $url_params = array_merge($url_params, $queries);
+
         // Build a new query string from our updated array
         $string_query = http_build_query($url_params);
         // Add the new query string back into our URL
