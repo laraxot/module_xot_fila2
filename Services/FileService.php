@@ -838,6 +838,7 @@ class FileService
     {
         $namespace = Str::replace('/', '\\', $namespace);
         $components_json = $path.'/_components.json';
+        $components_json =self::fixPath($components_json);
         $path = self::fixPath($path);
         /*
         throw new Exception ??
@@ -847,6 +848,7 @@ class FileService
             }
         }
         */
+        
         $exists = File::exists($components_json);
         if ($exists && ! $force_recreate) {
             $content = File::get($components_json);
@@ -859,7 +861,8 @@ class FileService
 
             return $comps;
         }
-        $files = File::allFiles(\dirname($components_json));
+        //$files = File::allFiles(\dirname($components_json));
+        $files = File::allFiles($path);
 
         $comps = [];
         foreach ($files as $k => $v) {
@@ -904,7 +907,7 @@ class FileService
             $old_content = File::get($components_json);
         }
         if ($old_content !== $content) {
-            File::put($components_json, $content);
+          //  File::put($components_json, $content);
         }
 
         return $comps;
