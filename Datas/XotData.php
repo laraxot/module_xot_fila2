@@ -34,7 +34,11 @@ class XotData extends Data
 
     public static function make(): self
     {
-        return self::from(config('xra'));
+        $xot=config('xra');
+        if(!is_array($xot)){
+            dddx($xot);
+        }
+        return self::from($xot);
     }
 
     public function getProfileClass(): string
