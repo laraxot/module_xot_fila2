@@ -34,10 +34,11 @@ class XotData extends Data
 
     public static function make(): self
     {
-        $xot=config('xra');
-        if(!is_array($xot)){
+        $xot = config('xra');
+        if (! is_array($xot)) {
             dddx($xot);
         }
+
         return self::from($xot);
     }
 
