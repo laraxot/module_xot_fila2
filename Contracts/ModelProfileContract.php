@@ -9,10 +9,10 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 /**
  * Modules\Xot\Contracts\ModelProfileContract.
  *
- * @property string   $id
- * @property string   $email
- * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\LU\Models\Role>       $roles
- * @property int|null $roles_count
+ * @property string                                                                 $id
+ * @property string                                                                 $email
+ * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\LU\Models\Role> $roles
+ * @property int|null                                                               $roles_count
  *
  * @mixin \Eloquent
  */
