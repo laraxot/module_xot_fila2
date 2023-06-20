@@ -20,8 +20,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property PivotContract|null              $pivot
  * @property string                          $tennant_name
  * @property int|null                        $author_id
- * @property \Modules\LU\Models\User|null    $user
- * @property \Modules\LU\Models\User|null    $author
+ * @property \Modules\User\Models\User|null  $user
+ * @property \Modules\User\Models\User|null  $author
  *
  * @method mixed     getKey()
  * @method string    getRouteKey()
@@ -45,6 +45,5 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin  \Eloquent
  */
-interface ModelWithAuthorContract
-{
+interface ModelWithAuthorContract {
 }

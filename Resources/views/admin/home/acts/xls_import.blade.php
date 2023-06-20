@@ -13,5 +13,5 @@
             </form>
         </div>
     </div> --}}
-    <livewire:import.xls.model modelClass="\Modules\LU\Models\User" />
+    <livewire:import.xls.model modelClass="\Modules\User\Models\User" />
 @endsection

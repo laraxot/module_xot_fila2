@@ -13,21 +13,20 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Modules\LU\Contracts\UserContract.
  *
- * @property ModelProfileContract|null                                          $profile
- * @property int                                                                $id
- * @property string                                                             $handle
- * @property string|null                                                        $first_name
- * @property string|null                                                        $last_name
- * @property string|null                                                        $full_name
- * @property string|null                                                        $phone
- * @property string|null                                                        $email
- * @property \Illuminate\Database\Eloquent\Collection|\Modules\LU\Models\Area[] $areas
- * @property \Modules\LU\Models\PermUser|null                                   $perm
+ * @property ModelProfileContract|null                                            $profile
+ * @property int                                                                  $id
+ * @property string                                                               $handle
+ * @property string|null                                                          $first_name
+ * @property string|null                                                          $last_name
+ * @property string|null                                                          $full_name
+ * @property string|null                                                          $phone
+ * @property string|null                                                          $email
+ * @property \Illuminate\Database\Eloquent\Collection|\Modules\User\Models\Area[] $areas
+ * @property \Modules\User\Models\PermUser|null                                   $perm
  *
  * @mixin    \Eloquent
  */
-interface UserContract extends MustVerifyEmail
-{
+interface UserContract extends MustVerifyEmail {
     /*
     public function isSuperAdmin();
     public function name();

@@ -21,7 +21,7 @@ use Spatie\ModelStatus\Status;
  * @property string|null                                                           $title
  * @property PivotContract|null                                                    $pivot
  * @property string                                                                $tennant_name
- * @property \Modules\LU\Models\User|null                                          $user
+ * @property \Modules\User\Models\User|null                                        $user
  * @property string                                                                $status
  * @property \Illuminate\Database\Eloquent\Collection|\Spatie\ModelStatus\Status[] $statuses
  * @property int|null                                                              $statuses_count
@@ -48,8 +48,7 @@ use Spatie\ModelStatus\Status;
  *
  * @mixin  \Eloquent
  */
-interface ModelWithStatusContract
-{
+interface ModelWithStatusContract {
     public function statuses(): MorphMany;
 
     public function status(): ?Status;

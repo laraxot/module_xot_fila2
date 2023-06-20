@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\Auth;
  * Trait Updater.
  * https://dev.to/hasanmn/automatically-update-createdby-and-updatedby-in-laravel-using-bootable-traits-28g9.
  */
-trait Updater
-{
+trait Updater {
     /**
      * Undocumented function.
      * move to modelservice.
@@ -36,8 +35,7 @@ trait Updater
      *
      * @return void
      */
-    protected static function bootUpdater()
-    {
+    protected static function bootUpdater() {
         // parent::boot();
         /*
          * During a model create Eloquent will also update the updated_at field so
@@ -46,8 +44,8 @@ trait Updater
         static::creating(
             function ($model) {
                 if (null !== Auth::user()) {
-                    // Cannot call method getAttribute() on Modules\LU\Models\User|null.
-                    // Cannot access property $handle on Modules\LU\Models\User|null.
+                    // Cannot call method getAttribute() on Modules\User\Models\User|null.
+                    // Cannot access property $handle on Modules\User\Models\User|null.
                     $model->created_by = Auth::user()->handle ?? '';
                     $model->updated_by = Auth::user()->handle ?? '';
                 }

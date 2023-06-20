@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null                     $title
  * @property PivotContract|null              $pivot
  * @property string                          $tennant_name
- * @property \Modules\LU\Models\User|null    $user
+ * @property \Modules\User\Models\User|null  $user
  *
  * @method mixed     getKey()
  * @method string    getRouteKey()
@@ -43,6 +43,5 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @mixin  \Eloquent
  */
-interface ModelWithUserContract
-{
+interface ModelWithUserContract {
 }

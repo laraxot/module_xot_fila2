@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Cms\Models\Panels;
 
 use Illuminate\Http\Request;
-use Modules\LU\Models\User;
+use Modules\User\Models\User;
 
 // --- Services --
 
