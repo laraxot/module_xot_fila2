@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\View;
 use Modules\Xot\View\Composers\XotComposer;
-use Nwidart\Modules\Facades\Module;
 
 /**
  * Class XotServiceProvider.

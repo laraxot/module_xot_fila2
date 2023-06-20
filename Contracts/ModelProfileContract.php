@@ -16,7 +16,8 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
  *
  * @mixin \Eloquent
  */
-interface ModelProfileContract extends ModelContract {
+interface ModelProfileContract extends ModelContract
+{
     /**
      * Grant the given permission(s) to a role.
      *

@@ -14,7 +14,8 @@ use ReflectionClass;
 /**
  * Class ModuleService.
  */
-class ModuleService {
+class ModuleService
+{
     private static ?self $_instance = null;
 
     public string $name;
@@ -24,7 +25,8 @@ class ModuleService {
      *
      * this method will return instance of the class
      */
-    public static function getInstance(): self {
+    public static function getInstance(): self
+    {
         if (! self::$_instance) {
             self::$_instance = new self();
         }
@@ -35,14 +37,16 @@ class ModuleService {
     /**
      * Undocumented function.
      */
-    public static function make(): self {
+    public static function make(): self
+    {
         return static::getInstance();
     }
 
     /**
      * Undocumented function.
      */
-    public function setName(string $name): self {
+    public function setName(string $name): self
+    {
         $this->name = $name;
 
         return $this;
@@ -51,7 +55,8 @@ class ModuleService {
     /**
      * Undocumented function.
      */
-    public function getModels(): array {
+    public function getModels(): array
+    {
         /*
         if (null == $module) {
             return [];

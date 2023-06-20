@@ -26,7 +26,8 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * @mixin    \Eloquent
  */
-interface UserContract extends MustVerifyEmail {
+interface UserContract extends MustVerifyEmail
+{
     /*
     public function isSuperAdmin();
     public function name();

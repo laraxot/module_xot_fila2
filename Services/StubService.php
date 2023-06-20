@@ -15,7 +15,8 @@ use Modules\Xot\Contracts\ModelProfileContract;
 /**
  * Class StubService.
  */
-class StubService {
+class StubService
+{
     // -- model (object) or class (string)
     // -- stub_name name of stub
     // -- create yes or not
@@ -37,7 +38,8 @@ class StubService {
      *
      * this method will return instance of the class
      */
-    public static function getInstance(): self {
+    public static function getInstance(): self
+    {
         if (! self::$_instance) {
             self::$_instance = new self();
         }
@@ -45,17 +47,20 @@ class StubService {
         return self::$_instance;
     }
 
-    public static function make(): self {
+    public static function make(): self
+    {
         return static::getInstance();
     }
 
-    public function setDebug(bool $debug): self {
+    public function setDebug(bool $debug): self
+    {
         $this->debug = $debug;
 
         return $this;
     }
 
-    public function setName(string $name): self {
+    public function setName(string $name): self
+    {
         $this->name = $name;
 
         return $this;
@@ -66,19 +71,22 @@ class StubService {
      *
      * @param Model|ModelContract|ModelProfileContract $model
      */
-    public function setModel($model): self {
+    public function setModel($model): self
+    {
         $this->model_class = \get_class($model);
 
         return $this;
     }
 
-    public function setModelClass(string $model_class): self {
+    public function setModelClass(string $model_class): self
+    {
         $this->model_class = $model_class;
 
         return $this;
     }
 
-    public function setCustomReplaces(array $custom_replaces): self {
+    public function setCustomReplaces(array $custom_replaces): self
+    {
         $this->custom_replaces = $custom_replaces;
 
         return $this;
@@ -89,14 +97,16 @@ class StubService {
      *
      * @param Model|ModelContract|ModelProfileContract $model
      */
-    public function setModelAndName($model, string $name): self {
+    public function setModelAndName($model, string $name): self
+    {
         $this->setModel($model);
         $this->setName($name);
 
         return $this;
     }
 
-    public function get(): string {
+    public function get(): string
+    {
         $file = $this->getClassFile();
         $class = $this->getClass();
         if (File::exists($file)) {
@@ -119,7 +129,8 @@ class StubService {
         return $class;
     }
 
-    public function getTable(): string {
+    public function getTable(): string
+    {
         if (isset($this->custom_replaces['DummyTable'])) {
             return $this->custom_replaces['DummyTable'];
         }
@@ -127,11 +138,13 @@ class StubService {
         return $this->getModel()->getTable();
     }
 
-    public function getModelClass(): string {
+    public function getModelClass(): string
+    {
         return $this->model_class;
     }
 
-    public function getNamespace(): string {
+    public function getNamespace(): string
+    {
         $ns = $this->getClass();
         $ns = implode('\\', \array_slice(explode('\\', $ns), 0, -1));
 
@@ -142,7 +155,8 @@ class StubService {
         return $ns;
     }
 
-    public function getModelNamespace(): string {
+    public function getModelNamespace(): string
+    {
         $ns = $this->model_class;
         $ns = implode('\\', \array_slice(explode('\\', $ns), 0, -1));
 
@@ -153,11 +167,13 @@ class StubService {
         return $ns;
     }
 
-    public function getModel(): Model {
+    public function getModel(): Model
+    {
         return app($this->model_class);
     }
 
-    public function getReplaces(): array {
+    public function getReplaces(): array
+    {
         $dummy_id = 'id';
         $search = [];
         $fields = [];
@@ -209,7 +225,8 @@ class StubService {
         return $replaces;
     }
 
-    public function getFactories(): string {
+    public function getFactories(): string
+    {
         if (! class_exists($this->model_class)) {
             return '';
         }
@@ -236,7 +253,8 @@ class StubService {
     /**
      * Maps properties.
      */
-    protected function mapTableProperties(Column $column): array {
+    protected function mapTableProperties(Column $column): array
+    {
         $key = $column->getName();
         /*
         if (! $this->shouldBeIncluded($column)) {
@@ -269,7 +287,8 @@ class StubService {
     /**
      * Checks if a given column should be included in the factory.
      */
-    protected function shouldBeIncluded(Column $column): bool {
+    protected function shouldBeIncluded(Column $column): bool
+    {
         $shouldBeIncluded = $column->getNotNull() /* || $this->includeNullableColumns */
             && ! $column->getAutoincrement();
 
@@ -296,7 +315,8 @@ class StubService {
      * @param string $key
      * @param string $value
      */
-    protected function mapToFactory($key, $value = null): array {
+    protected function mapToFactory($key, $value = null): array
+    {
         return [
             $key => null === $value ? $value : "'{$key}' => $value",
         ];
@@ -307,7 +327,8 @@ class StubService {
      *
      * @return string
      */
-    protected function mapToFaker(Column $column) {
+    protected function mapToFaker(Column $column)
+    {
         return app(TypeGuesser::class)->guess(
             $column->getName(),
             $column->getType(),
@@ -320,7 +341,8 @@ class StubService {
      *
      * @return Collection<string>
      */
-    public function getFillable(): Collection {
+    public function getFillable(): Collection
+    {
         $model = $this->getModel();
         if (! method_exists($model, 'getFillable')) {
             return collect([]);
@@ -344,7 +366,8 @@ class StubService {
     /**
      * Undocumented function.
      */
-    public function getColumns(): Collection {
+    public function getColumns(): Collection
+    {
         $model = $this->getModel();
         $conn = $model->getConnection();
         $platform = $conn->getDoctrineSchemaManager()->getDatabasePlatform();
@@ -388,7 +411,8 @@ class StubService {
     /**
      * sarebbe create ma in maniera fluent.
      */
-    public function generate(): self {
+    public function generate(): self
+    {
         $stub_file = __DIR__.'/../Console/stubs/'.$this->name.'.stub';
         $stub = File::get($stub_file);
         $replace = $this->getReplaces();
@@ -428,11 +452,13 @@ class StubService {
         return $this;
     }
 
-    public function getClassName(): string {
+    public function getClassName(): string
+    {
         return class_basename($this->model_class);
     }
 
-    public function getDirModel(): string {
+    public function getDirModel(): string
+    {
         if (class_exists($this->model_class)) {
             $autoloader_reflector = new \ReflectionClass($this->model_class);
             // dddx($autoloader_reflector);
@@ -457,7 +483,8 @@ class StubService {
         return $path;
     }
 
-    public function getClass(): string {
+    public function getClass(): string
+    {
         $dir = collect(explode('\\', $this->model_class))->slice(0, -1)->implode('\\');
 
         switch ($this->name) {
@@ -486,7 +513,8 @@ class StubService {
         }
     }
 
-    public function getClassFile(): string {
+    public function getClassFile(): string
+    {
         $class_name = $this->getClassName();
         $dir = $this->getDirModel();
         /*
@@ -528,7 +556,8 @@ class StubService {
     /**
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      */
-    public function getFields(): array {
+    public function getFields(): array
+    {
         $model = $this->getModel();
         if (! method_exists($model, 'getFillable')) {
             return [];
@@ -625,14 +654,16 @@ class StubService {
         return $fields;
     }
 
-    public function getModelPath(): string {
+    public function getModelPath(): string
+    {
         $path = base_path($this->getModelNamespace());
         $path = FileService::fixPath($path);
 
         return $path;
     }
 
-    public function getPrimaryKeyFromTable(): string {
+    public function getPrimaryKeyFromTable(): string
+    {
         $models = File::files($this->getModelPath());
         shuffle($models);
         $brother_file = collect($models)
@@ -660,7 +691,8 @@ class StubService {
         return $primaryKey;
     }
 
-    public function getFieldsFromTable(): array {
+    public function getFieldsFromTable(): array
+    {
         // dddx([$this->getModelClass(), $this->getModelPath()]);
 
         $models = File::files($this->getModelPath());

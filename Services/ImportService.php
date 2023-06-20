@@ -14,7 +14,6 @@ use GuzzleHttp\Cookie\SetCookie;
 // https://www.sitepoint.com/guzzle-php-http-client/
 // /*
 use GuzzleHttp\Exception\GuzzleException;
-use GuzzleHttp\Stream;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Nette\Utils\Json;

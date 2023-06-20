@@ -9,7 +9,6 @@ namespace Modules\Xot\Services;
 // use PhpOffice\PhpSpreadsheet\Spreadsheet;
 // use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-use Exception;
 // use Mpdf\Mpdf;
 use Illuminate\Support\Facades\Storage;
 use Spipu\Html2Pdf\Exception\ExceptionFormatter;
