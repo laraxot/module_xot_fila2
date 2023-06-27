@@ -10,7 +10,7 @@ modulo LU
   Line   Http\Controllers\Auth\LoginController.php
  ------ -----------------------------------------------------------------------
   145    Result of method
-         Modules\LU\Http\Controllers\Auth\LoginController::sendLockoutResponse
+         Modules\User\Http\Controllers\Auth\LoginController::sendLockoutResponse
          () (void) is used.
 
 modulo Xot

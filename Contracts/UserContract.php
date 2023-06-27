@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
- * Modules\LU\Contracts\UserContract.
+ * Modules\User\Contracts\UserContract.
  *
  * @property ModelProfileContract|null                                            $profile
  * @property int                                                                  $id
