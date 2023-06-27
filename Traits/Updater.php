@@ -46,8 +46,6 @@ trait Updater
         static::creating(
             function ($model) {
                 if (null !== Auth::user()) {
-                    // Cannot call method getAttribute() on Modules\User\Models\User|null.
-                    // Cannot access property $handle on Modules\User\Models\User|null.
                     $model->created_by = Auth::user()->handle ?? '';
                     $model->updated_by = Auth::user()->handle ?? '';
                 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 
 /**
@@ -95,14 +96,14 @@ class PolicyService
         if (! isset($class)) {
             throw new \Exception('class is missing');
         }
-
+        $user_class=get_class(Auth::user());
         $replaces = [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,
             'DummyFullModel' => $class,
             // 'dummy_id' => $dummy_id,
             'dummy_title' => 'title', // prendo il primo campo stringa
-            'NamespacedDummyUserModel' => 'Modules\User\Models\User',
+            'NamespacedDummyUserModel' => $user_class,
             'NamespacedDummyModel' => $class,
         ];
 
