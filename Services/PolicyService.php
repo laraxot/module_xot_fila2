@@ -96,7 +96,7 @@ class PolicyService
         if (! isset($class)) {
             throw new \Exception('class is missing');
         }
-        $user_class=get_class(Auth::user());
+        $user_class = get_class(Auth::user());
         $replaces = [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,

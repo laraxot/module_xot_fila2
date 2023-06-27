@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Illuminate\Support\Str;
 use Doctrine\DBAL\Schema\Column;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Modules\Xot\Contracts\ModelProfileContract;
 
@@ -203,7 +203,7 @@ class StubService
         if (isset($fields['updated_at'])) {
             $dummy_timestamps = 'true';
         }
-        $user_class=get_class(Auth::user());
+        $user_class = get_class(Auth::user());
         $replaces = [
             'DummyNamespace' => $ns,
             'DummyClassLower' => strtolower($dummy_class),
