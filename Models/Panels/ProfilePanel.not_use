@@ -108,9 +108,6 @@ class ProfilePanel extends XotBasePanel {
         if (null === $this->row) {
             throw new \Exception('row is null');
         }
-        if (! property_exists($this->row, 'user')) {
-            throw new \Exception('in ['.\get_class($this->row).'] property [user] not exists');
-        }
         $user = $this->row->user;
 
         if (! \is_object($user) && \is_object($this->row)) {
