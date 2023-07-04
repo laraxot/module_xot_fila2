@@ -22,6 +22,12 @@ return [
             'Url Not Found' => 'docs/base/url-not-found',
         ],
     ],
+    'Config' => [
+        'url' => 'docs/config',
+        'children' => [
+            'Configurazione modules.php' => 'docs/config/modules',
+        ],
+    ],
     'Model Actions' => [
         'url' => 'docs/model',
         'children' => [
@@ -51,6 +57,7 @@ return [
         'url' => 'docs/filament',
         'children' => [
             'Installazione' => 'docs/filament/installation',
+            'Creazione di una Resource' => 'docs/filament/resource',
         ],
     ],
     // 'Documentazione jigsaw' =>
