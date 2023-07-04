@@ -47,5 +47,11 @@ return [
             'Filter' => 'docs/links/filter',
         ],
     ],
+    'Filament' => [
+        'url' => 'docs/filament',
+        'children' => [
+            'Installazione' => 'docs/filament/installation',
+        ],
+    ],
     // 'Documentazione jigsaw' =>
 ];
