@@ -13,7 +13,7 @@ section: content
 
 - php artisan migrate
 
-- composer require artmin96/filament-jet
+- composer require artmin96/filament-jet:*
 
 - php artisan filament-jet:install --teams
 
@@ -49,7 +49,7 @@ section: content
 'disable_frontend_dynamic_route' => true,
 ```
 
-- composer require savannabits/filament-modules
+- composer require savannabits/filament-modules versione 1.1
 
 - php artisan module:use Modulo
 - 
