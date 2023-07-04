@@ -27,12 +27,14 @@ section: content
 
 - mettere in composer 
 
-    "repositories": [
-        {
-            "type": "path",
-            "url": "./packages/ArtMin96/FilamentJet"
-        }
-    ],
+```bash
+"repositories": [
+    {
+        "type": "path",
+        "url": "./packages/ArtMin96/FilamentJet"
+    }
+],
+```
 
 - nella cartella /packages/ArtMin96/FilamentJet git submodule add https://github.com/laraxot/filament-jet.git FilamentJet
 
@@ -42,8 +44,10 @@ section: content
 
 - su xra disabilitare routes frontend e backend
 
-    'disable_admin_dynamic_route' => true,
-    'disable_frontend_dynamic_route' => true,
+```bash
+'disable_admin_dynamic_route' => true,
+'disable_frontend_dynamic_route' => true,
+```
 
 - composer require savannabits/filament-modules
 
