@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 return [
+    /*
     'Getting Started' => [
         'url' => 'docs/getting-started',
         'children' => [
@@ -13,6 +14,7 @@ return [
         ],
     ],
     'Jigsaw Docs' => 'https://jigsaw.tighten.co/docs/installation',
+    */
     'Base' => [
         'url' => 'docs/base',
         'children' => [
@@ -58,6 +60,7 @@ return [
         'children' => [
             'Installazione' => 'docs/filament/installation',
             'Creazione di una Resource' => 'docs/filament/resource',
+            'Creazioni Pdf da azione' => 'docs/filament/actions/pdf',
         ],
     ],
     // 'Documentazione jigsaw' =>
