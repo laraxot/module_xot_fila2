@@ -20,7 +20,7 @@ Abilitare **rewrite** nei Modulo della configurazione globale di Apache Webserve
 
 ### Altra possibile soluzione  
 
-Se si verifica in locale, dopo aver creato la giunzione, è possibile che la giunzione punti alla cartella public e non a public_html.  
+Se si verifica in locale, dopo aver creato la giunzione, è possibile che la giunzione punti alla cartella public e non a public_html  
 
 La soluzione è andare nella cartella dove è si trovano tutte le configurazioni delle giunzioni di laragon  
 
@@ -32,4 +32,6 @@ esempio:
 da  
 define ROOT "C:/var/www/nome_giunzione/public"  
 a  
-define ROOT "C:/var/www/nome_giunzione/public_html"
+define ROOT "C:/var/www/nome_giunzione/public_html"  
+
+**NB**: dopo aver fatto questa modifica, riavviare laragon
