@@ -40,7 +40,6 @@ class XotData extends Data
             dddx($xot);
         }
 
-
         return self::from($xot);
     }
 
@@ -58,7 +57,6 @@ class XotData extends Data
         return $class;
     }
 
-
     public function getProfileModelByUserId(string $user_id): Model
     {
         $profile_class = $this->getProfileClass();
@@ -74,14 +72,12 @@ class XotData extends Data
         return $this->getProfileModelByUserId($user_id);
     }
 
-
-
     public function update(array $data): self
     {
-        foreach($data as $k=>$v) {
-            $this->{$k}=$v;
+        foreach ($data as $k => $v) {
+            $this->{$k} = $v;
         }
-        //$this->save();
+        // $this->save();
         return $this;
     }
 

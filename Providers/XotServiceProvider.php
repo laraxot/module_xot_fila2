@@ -35,7 +35,6 @@ class XotServiceProvider extends XotBaseServiceProvider
 
     public function bootCallback(): void
     {
-
         $this->registerCommands();
 
         $this->redirectSSL();
@@ -46,12 +45,11 @@ class XotServiceProvider extends XotBaseServiceProvider
         // $this->registerScout();
 
         // $this->registerLivewireComponents();
-        //$this->registerViewComposers(); //rompe filament
+        // $this->registerViewComposers(); //rompe filament
 
         // $this->registerPanel();
         // $this->registerDropbox();// PROBLEMA DI COMPOSER
         $this->registerEvents();
-
     }
 
     // end bootCallback
