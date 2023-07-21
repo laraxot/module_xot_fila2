@@ -40,6 +40,7 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
         // dddx([$router, $router1]);
 
         // $this->registerLang();
+
         $this->registerRoutePattern($router);
         $this->registerMyMiddleware($router);
     }

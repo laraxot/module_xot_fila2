@@ -35,9 +35,11 @@ class XotData extends Data
     public static function make(): self
     {
         $xot = config('xra');
+
         if (! is_array($xot)) {
             dddx($xot);
         }
+
 
         return self::from($xot);
     }
@@ -48,6 +50,14 @@ class XotData extends Data
 
         return $profile_class;
     }
+
+    public function getHomeController(): string
+    {
+        $class = 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
+
+        return $class;
+    }
+
 
     public function getProfileModelByUserId(string $user_id): Model
     {
@@ -62,5 +72,21 @@ class XotData extends Data
         $user_id = strval(Auth::id());
 
         return $this->getProfileModelByUserId($user_id);
+    }
+
+
+
+    public function update(array $data): self
+    {
+        foreach($data as $k=>$v) {
+            $this->{$k}=$v;
+        }
+        //$this->save();
+        return $this;
+    }
+
+    public function save()
+    {
+        dddx('wip');
     }
 }
