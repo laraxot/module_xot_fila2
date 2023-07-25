@@ -10,7 +10,8 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller as RoutingController;
 
-class XotBaseController extends RoutingController {
+class XotBaseController extends RoutingController
+{
     use AuthorizesRequests;
     use DispatchesJobs;
     use ValidatesRequests;
@@ -18,7 +19,8 @@ class XotBaseController extends RoutingController {
     /**
      * success response method.
      */
-    public function sendResponse(string $message, array $result): JsonResponse {
+    public function sendResponse(string $message, array $result): JsonResponse
+    {
         $response = [
             'success' => true,
             'message' => $message,
@@ -31,7 +33,8 @@ class XotBaseController extends RoutingController {
     /**
      * return error response.
      */
-    public function sendError(string $error, array $errorMessages = [], int $code = 404): JsonResponse {
+    public function sendError(string $error, array $errorMessages = [], int $code = 404): JsonResponse
+    {
         $response = [
             'success' => false,
             'message' => $error,
