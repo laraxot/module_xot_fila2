@@ -36,7 +36,7 @@ class NavService
             $tmp['title'] = $year;
             // Strict comparison using === between numeric-string and (float|int) will always evaluate to false
             // if (date('Y') === $params['year']) {
-            if ($params['year'] * 1 === date('Y') * 1) {
+            if (intval($params['year']) === intval(date('Y'))) {
                 $tmp['title'] = '['.$tmp['title'].']';
             }
             if ($year === $params['year']) {

@@ -18,6 +18,11 @@ use Modules\Xot\Services\ModuleService;
 use Nwidart\Modules\Facades\Module;
 
 use function Safe\define;
+use function Safe\glob;
+use function Safe\json_decode;
+use function Safe\parse_url;
+use function Safe\preg_match;
+use function Safe\preg_replace;
 
 // ------------------------------------------------
 

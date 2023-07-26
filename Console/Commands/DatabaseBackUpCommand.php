@@ -12,6 +12,8 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
+use function Safe\exec;
+
 class DatabaseBackUpCommand extends Command
 {
     /**

@@ -13,6 +13,9 @@ use Modules\Xot\Services\BladeService;
 use Modules\Xot\Services\LivewireService;
 use Nwidart\Modules\Facades\Module;
 
+use function Safe\glob;
+use function Safe\json_decode;
+use function Safe\json_encode;
 use function Safe\realpath;
 
 // use Modules;

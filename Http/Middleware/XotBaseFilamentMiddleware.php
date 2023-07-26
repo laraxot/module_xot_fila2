@@ -6,6 +6,7 @@ namespace Modules\Xot\Http\Middleware;
 
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Support\Str;
 use Nwidart\Modules\Laravel\Module;
 
 abstract class XotBaseFilamentMiddleware extends Middleware
@@ -13,6 +14,9 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     public static string $module = 'EWall';
     public static string $context = 'filament';
 
+    /**
+     * @return \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
+     */
     private function getModule(): Module
     {
         return app('modules')->findOrFail(static::$module);
@@ -28,7 +32,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
             throw new \Exception('Context has to be defined in your class');
         }
 
-        return \Str::of($module->getLowerName())->append('-')->append(\Str::slug(static::$context))->kebab()->toString();
+        return Str::of($module->getLowerName())->append('-')->append(Str::slug(static::$context))->kebab()->toString();
     }
 
     protected function authenticate($request, array $guards): void

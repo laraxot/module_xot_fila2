@@ -14,6 +14,7 @@ use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
 
+use function Safe\json_encode;
 use function Safe\realpath;
 
 use Webmozart\Assert\Assert;

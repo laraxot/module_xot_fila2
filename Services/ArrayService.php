@@ -11,7 +11,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
+use function Safe\fclose;
 use function Safe\fopen;
+use function Safe\fputcsv;
 
 /**
  * Class ArrayService.

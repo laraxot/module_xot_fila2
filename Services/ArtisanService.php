@@ -13,6 +13,9 @@ use Illuminate\Support\Str;
 use Modules\Tenant\Services\TenantService;
 use Modules\UI\Services\ThemeService;
 
+use function Safe\fopen;
+use function Safe\preg_match_all;
+
 if (! \defined('STDIN')) {
     \define('STDIN', fopen('php://stdin', 'r'));
 }
