@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Modules\Cms\Services\PanelService;
 use Modules\Tenant\Services\TenantService;
+use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
 use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;
@@ -1425,7 +1426,7 @@ if (! function_exists('recursive_unset')) {
 }
 
 if (! function_exists('profile')) {
-    function profile()
+    function profile(): Model
     {
         $xot = XotData::make();
         $profileModel = $xot->getProfileModel();

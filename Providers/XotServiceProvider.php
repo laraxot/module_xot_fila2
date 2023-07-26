@@ -128,13 +128,14 @@ class XotServiceProvider extends XotBaseServiceProvider
         );
     }
 
-    private function registerViewComposers(): void
-    {
-        // Factory $view
-        // $view->composer('bootstrap-italia::page', BootstrapItaliaComposer::class);
-        View::composer('*', XotComposer::class);
-        // dddx($res);
-    }
+    //Method Modules\Xot\Providers\XotServiceProvider::registerViewComposers() is unused
+    // private function registerViewComposers(): void
+    // {
+    // Factory $view
+    // $view->composer('bootstrap-italia::page', BootstrapItaliaComposer::class);
+    //    View::composer('*', XotComposer::class);
+    // dddx($res);
+    // }
 
     /*
     public function mergeConfigs(): void {

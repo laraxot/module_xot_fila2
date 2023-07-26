@@ -6,6 +6,7 @@ namespace Modules\Xot\Services;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use Modules\Xot\Datas\XotData;
 
 /**
  * Class PolicyService.
@@ -86,6 +87,7 @@ class PolicyService
 
     public static function replaces(array $params = []): array
     {
+        $xotData=XotData::make();
         extract(self::$out_vars);
         if (! isset($namespace)) {
             throw new \Exception('namespace is missing');
@@ -96,7 +98,8 @@ class PolicyService
         if (! isset($class)) {
             throw new \Exception('class is missing');
         }
-        $user_class = get_class(Auth::user());
+        //$user_class = get_class(Auth::user());
+        $user_class=$xotData->getUserClass();
         $replaces = [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,

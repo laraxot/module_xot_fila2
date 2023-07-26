@@ -7,6 +7,7 @@ namespace Modules\Xot\Datas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\Data;
+use Webmozart\Assert\Assert;
 
 /**
  * Undocumented class.
@@ -41,6 +42,13 @@ class XotData extends Data
         }
 
         return self::from($xot);
+    }
+
+    public function getUserClass(): string
+    {
+        Assert::classExists($class=config('auth.providers.users.model'), 'check config auth');
+        return $class;
+
     }
 
     public function getProfileClass(): string
@@ -81,7 +89,7 @@ class XotData extends Data
         return $this;
     }
 
-    public function save()
+    public function save():void
     {
         dddx('wip');
     }

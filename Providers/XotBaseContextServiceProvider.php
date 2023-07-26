@@ -20,7 +20,7 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
         parent::packageRegistered();
     }
 
-    public function registerConfigs()
+    public function registerConfigs():void
     {
         $this->mergeConfigFrom(
             app('modules')->findOrFail(static::$module)->getExtraPath('Config/'.static::$name.'.php'),
@@ -28,7 +28,7 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
         );
     }
 
-    public function boot()
+    public function boot():void
     {
         parent::boot();
         app(FilamentModules::class)->prepareDefaultNavigation(static::$module, static::$name);

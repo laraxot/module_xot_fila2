@@ -173,6 +173,7 @@ class ImportService
 
     /**
      * ---.
+     * @return mixed
      */
     public function getConfig(string $x)
     {
@@ -277,6 +278,9 @@ class ImportService
         return $this->res->getStatusCode();
     }
 
+    /**
+     * @return string
+     */
     public function getRedirectHistory()
     {
         return $this->res->getHeaderLine('X-Guzzle-Redirect-History'); // http://first-redirect, http://second-redirect, etc...
