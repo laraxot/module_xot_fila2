@@ -13,6 +13,8 @@ use Modules\Xot\Services\BladeService;
 use Modules\Xot\Services\LivewireService;
 use Nwidart\Modules\Facades\Module;
 
+use function Safe\realpath;
+
 // use Modules;
 
 /**

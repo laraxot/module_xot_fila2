@@ -17,6 +17,8 @@ use Modules\Xot\Services\FileService;
 use Modules\Xot\Services\ModuleService;
 use Nwidart\Modules\Facades\Module;
 
+use function Safe\define;
+
 // ------------------------------------------------
 
 /* --- MAH

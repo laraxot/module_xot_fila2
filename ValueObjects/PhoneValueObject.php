@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\ValueObjects;
 
+use function Safe\preg_match;
+
 class PhoneValueObject
 {
     private function __construct(private readonly string $phone)

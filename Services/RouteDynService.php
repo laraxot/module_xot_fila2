@@ -7,6 +7,8 @@ namespace Modules\Xot\Services;
 use Illuminate\Support\Str;
 use Route;
 
+use function Safe\preg_replace;
+
 /**
  * Class RouteDynService.
  */

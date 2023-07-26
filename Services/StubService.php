@@ -13,6 +13,10 @@ use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
+
+use function Safe\date;
+use function Safe\shuffle;
+
 use Webmozart\Assert\Assert;
 
 /**

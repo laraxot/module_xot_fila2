@@ -20,6 +20,12 @@ use Nette\Utils\Json;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+
+use function Safe\fclose;
+use function Safe\ini_set;
+use function Safe\json_encode;
+use function Safe\parse_url;
+
 use Symfony\Component\DomCrawler\Crawler;
 
 // */

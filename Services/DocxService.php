@@ -7,6 +7,8 @@ namespace Modules\Xot\Services;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpWord\TemplateProcessor;
+
 /*
 use PhpOffice\PhpWord\PhpWord;
 use Illuminate\Support\Facades\Storage;
@@ -20,7 +22,7 @@ https://code-boxx.com/convert-html-to-docx-using-php/
 
 */
 
-use PhpOffice\PhpWord\TemplateProcessor;
+use function Safe\json_decode;
 
 /**
  * Class DocxService.

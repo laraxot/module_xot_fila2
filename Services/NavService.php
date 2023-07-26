@@ -7,6 +7,8 @@ namespace Modules\Xot\Services;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
 
+use function Safe\date;
+
 /**
  * Class NavService.
  */

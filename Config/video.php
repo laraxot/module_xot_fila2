@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use function Safe\realpath;
+
 $root_path = realpath(dirname(__DIR__));
 
 $config = [];

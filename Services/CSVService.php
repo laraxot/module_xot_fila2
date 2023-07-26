@@ -9,6 +9,8 @@ namespace Modules\Xot\Services;
 
 use Illuminate\Support\Collection;
 
+use function Safe\file;
+
 /**
  * Class CSVService.
  */

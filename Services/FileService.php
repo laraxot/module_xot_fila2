@@ -13,6 +13,9 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
+
+use function Safe\realpath;
+
 use Webmozart\Assert\Assert;
 
 /**
