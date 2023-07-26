@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
+use Webmozart\Assert\Assert;
 
 /**
  * Class StubService.
@@ -494,17 +495,18 @@ class StubService
 
         switch ($this->name) {
             case 'factory':
-                return Str::replace('\Models\\', '\Database\Factories\\', $this->model_class).'Factory';
+                // Assert::string();
+                return Str::replaceFirst('\Models\\', '\Database\Factories\\', $this->model_class).'Factory';
             case 'migration_morph_pivot':
                 return '';
             case 'morph_pivot':
                 return '';
             case 'repository':
-                return Str::replace('\Models\\', '\Repositories\\', $this->model_class).'Repository';
+                return Str::replaceFirst('\Models\\', '\Repositories\\', $this->model_class).'Repository';
             case 'transformer_collection':
-                return Str::replace('\Models\\', '\Transformers\\', $this->model_class).'Collection';
+                return Str::replaceFirst('\Models\\', '\Transformers\\', $this->model_class).'Collection';
             case 'transformer_resource':
-                return Str::replace('\Models\\', '\Transformers\\', $this->model_class).'Resource';
+                return Str::replaceFirst('\Models\\', '\Transformers\\', $this->model_class).'Resource';
             case 'policy':
                 return $dir.'\\Policies\\'.class_basename($this->model_class).'Policy';
             case 'panel':

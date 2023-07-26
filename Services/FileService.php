@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
+use Webmozart\Assert\Assert;
 
 /**
  * Class FileService.
@@ -86,6 +87,7 @@ class FileService
                         file to ['.$filename_to.']');
                 }
             }
+            Assert::string($asset, 'wip');
 
             return $asset;
         }
@@ -112,6 +114,7 @@ class FileService
             File::copy($filename_from, $filename_to);
             // }
         }
+        Assert::string($asset, 'wip');
 
         return $asset;
 

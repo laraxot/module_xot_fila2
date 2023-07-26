@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 // use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;
 use Modules\Xot\Services\ModuleService;
 use Nwidart\Modules\Facades\Module;
+use Symfony\Component\DomCrawler\Form;
 
 // ------------------------------------------------
 
@@ -597,6 +599,145 @@ if (! function_exists('xotModel')) {
         }
 
         return app($model_class);
+    }
+}
+
+/*
+if (! function_exists('xotModelEager')) {
+    function xotModelEager($name) {
+        return TenantService::modelEager($name);
+    }
+}
+*/
+
+if (! function_exists('transFields')) {
+    /**
+     * @return mixed|stdClass
+     */
+    function transFields(array $params)
+    {
+        $params_orig = $params;
+        if (! isset($params_orig['attributes'])) {
+            $params_orig['attributes'] = [];
+        }
+        $name = 'not-set';
+        // $model = Form::getModel();
+        /**
+         * @var Model
+         */
+        $model = \Collective\Html\FormFacade::getModel();
+        $module_name = '';
+        if (is_object($model)) {
+            $module_name = getModuleNameFromModel($model);
+        }
+
+        $ns = Str::lower($module_name);
+        /**
+         * @var string
+         */
+        $model_basename = class_basename($model);
+        $trans_root = $ns.'::'.Str::snake($model_basename);
+        // debug_getter_obj(['obj'=>$module]);
+        // dddx($module_name->getNamespace());
+        /**
+         * @phpstan-var view-string
+         */
+        $view = 'unknown';
+        extract($params);
+        // dddx($params);
+        if (isset($attributes)) {
+            extract($attributes);
+        }
+        if (isset($options['field'])) {
+            $field = $options['field'];
+            $ris = $field;
+        } else {
+            $ris = new \stdClass();
+        }
+
+        $start = 0;
+        if (inAdmin()) {
+            $start = 1;
+        }
+        if (! isset($ris->name)) {
+            $ris->name = $name;
+        }
+
+        $ris->name_dot = bracketsToDotted((string) $name);
+
+        $pattern = '/\.[0-9]+\./m';
+        $ris->name_dot = preg_replace($pattern, '.', $ris->name_dot);
+        if (! Str::contains($view, '::')) {
+            /**
+             * @phpstan-var view-string
+             */
+            $view = 'pub_theme::'.$view;
+        }
+        list($ns, $key) = explode('::', $view);
+        if (null == $module_name) {
+            $trans_root = $ns.'::'.implode('.', array_slice(explode('.', $key), $start, -1));
+        }
+        // *
+
+        $trans_fields = ['label', 'placeholder', 'help'];
+        foreach ($trans_fields as $tf) {
+            $trans = $trans_root.'.field.'.Str::snake((string) $ris->name_dot).'.'.$tf;
+            // if (! isset($ris->$tf)) {
+            $ris->$tf = isset($$tf) ? $$tf : trans($trans);
+
+            if ($ris->$tf === $trans && ! config('xra.show_trans_key')) {
+                $ris->$tf = $ris->name_dot;
+                // $ris->$tf = $trans;
+            }
+            // }
+        }
+        // */
+        if ($ris->help === $ris->name_dot) {
+            $ris->help = '';
+        }
+
+        $attributes = $params;
+        $attrs_default = ['class' => 'form-control', 'placeholder' => $ris->placeholder];
+        if (! isset($params['attributes'])) {
+            $params['attributes'] = [];
+        }
+        $attributes = array_merge($attrs_default, $attributes, $params['attributes'], $params_orig['attributes']);
+        /*
+        if (! empty($params_orig['attributes'])) {
+            dddx($attributes);
+        }
+        */
+        $ris->attributes = collect($attributes)
+            ->filter(
+                function ($item, $key) {
+                    return in_array($key, ['style', 'class', 'placeholder', 'readonly', 'id', 'value', 'name'], true) || Str::startsWith($key, 'data-');
+                }
+            )
+            // ->only('class','placeholder','readonly')
+            ->all();
+        $ris->params = $params;
+
+        if (! isset($ris->col_size)) {
+            $ris->col_size = 12;
+        }
+        /**
+         * @var array|ArrayAccess
+         */
+        $row = \Collective\Html\FormFacade::getModel();
+        try {
+            $ris->value = Arr::get($row, $name);
+        } catch (\Exception $e) {
+            /*
+            dddx([
+                'row' => $row,
+                'name' => $name,
+                'e' => $e,
+            ]);
+            */
+            throw new Exception(''.PHP_EOL.'['.$name.']'.PHP_EOL.'['.$e->getMessage().']'.PHP_EOL.'['.__LINE__.']['.__FILE__.']');
+        }
+
+        return $ris;
     }
 }
 

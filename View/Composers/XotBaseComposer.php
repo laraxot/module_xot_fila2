@@ -25,6 +25,8 @@ abstract class XotBaseComposer
      *
      * @param string $name
      * @param array  $arguments
+     *
+     * @return mixed|void
      */
     public function __call($name, $arguments)
     {
@@ -86,6 +88,8 @@ abstract class XotBaseComposer
      * Undocumented function.
      *
      * @param array|string|int|float|null ...$args
+     *
+     * @return mixed|void
      */
     public function call(string $func, ...$args)
     {
