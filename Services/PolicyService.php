@@ -87,7 +87,7 @@ class PolicyService
 
     public static function replaces(array $params = []): array
     {
-        $xotData=XotData::make();
+        $xotData = XotData::make();
         extract(self::$out_vars);
         if (! isset($namespace)) {
             throw new \Exception('namespace is missing');
@@ -98,8 +98,8 @@ class PolicyService
         if (! isset($class)) {
             throw new \Exception('class is missing');
         }
-        //$user_class = get_class(Auth::user());
-        $user_class=$xotData->getUserClass();
+        // $user_class = get_class(Auth::user());
+        $user_class = $xotData->getUserClass();
         $replaces = [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,

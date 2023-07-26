@@ -26,7 +26,6 @@ trait Getter
 
     /**
      * __getStatic function.
-     * @return mixed
      */
     public static function __getStatic(string $index)
     {

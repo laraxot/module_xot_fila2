@@ -46,9 +46,9 @@ class XotData extends Data
 
     public function getUserClass(): string
     {
-        Assert::classExists($class=config('auth.providers.users.model'), 'check config auth');
-        return $class;
+        Assert::classExists($class = config('auth.providers.users.model'), 'check config auth');
 
+        return $class;
     }
 
     public function getProfileClass(): string
@@ -89,7 +89,7 @@ class XotData extends Data
         return $this;
     }
 
-    public function save():void
+    public function save(): void
     {
         dddx('wip');
     }

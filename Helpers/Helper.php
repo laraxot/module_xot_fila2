@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Modules\Cms\Services\PanelService;
 use Modules\Tenant\Services\TenantService;
-use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
 use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;

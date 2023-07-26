@@ -176,7 +176,7 @@ class StubService
 
     public function getReplaces(): array
     {
-        $xotData=XotData::make();
+        $xotData = XotData::make();
         $dummy_id = 'id';
         $search = [];
         $fields = [];
@@ -205,9 +205,9 @@ class StubService
         if (isset($fields['updated_at'])) {
             $dummy_timestamps = 'true';
         }
-        //$user_class = get_class(Auth::user());
+        // $user_class = get_class(Auth::user());
         $user_class = $xotData->getUserClass();
-        ;
+
         $replaces = [
             'DummyNamespace' => $ns,
             'DummyClassLower' => strtolower($dummy_class),

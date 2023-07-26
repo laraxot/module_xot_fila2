@@ -44,7 +44,6 @@ class Memoization
 
     /**
      * Undocumented function.
-     * @return mixed
      */
     public function memoize(string $key, \Closure $callback)
     {

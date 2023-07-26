@@ -47,7 +47,6 @@ interface UserContract extends MustVerifyEmail
      * Get a relationship.
      *
      * @param string $key
-     * @return mixed
      */
     public function getRelationValue($key);
 
@@ -60,6 +59,7 @@ interface UserContract extends MustVerifyEmail
 
     /**
      * Summary of getKey.
+     *
      * @return string|int
      */
     public function getKey();

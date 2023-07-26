@@ -128,7 +128,7 @@ class XotServiceProvider extends XotBaseServiceProvider
         );
     }
 
-    //Method Modules\Xot\Providers\XotServiceProvider::registerViewComposers() is unused
+    // Method Modules\Xot\Providers\XotServiceProvider::registerViewComposers() is unused
     // private function registerViewComposers(): void
     // {
     // Factory $view
