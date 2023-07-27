@@ -4,22 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use function Safe\date;
-use function Safe\shuffle;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
-use Modules\Xot\Datas\XotData;
 use Doctrine\DBAL\Schema\Column;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\File;
-use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
-use Symfony\Component\Finder\SplFileInfo;
 use Modules\Xot\Contracts\ModelProfileContract;
+use Modules\Xot\Datas\XotData;
+
+use function Safe\date;
+use function Safe\shuffle;
+
+use Symfony\Component\Finder\SplFileInfo;
+use Webmozart\Assert\Assert;
 
 /**
  * Class StubService.
@@ -689,7 +689,7 @@ class StubService
         /**
          * @var SplFileInfo
          */
-        $brother_file=Arr::first($models, function (SplFileInfo $file){
+        $brother_file = Arr::first($models, function (SplFileInfo $file) {
             return 'php' === $file->getExtension();
         });
         if (null === $brother_file) {
@@ -718,18 +718,18 @@ class StubService
 
         $models = File::files($this->getModelPath());
         shuffle($models);
-       /*
-        $models_coll=collect($models);
-        $brother_file = $models_coll
-            ->filter(function (SplFileInfo $file) {
-                return 'php' === $file->getExtension();
-            })
-            ->first();
-        */
+        /*
+         $models_coll=collect($models);
+         $brother_file = $models_coll
+             ->filter(function (SplFileInfo $file) {
+                 return 'php' === $file->getExtension();
+             })
+             ->first();
+         */
         /**
          * @var SplFileInfo
          */
-        $brother_file=Arr::first($models, function (SplFileInfo $file){
+        $brother_file = Arr::first($models, function (SplFileInfo $file) {
             return 'php' === $file->getExtension();
         });
         // dddx(get_class_methods($brother_file));
