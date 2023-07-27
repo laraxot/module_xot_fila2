@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Http\Middleware;
 
+use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Illuminate\Support\Str;
 
 abstract class XotBaseFilamentMiddleware extends Middleware
 {
@@ -37,7 +38,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     protected function authenticate($request, array $guards): void
     {
         $context = $this->getContextName();
-        $guardName = config("$context.auth.guard");
+        Assert::string($guardName = config("$context.auth.guard"),'wip');
         $guard = $this->auth->guard($guardName);
 
         if (! $guard->check()) {
