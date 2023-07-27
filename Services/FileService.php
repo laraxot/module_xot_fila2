@@ -736,7 +736,7 @@ class FileService
          */
         $group = Str::of($key)->after('::');
         $ns_dir = self::getViewNameSpacePath($ns_name);
-        Assert::string($group_dir=Str::replace('.', '/', $group),'wip');
+        Assert::string($group_dir = Str::replace('.', '/', $group), 'wip');
         $res = $ns_dir.'/'.$group_dir.'.blade.php';
 
         return self::fixPath($res);
@@ -908,9 +908,9 @@ class FileService
             }
         }
         $content = json_encode($comps);
-        //if (false === $content) {
+        // if (false === $content) {
         //    throw new \Exception('can not decode json');
-        //}
+        // }
         $old_content = '';
         if (File::exists($components_json)) {
             $old_content = File::get($components_json);
