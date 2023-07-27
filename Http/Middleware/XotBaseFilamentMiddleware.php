@@ -7,7 +7,6 @@ namespace Modules\Xot\Http\Middleware;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Str;
-use Nwidart\Modules\Laravel\Module;
 
 abstract class XotBaseFilamentMiddleware extends Middleware
 {
@@ -17,7 +16,8 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     /**
      * @return \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
      */
-    private function getModule(){
+    private function getModule()
+    {
         return app('modules')->findOrFail(static::$module);
     }
 

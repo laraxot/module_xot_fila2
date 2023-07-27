@@ -14,8 +14,8 @@ use Illuminate\Support\NamespacedItemResolver;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
 
-use function Safe\json_encode;
 use function Safe\json_decode;
+use function Safe\json_encode;
 use function Safe\realpath;
 
 use Webmozart\Assert\Assert;
@@ -211,9 +211,9 @@ class FileService
 
         $filename = $path.\DIRECTORY_SEPARATOR.$path1;
         $public_path = realpath(public_path('/'));
-        //if (false === $public_path) {
+        // if (false === $public_path) {
         //    throw new \Exception('do not reach public path');
-        //}
+        // }
 
         if (Str::startsWith($filename, $public_path)) {
             $url = substr($filename, \strlen($public_path));
