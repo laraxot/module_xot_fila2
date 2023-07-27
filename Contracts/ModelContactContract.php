@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Modules\Xot\Contracts\ModelContract.
  *
- * @property int                             $id
- * @property int|null                        $user_id
- * @property string|null                     $post_type
- * @property string|null                     $mail_subject
+ * @property int         $id
+ * @property int|null    $user_id
+ * @property string|null $post_type
+ * @property string|null $mail_subject
  * @property string|null                     mail_body
  * @property string|null                     theme
  * @property string|null                     sms_from

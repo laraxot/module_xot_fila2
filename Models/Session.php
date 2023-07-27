@@ -13,6 +13,7 @@ namespace Modules\Xot\Models;
  * @property string|null $user_agent
  * @property string      $payload
  * @property int         $last_activity
+ *
  * @method static \Modules\Xot\Database\Factories\SessionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Session  newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session  newQuery()
@@ -23,6 +24,7 @@ namespace Modules\Xot\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|Session  wherePayload($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserAgent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserId($value)
+ *
  * @mixin IdeHelperSession
  * @mixin \Eloquent
  */

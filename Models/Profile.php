@@ -43,6 +43,7 @@ use Spatie\Tags\HasTags;
  * @property \Illuminate\Database\Eloquent\Collection<int, \Spatie\Tags\Tag>                $tags
  * @property int|null                                                                       $tags_count
  * @property \Modules\User\Models\User|null                                                 $user
+ *
  * @method static \Modules\Xot\Database\Factories\ProfileFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  newQuery()
@@ -75,9 +76,13 @@ use Spatie\Tags\HasTags;
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTagsOfAnyType($tags)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
+ *
  * @mixin IdeHelperProfile
+ *
  * @property string|null $surname
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereSurname($value)
+ *
  * @mixin \Eloquent
  */
 class Profile extends BaseModel implements ModelWithUserContract, ModelProfileContract
