@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
- * @mixin \Eloquent
  * @mixin IdeHelperSettings
+ * @mixin \Eloquent
  */
 class Settings extends Model
 {

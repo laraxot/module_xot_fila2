@@ -75,8 +75,10 @@ use Spatie\Tags\HasTags;
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTagsOfAnyType($tags)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
- * @mixin \Eloquent
  * @mixin IdeHelperProfile
+ * @property string|null $surname
+ * @method static \Illuminate\Database\Eloquent\Builder|Profile whereSurname($value)
+ * @mixin \Eloquent
  */
 class Profile extends BaseModel implements ModelWithUserContract, ModelProfileContract
 {

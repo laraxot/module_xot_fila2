@@ -23,8 +23,8 @@ namespace Modules\Xot\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|Session  wherePayload($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserAgent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserId($value)
- * @mixin \Eloquent
  * @mixin IdeHelperSession
+ * @mixin \Eloquent
  */
 class Session extends BaseModel
 {

@@ -12,6 +12,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int                             $id
  * @property int|null                        $user_id
  * @property string|null                     $post_type
+ * @property string|null                     $mail_subject
+ * @property string|null                     mail_body
+ * @property string|null                     theme
+ * @property string|null                     sms_from
+ * @property string|null                     mobile_phone
+ * @property string|null                     sms_body
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null                     $created_by

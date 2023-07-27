@@ -880,8 +880,8 @@ class FileService
                 $class_name = $v->getFilenameWithoutExtension();
 
                 $tmp->class_name = $class_name;
-
-                $tmp->comp_name = Str::slug(Str::snake(Str::replace('\\', ' ', $class_name)));
+                Assert::string($comp_name=Str::replace('\\', ' ', $class_name),'wip');
+                $tmp->comp_name = Str::slug(Str::snake($comp_name));
                 $tmp->comp_name = $prefix.$tmp->comp_name;
 
                 $tmp->comp_ns = $namespace.'\\'.$class_name;
