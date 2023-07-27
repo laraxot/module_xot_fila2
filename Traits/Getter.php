@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
+use function Safe\preg_match;
 
 /**
  * Trait Getter.

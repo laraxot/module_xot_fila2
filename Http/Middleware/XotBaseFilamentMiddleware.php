@@ -17,8 +17,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     /**
      * @return \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
      */
-    private function getModule(): Module
-    {
+    private function getModule(){
         return app('modules')->findOrFail(static::$module);
     }
 

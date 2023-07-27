@@ -634,9 +634,9 @@ class ImportService
         $q = urlencode($q);
         $url = 'http://'.$host.'/get?q='.$q.'&langpair='.$from.'|'.$to.'';
         $urldata = file_get_contents($url);
-        if (false === $urldata) {
-            throw new \Exception('can not get '.$urldata);
-        }
+        //if (false === $urldata) {
+        //    throw new \Exception('can not get '.$urldata);
+        //}
         $data = (array) json_decode($urldata, true);
         // $data = Json::decode($urldata, Json::FORCE_ARRAY);
         // $data = (array) Json::decode($urldata, Json::FORCE_ARRAY);
