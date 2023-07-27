@@ -28,6 +28,7 @@ trait Getter
 
     /**
      * __getStatic function.
+     *
      * @return mixed|void
      */
     public static function __getStatic(string $index)
