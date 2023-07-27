@@ -25,7 +25,7 @@ class ProfileFactory extends Factory
     {
         return [
             // 'id' => $this->faker->randomNumber,
-            // 'user_id' => $this->faker->integer,
+            // 'user_id' => $this->faker->randomNumber(5, false),
         ];
     }
 }
