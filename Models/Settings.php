@@ -14,7 +14,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string                          $name
  * @property string|null                     $value
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Settings query()
@@ -23,8 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
- *
  * @mixin \Eloquent
+ * @mixin IdeHelperSettings
  */
 class Settings extends Model
 {

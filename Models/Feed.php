@@ -15,8 +15,8 @@ namespace Modules\Xot\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|Feed  newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feed  newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feed  query()
- *
  * @mixin \Eloquent
+ * @mixin IdeHelperFeed
  */
 class Feed extends BaseModel
 {
