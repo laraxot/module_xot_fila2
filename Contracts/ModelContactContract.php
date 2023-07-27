@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * Modules\Xot\Contracts\ModelContract.
  *
+<<<<<<< HEAD
  * @property int         $id
  * @property int|null    $user_id
  * @property string|null $post_type
@@ -18,6 +19,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string|null                     sms_from
  * @property string|null                     mobile_phone
  * @property string|null                     sms_body
+=======
+ * @property int                             $id
+ * @property int|null                        $user_id
+ * @property string|null                     $post_type
+ * @property string|null                     $mail_subject
+>>>>>>> 0632fd0b (up)
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property string|null                     $created_by

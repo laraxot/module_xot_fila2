@@ -3,26 +3,27 @@
 declare(strict_types=1);
 
 // use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Str;
-use Modules\Cms\Services\PanelService;
-use Modules\Tenant\Services\TenantService;
-use Modules\Xot\Datas\XotData;
-use Modules\Xot\Services\ArrayService;
-use Modules\Xot\Services\FileService;
-use Modules\Xot\Services\ModuleService;
-use Nwidart\Modules\Facades\Module;
-
-use function Safe\define;
 use function Safe\glob;
-use function Safe\json_decode;
+use function Safe\define;
+use Illuminate\Support\Str;
 use function Safe\parse_url;
+use Webmozart\Assert\Assert;
 use function Safe\preg_match;
+use function Safe\json_decode;
+use Modules\Xot\Datas\XotData;
 use function Safe\preg_replace;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\URL;
+use Nwidart\Modules\Facades\Module;
+use Illuminate\Support\Facades\File;
+
+use Illuminate\Support\Facades\Route;
+use Modules\Xot\Services\FileService;
+use Modules\Cms\Services\PanelService;
+use Modules\Xot\Services\ArrayService;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Xot\Services\ModuleService;
+use Modules\Tenant\Services\TenantService;
 
 // ------------------------------------------------
 
@@ -849,6 +850,7 @@ if (! function_exists('url_queries')) {
         // Build a new query string from our updated array
         $string_query = http_build_query($url_params);
         // Add the new query string back into our URL
+        Assert::isArray($url_parsed,'wip');
         $url_parsed['query'] = $string_query;
         // Build the array back into a complete URL string
         $url = build_url($url_parsed);
@@ -1091,7 +1093,7 @@ if (! function_exists('getRouteAction')) {
 if (! function_exists('getModTradFilepath')) {
     function getModTradFilepath(string $file_path): string
     {
-        $file_path = Str::replace('\\', '/', $file_path);
+        Assert::string($file_path = Str::replace('\\', '/', $file_path),'wip');
 
         $ns = Str::of($file_path)->after('/Modules/')->before('/')->lower();
         $info = pathinfo($file_path);
@@ -1225,7 +1227,7 @@ if (! function_exists('getServerName')) {
             $server_name = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
         }
 
-        $server_name = Str::replace('www.', '', $server_name);
+        Assert::string($server_name = Str::replace('www.', '', $server_name),'wip');
 
         return $server_name;
     }

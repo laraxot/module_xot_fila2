@@ -845,7 +845,7 @@ class FileService
      */
     public static function getComponents(string $path, string $namespace, string $prefix, bool $force_recreate = false): array
     {
-        $namespace = Str::replace('/', '\\', $namespace);
+        Assert::string($namespace = Str::replace('/', '\\', $namespace),'wip');
         $components_json = $path.'/_components.json';
         $components_json = self::fixPath($components_json);
         $path = self::fixPath($path);
@@ -886,7 +886,7 @@ class FileService
 
                 $tmp->comp_ns = $namespace.'\\'.$class_name;
                 $relative_path = $v->getRelativePath();
-                $relative_path = Str::replace('/', '\\', $relative_path);
+                Assert::string($relative_path = Str::replace('/', '\\', $relative_path),'wip');
 
                 if ('' !== $relative_path) {
                     $tmp->comp_name = '';
@@ -898,7 +898,8 @@ class FileService
                             )
                             ->implode('.');
                     $tmp->comp_name .= $piece;
-                    $tmp->comp_name .= '.'.Str::slug(Str::snake(Str::replace('\\', ' ', $class_name)));
+                    Assert::string($comp_name=Str::replace('\\', ' ', $class_name),'wip');
+                    $tmp->comp_name .= '.'.Str::slug(Str::snake($comp_name));
                     $tmp->comp_name = $prefix.$tmp->comp_name;
                     $tmp->comp_ns = $namespace.'\\'.$relative_path.'\\'.$class_name;
                     $tmp->class_name = $relative_path.'\\'.$tmp->class_name;

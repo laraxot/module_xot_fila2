@@ -15,9 +15,10 @@ use Modules\UI\Services\ThemeService;
 
 use function Safe\fopen;
 use function Safe\preg_match_all;
+use function Safe\define;
 
-if (! \defined('STDIN')) {
-    \define('STDIN', fopen('php://stdin', 'r'));
+if (! defined('STDIN')) {
+    define('STDIN', fopen('php://stdin', 'r'));
 }
 
 // ----- TODO

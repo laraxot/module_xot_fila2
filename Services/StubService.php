@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Doctrine\DBAL\Schema\Column;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Str;
-use Modules\Xot\Contracts\ModelContract;
-use Modules\Xot\Contracts\ModelProfileContract;
-use Modules\Xot\Datas\XotData;
-
 use function Safe\date;
 use function Safe\shuffle;
-
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Webmozart\Assert\Assert;
+use Modules\Xot\Datas\XotData;
+use Doctrine\DBAL\Schema\Column;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
+
+use Illuminate\Support\Facades\File;
+use Illuminate\Database\Eloquent\Model;
+
+use Modules\Xot\Contracts\ModelContract;
+use Symfony\Component\Finder\SplFileInfo;
+use Modules\Xot\Contracts\ModelProfileContract;
 
 /**
  * Class StubService.
@@ -677,11 +679,19 @@ class StubService
     {
         $models = File::files($this->getModelPath());
         shuffle($models);
+        /*
         $brother_file = collect($models)
-        ->filter(function ($file) {
+        ->filter(function (SplFileInfo $file) {
             return 'php' === $file->getExtension();
         })
         ->first();
+        */
+        /**
+         * @var SplFileInfo
+         */
+        $brother_file=Arr::first($models, function (SplFileInfo $file){
+            return 'php' === $file->getExtension();
+        });
         if (null === $brother_file) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
@@ -708,11 +718,20 @@ class StubService
 
         $models = File::files($this->getModelPath());
         shuffle($models);
-        $brother_file = collect($models)
-            ->filter(function ($file) {
+       /*
+        $models_coll=collect($models);
+        $brother_file = $models_coll
+            ->filter(function (SplFileInfo $file) {
                 return 'php' === $file->getExtension();
             })
             ->first();
+        */
+        /**
+         * @var SplFileInfo
+         */
+        $brother_file=Arr::first($models, function (SplFileInfo $file){
+            return 'php' === $file->getExtension();
+        });
         // dddx(get_class_methods($brother_file));
         // dddx($brother_file->getFilenameWithoutExtension());
         if (null === $brother_file) {
