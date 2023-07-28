@@ -137,9 +137,9 @@ abstract class XotBaseMigration extends Migration
     }
 
     /**
-     * @return bool
+     * ---.
      */
-    public function tableExists(string $table = null)
+    public function tableExists(string $table = null): bool
     {
         if (null === $table) {
             $table = $this->getTable();
@@ -174,9 +174,9 @@ abstract class XotBaseMigration extends Migration
     }
 
     /**
-     * @param string $sql
+     * ---.
      */
-    public function query($sql): void
+    public function query(string $sql): void
     {
         $this->getConn()->getConnection()->statement($sql);
     }
@@ -243,6 +243,13 @@ abstract class XotBaseMigration extends Migration
     public function rename(string $from, string $to): void
     {
         $this->getConn()->rename($from, $to);
+    }
+
+    public function renameTable(string $from, string $to): void
+    {
+        if ($this->tableExists($from)) {
+            $this->getConn()->rename($from, $to);
+        }
     }
 
     // da rivedere
