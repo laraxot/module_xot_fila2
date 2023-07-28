@@ -33,6 +33,9 @@ class XotData extends Data
     public bool $disable_frontend_dynamic_route = false;
     public bool $disable_admin_dynamic_route = false;
 
+    public bool $register_adm_theme=false;
+    public bool $register_pub_theme=false;
+
     public static function make(): self
     {
         $xot = config('xra');
