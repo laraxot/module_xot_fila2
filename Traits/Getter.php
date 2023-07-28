@@ -55,9 +55,7 @@ trait Getter
     }
 
     // end __set
-    /**
-     * @param mixed $value
-     */
+
     public static function __setStatic(string $index, $value): void
     {
         // echo '<br/>SET ['.get_class($this).']['.$index.']['.round(memory_get_usage()/(1024*1024),2).' MB]';
