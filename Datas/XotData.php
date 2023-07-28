@@ -35,6 +35,7 @@ class XotData extends Data
 
     public bool $register_adm_theme=false;
     public bool $register_pub_theme=false;
+    public bool $register_collective=false;
 
     public static function make(): self
     {
