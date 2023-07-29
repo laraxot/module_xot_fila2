@@ -1302,3 +1302,11 @@ if (! function_exists('profile')) {
         return $profileModel;
     }
 }
+
+if (! function_exists('profile')) {
+    function cssInLine(string $file): string {
+        $content = File::get(FileService::assetPath($file));
+
+        return $content;
+    }
+}
