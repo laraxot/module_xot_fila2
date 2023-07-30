@@ -1303,7 +1303,7 @@ if (! function_exists('profile')) {
     }
 }
 
-if (! function_exists('profile')) {
+if (! function_exists('cssInLine')) {
     function cssInLine(string $file): string
     {
         $content = File::get(FileService::assetPath($file));
