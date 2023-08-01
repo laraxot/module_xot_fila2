@@ -8,13 +8,15 @@ use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Spatie\QueueableAction\QueueableAction;
 
-class RegisterFilamentNavigationItem {
+class RegisterFilamentNavigationItem
+{
     use QueueableAction;
 
     /**
      * Undocumented function.
      */
-    public static function execute($module, $context): void {
+    public static function execute($module, $context): void
+    {
         $panel = \Str::of($context)->after('-')->replace('filament', 'default')->slug()->replace('-', ' ')->title()->title();
         $moduleContexts = app(GetModuleContexts::class)->execute($module);
         $module_lower = \Module::findOrFail($module)->getLowerName();

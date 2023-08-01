@@ -9,13 +9,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\QueueableAction\QueueableAction;
 
-class GetModuleContexts {
+class GetModuleContexts
+{
     use QueueableAction;
 
     /**
      * Undocumented function.
      */
-    public function execute(string $module): Collection {
+    public function execute(string $module): Collection
+    {
         $prefix = Str::of($module)->lower()->append('-')->toString();
 
         return collect(Filament::getContexts())
