@@ -110,6 +110,25 @@ composer dumpautoload
 protected $guard_name = 'web';
 ```
 
+### Errore 500 e PAGINA BIANCA oppure PAGINA NERA
+
+Leggeva un allegato pdf con l’id sbagliato (id di company invece di profile).
+
+Per scoprire il problema ho dovuto fare **debug del file “laravel/vendor/laravel/framework/src/Illuminate/Mail/Mailer.php”** sul **metodo sendSymfonyMessage** e aggiungere il **catch(\Exception $e)**.
+
+Poi tolto perchè **non vanno mai modificati i vendor**.
+
+### Errore delle tabelle temporanee di Sushi
+
+Esempio:
+
+```php
+SQLSTATE[HY000]: General error: 1 no such table: homes (Connection: , SQL: select * from "homes" where ("id" = 1) limit 1)
+```
+
+Soluzione:
+
+Nella cartella **STORAGE: cancellare le tabelle temporanee di Sushi**
 
 ### TIPS
 
@@ -122,3 +141,5 @@ E' possibile fare un backup del progetto con il file
 ```bash
 ./bashscripts/backup.sh
 ```
+
+
