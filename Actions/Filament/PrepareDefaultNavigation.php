@@ -7,15 +7,13 @@ namespace Modules\Xot\Actions\Filament;
 use Filament\Facades\Filament;
 use Spatie\QueueableAction\QueueableAction;
 
-class PrepareDefaultNavigation
-{
+class PrepareDefaultNavigation {
     use QueueableAction;
 
     /**
      * Undocumented function.
      */
-    public function execute($module, $context): void
-    {
+    public function execute(string $module, string $context): void {
         Filament::serving(function () use ($module, $context) {
             Filament::forContext('filament', function () use ($module, $context) {
                 app(RegisterFilamentNavigationItem::class)->execute($module, $context);
