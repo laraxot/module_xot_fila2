@@ -20,7 +20,7 @@ use Modules\Xot\Relations\CustomRelation;
 trait HasCustomRelations
 {
     /**
-     * @param Builder $related
+     * @param Builder|string $related
      *
      * @return CustomRelation
      */
