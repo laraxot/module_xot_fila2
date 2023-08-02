@@ -27,7 +27,7 @@ trait HasCustomRelations
     public function customRelation($related, \Closure $baseConstraints, \Closure $eagerConstraints = null, \Closure $eagerMatcher = null)
     {
         $instance = new $related();
-        //Call to an undefined method object::newQuery()
+        // Call to an undefined method object::newQuery()
         $query = $instance->newQuery();
 
         return new CustomRelation($query, $this, $baseConstraints, $eagerConstraints, $eagerMatcher);
