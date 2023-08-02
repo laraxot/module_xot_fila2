@@ -56,7 +56,7 @@ trait Getter
 
     // end __set
 
-    public static function __setStatic(string $index, array $value): void
+    public static function __setStatic(string $index, mixed $value): void
     {
         // echo '<br/>SET ['.get_class($this).']['.$index.']['.round(memory_get_usage()/(1024*1024),2).' MB]';
         self::$vars[$index] = $value;
