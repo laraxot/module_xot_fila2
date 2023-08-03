@@ -38,7 +38,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     protected function authenticate($request, array $guards): void
     {
         $context = $this->getContextName();
-        Assert::string($guardName = config("$context.auth.guard"), 'wip');
+        Assert::string($guardName = config("$context.auth.guard"), 'fix config ['.$context.'.auth.guard]');
         $guard = $this->auth->guard($guardName);
 
         if (! $guard->check()) {
