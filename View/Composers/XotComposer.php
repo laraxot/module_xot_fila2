@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace Modules\Xot\View\Composers;
 
 // use App\Repositories\UserRepository;
+use Illuminate\View\View;
+use Nwidart\Modules\Facades\Module;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\View\View;
+use Modules\Xot\Services\FileService;
 
 /**
  * Class XotComposer.
@@ -21,20 +23,32 @@ class XotComposer
      */
     public function compose(View $view)
     {
-        $user = Auth::user();
-        if (null === $user) {
-            return;
-        }
-        // $profile = ProfileService::make()->get($user);
         $lang = app()->getLocale();
-        $params = [];
-        $route_current = Route::current();
-        if (null !== $route_current) {
-            $params = $route_current->parameters();
-        }
-
-        $view->with('params', $params);
         $view->with('lang', $lang);
-        // $view->with('profile', $profile);
+        $view->with('_theme',$this);
+    }
+
+
+    public function asset(string $str){
+        $url=Module::asset($str);
+        /*
+        dddx([
+            'str'=>$str, //ewall::js/schedule.js
+            '1'=>Module::asset($str),  //ewall-cms-dev.egeatech.it/modules/ewall
+            '2'=>Module::assetPath($str),// /var/www/vhosts/egeatech.it/ewall-cms-dev.egeatech.it/public_html/modules/ewall::js/schedule.js
+            '3'=>Module::getModulePath($str),///var/www/vhosts/egeatech.it/ewall-cms-dev.egeatech.it/laravel/Modules/Ewall::js/schedule.js/
+            //'4'=>Module::getPath($str),///var/www/vhosts/egeatech.it/ewall-cms-dev.egeatech.it/laravel/Modules
+            //'5'=>Module::getAssetsPath($str),///var/www/vhosts/egeatech.it/ewall-cms-dev.egeatech.it/public_html/modules
+        ]);
+        */
+        return asset(FileService::asset($str));
+        /*
+        $from=Module::getModulePath($str);
+        $from=str_replace('::','/Resources/',$from);
+        $to=Module::assetPath($str);
+        $to=str_replace('::','/',$to);
+
+        dddx([$from,$to]);
+        */
     }
 }

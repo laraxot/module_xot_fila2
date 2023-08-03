@@ -45,7 +45,8 @@ class XotServiceProvider extends XotBaseServiceProvider
         // $this->registerScout();
 
         // $this->registerLivewireComponents();
-        // $this->registerViewComposers(); //rompe filament
+
+        $this->registerViewComposers(); //rompe filament
 
         // $this->registerPanel();
         // $this->registerDropbox();// PROBLEMA DI COMPOSER
@@ -129,13 +130,13 @@ class XotServiceProvider extends XotBaseServiceProvider
     }
 
     // Method Modules\Xot\Providers\XotServiceProvider::registerViewComposers() is unused
-    // private function registerViewComposers(): void
-    // {
+    private function registerViewComposers(): void
+    {
     // Factory $view
     // $view->composer('bootstrap-italia::page', BootstrapItaliaComposer::class);
-    //    View::composer('*', XotComposer::class);
+        View::composer('*', XotComposer::class);
     // dddx($res);
-    // }
+    }
 
     /*
     public function mergeConfigs(): void {
