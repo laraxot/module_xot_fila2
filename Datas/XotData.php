@@ -23,7 +23,7 @@ class XotData extends Data
 
     public string $primary_lang = 'it';
     // 'pub_theme' => 'DirectoryBs5',
-    public string $pub_theme; // ' => 'BsItalia',
+    public string $pub_theme; // ' => 'One',
     public string $search_action = 'it/videos';
     public bool $show_trans_key = false;
     public string $register_type = '0';
