@@ -31,6 +31,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
         if (! static::$context) {
             throw new \Exception('Context has to be defined in your class');
         }
+
         return Str::slug(static::$context);
         // dddx(Str::of($module->getLowerName())->append('-')->append(Str::slug(static::$context))->kebab()->toString());
         // return Str::of($module->getLowerName())->append('-')->append(Str::slug(static::$context))->kebab()->toString();
