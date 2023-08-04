@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Actions;
 
 use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
 use Modules\Xot\Services\FileService;
 use Spatie\QueueableAction\QueueableAction;
 
@@ -38,7 +39,8 @@ class GetViewAction
                 $item = Str::slug(Str::snake($item));
 
                 return $item;
-            })->implode('.');
+            }
+        )->implode('.');
 
         $view = Str::lower($mod).'::'.$tmp;
         if ('' != $tpl) {
@@ -52,7 +54,7 @@ class GetViewAction
             $view = Str::replace('-action', '', $view);
         }
         // }
-
+        Assert::string($view);
         if (! view()->exists($view)) {
             throw new \Exception('View ['.$view.'] not found');
         }
