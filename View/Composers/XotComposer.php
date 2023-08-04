@@ -6,10 +6,8 @@ namespace Modules\Xot\View\Composers;
 
 // use App\Repositories\UserRepository;
 use Illuminate\View\View;
-use Nwidart\Modules\Facades\Module;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
 use Modules\Xot\Services\FileService;
+use Nwidart\Modules\Facades\Module;
 
 /**
  * Class XotComposer.
@@ -25,12 +23,12 @@ class XotComposer
     {
         $lang = app()->getLocale();
         $view->with('lang', $lang);
-        $view->with('_theme',$this);
+        $view->with('_theme', $this);
     }
 
-
-    public function asset(string $str){
-        $url=Module::asset($str);
+    public function asset(string $str)
+    {
+        $url = Module::asset($str);
         /*
         dddx([
             'str'=>$str, //ewall::js/schedule.js
