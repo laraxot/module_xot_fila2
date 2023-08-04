@@ -26,7 +26,7 @@ class XotComposer
         $view->with('_theme', $this);
     }
 
-    public function asset(string $str)
+    public function asset(string $str): string
     {
         $url = Module::asset($str);
         /*
