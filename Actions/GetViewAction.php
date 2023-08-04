@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Modules\Xot\Actions;
 
 use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
 use Modules\Xot\Services\FileService;
 use Spatie\QueueableAction\QueueableAction;
+use Webmozart\Assert\Assert;
 
 class GetViewAction
 {
