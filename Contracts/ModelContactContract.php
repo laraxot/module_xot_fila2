@@ -56,5 +56,5 @@ interface ModelContactContract
 
     public function sendEmailCallback(): void;
 
-    public function increment(string $what,array $data):void;
+    public function increment(string $what, array $data): void;
 }
