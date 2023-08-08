@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Closure;
+use Illuminate\Database\Query\Builder;
+
 interface BuilderContract
 {
     /**
@@ -52,7 +55,7 @@ interface BuilderContract
      * Add a raw from clause to the query.
      *
      * @param string $expression
-     *
+     * @param  mixed  $bindings
      * @return $this
      */
     public function fromRaw($expression, $bindings = []);
@@ -70,7 +73,7 @@ interface BuilderContract
      * Parse the subquery into SQL and bindings.
      *
      * @throws \InvalidArgumentException
-     *
+     * @param  mixed  $query
      * @return array
      */
     public function parseSub($query);
@@ -1062,7 +1065,7 @@ interface BuilderContract
     /**
      * Add another query builder as a nested having to the query builder.
      *
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param Builder $query
      * @param string                             $boolean
      *
      * @return $this
@@ -1377,6 +1380,7 @@ interface BuilderContract
      * Get a single column's value from the first result of a query.
      *
      * @param string $column
+     * @return mixed|static
      */
     public function value($column);
 

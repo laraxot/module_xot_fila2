@@ -10,15 +10,20 @@ declare(strict_types=1);
 namespace Modules\Xot\Relations;
 
 use Closure;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Modules\Xot\Contracts\BuilderContract;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\Relation;
 
 /**
  * Class CustomRelation.
+ *
+ * @method static Builder when($value = null, callable $callback = null, callable $default = null)
+ * @method static Builder whereBetween($column, iterable $values, $boolean = 'and', $not = false)
+ * @method static Builder selectRaw($expression, array $bindings = []);
  */
-class CustomRelation extends Relation implements BuilderContract
+class CustomRelation extends Relation /*implements BuilderContract*/
 {
     /**
      * The baseConstraints callback.

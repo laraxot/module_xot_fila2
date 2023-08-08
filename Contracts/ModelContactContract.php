@@ -55,4 +55,6 @@ interface ModelContactContract
     public function getNotifyVia(): array;
 
     public function sendEmailCallback(): void;
+
+    public function increment(string $what,array $data):void;
 }
