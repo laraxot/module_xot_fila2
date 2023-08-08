@@ -1,13 +1,12 @@
 <?php
+/**
+ * @see https://stackoverflow.com/questions/39213022/custom-laravel-relations
+ * @see https://github.com/johnnyfreeman/laravel-custom-relation
+ */
 
 declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
-
-/*
- * https://stackoverflow.com/questions/39213022/custom-laravel-relations
- * https://github.com/johnnyfreeman/laravel-custom-relation
- */
 
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Modules\Xot\Relations\CustomRelation;
@@ -20,7 +19,7 @@ use Modules\Xot\Relations\CustomRelation;
 trait HasCustomRelations
 {
     /**
-     * @param Builder|string $related
+     * @param class-string<Builder> $related
      *
      * @return CustomRelation
      */
