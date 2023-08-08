@@ -56,7 +56,7 @@ interface BuilderContract
      * @return $this
      */
     public function fromRaw($expression, $bindings = []);
-    
+
     /**
      * Creates a subquery and parse it.
      *
