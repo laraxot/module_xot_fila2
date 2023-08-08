@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 /**
  * Class CustomRelation.
  */
-class CustomRelation extends Relation
+class CustomRelation extends Relation implements BuilderContract
 {
     /**
      * The baseConstraints callback.
