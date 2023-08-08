@@ -8,8 +8,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Webmozart\Assert\Assert;
+use Illuminate\Database\Eloquent\Model;
 use Modules\Xot\Relations\CustomRelation;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 // use Illuminate\Database\Eloquent\Builder;
 
@@ -19,14 +21,13 @@ use Modules\Xot\Relations\CustomRelation;
 trait HasCustomRelations
 {
     /**
-     * @param class-string<Builder> $related
      *
-     * @return CustomRelation
      */
-    public function customRelation($related, \Closure $baseConstraints, \Closure $eagerConstraints = null, \Closure $eagerMatcher = null)
+    public function customRelation(string $related, \Closure $baseConstraints, \Closure $eagerConstraints = null, \Closure $eagerMatcher = null):CustomRelation
     {
         $instance = new $related();
         // Call to an undefined method object::newQuery()
+        Assert::isInstanceOf($instance,Model::class);
         $query = $instance->newQuery();
 
         return new CustomRelation($query, $this, $baseConstraints, $eagerConstraints, $eagerMatcher);
