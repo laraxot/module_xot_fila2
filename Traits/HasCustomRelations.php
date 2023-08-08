@@ -26,7 +26,7 @@ trait HasCustomRelations
         Assert::isInstanceOf($instance, Model::class);
         $query = $instance->newQuery();
 
-        $res= new CustomRelation($query, $this, $baseConstraints, $eagerConstraints, $eagerMatcher);
+        $res = new CustomRelation($query, $this, $baseConstraints, $eagerConstraints, $eagerMatcher);
 
         return $res;
     }
