@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
-use Modules\Xot\Contracts\BuilderContract;
+
 
 /**
  * Class CustomRelation.
@@ -22,6 +22,7 @@ use Modules\Xot\Contracts\BuilderContract;
  * @method static Builder when($value = null, callable $callback = null, callable $default = null)
  * @method static Builder whereBetween($column, iterable $values, $boolean = 'and', $not = false)
  * @method static Builder selectRaw($expression, array $bindings = []);
+ * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
  */
 class CustomRelation extends Relation
 { /* implements BuilderContract */
