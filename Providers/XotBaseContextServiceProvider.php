@@ -9,9 +9,6 @@ use Filament\Navigation\NavigationItem;
 use Modules\Xot\Actions\Filament\PrepareDefaultNavigation;
 use Savannabits\FilamentModules\ContextServiceProvider;
 use Savannabits\FilamentModules\FilamentModules;
-use Illuminate\Support\Facades\Blade;
-use Illuminate\View\Compilers\BladeCompiler;
-use Livewire\Livewire;
 
 class XotBaseContextServiceProvider extends ContextServiceProvider
 {
@@ -36,19 +33,11 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
 
     public function boot(): void
     {
-
-
         parent::boot();
         // app(FilamentModules::class)->prepareDefaultNavigation(static::$module, static::$name);
 
         app(PrepareDefaultNavigation::class)->execute(static::$module, static::$name);
-
-
     }
-
-
-
-
 
     /*
     public function prepareDefaultNavigation($module, $context): void {
