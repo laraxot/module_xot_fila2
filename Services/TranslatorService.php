@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use const DIRECTORY_SEPARATOR;
-
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
@@ -17,10 +14,6 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator as BaseTranslator;
 use Modules\UI\Services\ThemeService;
-
-use function dirname;
-use function is_array;
-use function strlen;
 
 // dddx('leggo');
 
@@ -46,15 +39,15 @@ class TranslatorService extends BaseTranslator
         $item = $tmp[2];
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
-        $filename = $path . '/' . $lang . '/' . $group . '.php';
-        $filename = str_replace(['/', '\\'], [DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR], $filename);
-        $lang_dir = dirname($filename, 2);
+        $filename = $path.'/'.$lang.'/'.$group.'.php';
+        $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
+        $lang_dir = \dirname($filename, 2);
 
         return [
             'key' => str_replace(['[', ']'], ['.', ''], $key),
             'namespace' => $namespace,
             'group' => $group,
-            'ns_group' => $namespace . '::' . $group,
+            'ns_group' => $namespace.'::'.$group,
             'item' => $item,
             'filename' => $filename,
             'file_exists' => File::exists($filename),
@@ -79,7 +72,7 @@ class TranslatorService extends BaseTranslator
         // ->dd()
             ->filter(
                 function ($v, $k) {
-                    return $v['dir_exists'] && strlen($v['lang_dir']) > 3;
+                    return $v['dir_exists'] && \strlen($v['lang_dir']) > 3;
                 }
             )
             ->groupBy(['ns_group'])  // risparmio salvataggi
@@ -88,13 +81,13 @@ class TranslatorService extends BaseTranslator
         foreach ($data as $ns_group => $data0) {
             $rows = trans($ns_group);
 
-            if (! is_array($rows)) {
+            if (! \is_array($rows)) {
                 // dddx($rows);  //---- dovrei leggere il file o controllarlo intanto lo blokko non voglio sovrascrivere
                 $rows = [];
             }
 
             foreach ($data0 as $k => $v) {
-                $key = Str::after($v['key'], $ns_group . '.');
+                $key = Str::after($v['key'], $ns_group.'.');
                 Arr::set($rows, $key, $v['value']);
             }
 
@@ -111,8 +104,9 @@ class TranslatorService extends BaseTranslator
     }
 
     /**
-     * @param  string  $key
-     * @param  string  $value
+     * @param string $key
+     * @param string $value
+     *
      * @return void
      */
     public static function set($key, $value)
@@ -129,21 +123,21 @@ class TranslatorService extends BaseTranslator
         $item = $tmp[2];
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
-        $filename = $path . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $group . '.php';
+        $filename = $path.\DIRECTORY_SEPARATOR.$lang.\DIRECTORY_SEPARATOR.$group.'.php';
 
-        $trad = $namespace . '::' . $group;
+        $trad = $namespace.'::'.$group;
         $rows = trans($trad);
         $item_keys = explode('.', $item);
         $item_keys = implode('"]["', $item_keys);
-        $item_keys = '["' . $item_keys . '"]';
-        $str = '$rows' . $item_keys . '="' . $value . '";';
+        $item_keys = '["'.$item_keys.'"]';
+        $str = '$rows'.$item_keys.'="'.$value.'";';
         try {
             eval($str); // fa schifo ma funziona
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
         }
         ArrayService::save(['data' => $rows, 'filename' => $filename]);
 
-        Session::flash('status', 'Modifica Eseguita! [' . $filename . ']');
+        Session::flash('status', 'Modifica Eseguita! ['.$filename.']');
 
         /*
 
@@ -164,7 +158,7 @@ class TranslatorService extends BaseTranslator
         [$namespace,$group,$item] = $translator->parseKey($key);
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
-        $file_path = $path . DIRECTORY_SEPARATOR . $lang . DIRECTORY_SEPARATOR . $group . '.php';
+        $file_path = $path.\DIRECTORY_SEPARATOR.$lang.\DIRECTORY_SEPARATOR.$group.'.php';
         $file_path = FileService::fixPath($file_path);
 
         return $file_path;
@@ -184,7 +178,7 @@ class TranslatorService extends BaseTranslator
             // $original = Lang::get($key, []);
         }
 
-        if (! is_array($original)) {
+        if (! \is_array($original)) {
             dddx(
                 [
                     'message' => 'original is not an array',
@@ -195,7 +189,7 @@ class TranslatorService extends BaseTranslator
                     'data' => $data,
                 ]
             );
-            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+            throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $merged = collect($original)
             ->merge($data)
@@ -203,7 +197,7 @@ class TranslatorService extends BaseTranslator
 
         if ($original !== $merged) {
             ArrayService::save(['data' => $merged, 'filename' => $file_path]);
-            Session::flash('status', 'Modifica Eseguita! [' . $file_path . ']');
+            Session::flash('status', 'Modifica Eseguita! ['.$file_path.']');
         }
     }
 
@@ -217,7 +211,7 @@ class TranslatorService extends BaseTranslator
         $missing = collect($data)
             ->filter(
                 function ($item) use ($key) {
-                    $k = $key . '.' . $item;
+                    $k = $key.'.'.$item;
                     $v = trans($k);
 
                     return $k === $v;
@@ -233,7 +227,7 @@ class TranslatorService extends BaseTranslator
 
         $data = collect($data)->map(
             function ($item) use ($key) {
-                $k = $key . '.' . $item;
+                $k = $key.'.'.$item;
                 $v = trans($k);
 
                 return $v;
@@ -246,9 +240,10 @@ class TranslatorService extends BaseTranslator
     /**
      * get.
      *
-     * @param  string  $key
-     * @param  string|null  $locale
-     * @param  bool  $fallback
+     * @param string      $key
+     * @param string|null $locale
+     * @param bool        $fallback
+     *
      * @return array|string
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
@@ -291,8 +286,9 @@ class TranslatorService extends BaseTranslator
     /**
      * getFromJson.
      *
-     * @param  string  $key
-     * @param  string|null  $locale
+     * @param string      $key
+     * @param string|null $locale
+     *
      * @return array|string
      */
     public function getFromJson($key, array $replace = [], $locale = null)

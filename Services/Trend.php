@@ -199,10 +199,10 @@ class Trend
     {
         // Call to an undefined method Illuminate\Database\ConnectionInterface::getDriverName(
         $adapter = match ($this->builder->getConnection()->getDriverName()) {
-            'mysql' => new MySqlAdapter,
-            'sqlite' => new SqliteAdapter,
-            'pgsql' => new PgsqlAdapter,
-            default => throw new Error('Unsupported database driver.'),
+            'mysql' => new MySqlAdapter(),
+            'sqlite' => new SqliteAdapter(),
+            'pgsql' => new PgsqlAdapter(),
+            default => throw new \Error('Unsupported database driver.'),
         };
 
         return $adapter->format($this->dateColumn, $this->interval);
@@ -216,7 +216,7 @@ class Trend
             'day' => 'Y-m-d',
             'month' => 'Y-m',
             'year' => 'Y',
-            default => throw new Error('Invalid interval.'),
+            default => throw new \Error('Invalid interval.'),
         };
     }
 }

@@ -11,8 +11,6 @@ use Modules\Xot\DTOs\RelationDTO;
 use Spatie\LaravelData\DataCollection;
 use Spatie\QueueableAction\QueueableAction;
 
-use function in_array;
-
 class FilterRelationsAction
 {
     use QueueableAction;
@@ -30,7 +28,7 @@ class FilterRelationsAction
         $res = collect($data)
             ->filter(
                 function ($value, $item) use ($methods) {
-                    return in_array($item, $methods, true);
+                    return \in_array($item, $methods, true);
                 }
             )
             ->filter(

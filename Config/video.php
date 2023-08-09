@@ -14,9 +14,9 @@ $config['version'] = '1.2.4';
 
 $config['base_url'] = '/codecanyon/public/'; // Base URL (address without "http://domain.com")
 $config['home_url'] = ''; // Home URL
-$config['logo_image'] = $config['base_url'] . 'assets/img/logo_sm.png'; // Logo image URL
-$config['root_path'] = $root_path . '/'; // Root path
-$config['public_path'] = $root_path . '/public/'; // Path of the "public" folder
+$config['logo_image'] = $config['base_url'].'assets/img/logo_sm.png'; // Logo image URL
+$config['root_path'] = $root_path.'/'; // Root path
+$config['public_path'] = $root_path.'/public/'; // Path of the "public" folder
 $config['input_dir'] = 'userfiles/input/'; // The address of the folder "input" (without "/" at the beginning)
 $config['output_dir'] = 'userfiles/output/'; // The address of the folder "output" (without "/" at the beginning)
 $config['tmp_dir'] = 'userfiles/tmp/'; // The address of the folder "tmp" (without "/" at the beginning)

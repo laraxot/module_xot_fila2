@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use DB;
 use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Artisan;
@@ -13,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
 use Modules\Tenant\Services\TenantService;
 use Modules\UI\Services\ThemeService;
-use Request;
 
-use function count;
 use function Safe\define;
 use function Safe\fopen;
 use function Safe\preg_match_all;
@@ -40,15 +37,15 @@ class ArtisanService
         // echo '<h3>['.TenantService::getName().']</h3>';
         // echo '<pre>'.print_r(TenantService::config('database'), true).'</pre>';
         // da fare anche in noconsole, e magari mettere un policy
-        $module_name = Request::input('module', '');
+        $module_name = \Request::input('module', '');
         switch ($act) {
             case 'migrate':
-                DB::purge('mysql');
-                DB::reconnect('mysql');
+                \DB::purge('mysql');
+                \DB::reconnect('mysql');
                 if ('' !== $module_name) {
-                    echo '<h3>Module ' . $module_name . '</h3>';
+                    echo '<h3>Module '.$module_name.'</h3>';
 
-                    return self::exe('module:migrate ' . $module_name . ' --force');
+                    return self::exe('module:migrate '.$module_name.' --force');
                 } else {
                     return self::exe('migrate --force');
                 }
@@ -62,21 +59,21 @@ class ArtisanService
             case 'optimize':
                 return self::exe('optimize');
             case 'clear':
-                echo self::exe('cache:clear') . PHP_EOL;
-                echo self::exe('config:clear') . PHP_EOL;
-                echo self::exe('event:clear') . PHP_EOL;
-                echo self::exe('route:clear') . PHP_EOL;
-                echo self::exe('view:clear') . PHP_EOL;
-                echo self::exe('debugbar:clear') . PHP_EOL;
-                echo self::exe('opcache:clear') . PHP_EOL;
-                echo self::exe('optimize:clear') . PHP_EOL;
-                echo self::exe('key:generate') . PHP_EOL;
+                echo self::exe('cache:clear').PHP_EOL;
+                echo self::exe('config:clear').PHP_EOL;
+                echo self::exe('event:clear').PHP_EOL;
+                echo self::exe('route:clear').PHP_EOL;
+                echo self::exe('view:clear').PHP_EOL;
+                echo self::exe('debugbar:clear').PHP_EOL;
+                echo self::exe('opcache:clear').PHP_EOL;
+                echo self::exe('optimize:clear').PHP_EOL;
+                echo self::exe('key:generate').PHP_EOL;
 
                 // -- non artisan
-                echo self::sessionClear() . PHP_EOL;
-                echo self::errorClear() . PHP_EOL;
-                echo self::debugbarClear() . PHP_EOL;
-                echo PHP_EOL . 'DONE' . PHP_EOL;
+                echo self::sessionClear().PHP_EOL;
+                echo self::errorClear().PHP_EOL;
+                echo self::debugbarClear().PHP_EOL;
+                echo PHP_EOL.'DONE'.PHP_EOL;
                 break;
             case 'clearcache':
                 return self::exe('cache:clear');
@@ -98,9 +95,9 @@ class ArtisanService
             case 'module-list':
                 return self::exe('module:list');
             case 'module-disable':
-                return self::exe('module:disable ' . $module_name);
+                return self::exe('module:disable '.$module_name);
             case 'module-enable':
-                return self::exe('module:enable ' . $module_name);
+                return self::exe('module:enable '.$module_name);
                 // ----------------------------------------------------------------------
             case 'error':
             case 'error-show':
@@ -136,8 +133,8 @@ class ArtisanService
         $log = request('log', '');
         $content = '';
         if ('' !== $log) {
-            if (File::exists(storage_path('logs/' . $log))) {
-                $content = File::get(storage_path('logs/' . $log));
+            if (File::exists(storage_path('logs/'.$log))) {
+                $content = File::get(storage_path('logs/'.$log));
             }
         }
         $pattern = '/url":"([^"]*)"/';
@@ -206,13 +203,13 @@ class ArtisanService
         foreach ($files as $file) {
             if ('log' === $file->getExtension() && false !== $file->getRealPath()) {
                 // Parameter #1 $paths of static method Illuminate\Filesystem\Filesystem::delete() expects array|string, Symfony\Component\Finder\SplFileInfo given.
-                echo '<br/>' . $file->getRealPath();
+                echo '<br/>'.$file->getRealPath();
 
                 File::delete($file->getRealPath());
             }
         }
 
-        return '<pre>laravel.log cleared !</pre> (' . count($files) . ' Files )';
+        return '<pre>laravel.log cleared !</pre> ('.\count($files).' Files )';
     }
 
     /**
@@ -232,7 +229,7 @@ class ArtisanService
             }
         }
 
-        return 'Session cleared! (' . count($files) . ' Files )';
+        return 'Session cleared! ('.\count($files).' Files )';
     }
 
     /**
@@ -251,11 +248,11 @@ class ArtisanService
             }
         }
 
-        return 'Debugbar Storage cleared! (' . count($files) . ' Files )';
+        return 'Debugbar Storage cleared! ('.\count($files).' Files )';
     }
 
     /**
-     * @param  string  $command
+     * @param string $command
      */
     public static function exe($command, array $arguments = []): string
     {
@@ -263,12 +260,12 @@ class ArtisanService
             $output = '';
 
             Artisan::call($command, $arguments);
-            $output .= '[<pre>' . Artisan::output() . '</pre>]';
+            $output .= '[<pre>'.Artisan::output().'</pre>]';
 
             return $output;  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // throw new Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
-            return '[<pre>' . $e->getMessage() . '</pre>]';
+            return '[<pre>'.$e->getMessage().'</pre>]';
             // dddx(get_class_methods($e));
             /*
             $vendor_dir = (realpath(LARAVEL_DIR.'/vendor'));

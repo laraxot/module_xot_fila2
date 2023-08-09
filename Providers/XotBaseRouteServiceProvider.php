@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
-use Config;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
-use Request;
 
 /**
  * Class XotBaseRouteServiceProvider.
@@ -36,7 +34,7 @@ abstract class XotBaseRouteServiceProvider extends RouteServiceProvider
      */
     public function boot()
     {
-        Config::set('extra_conn', Request::segment(2)); // Se configurato va a prendere db diverso
+        \Config::set('extra_conn', \Request::segment(2)); // Se configurato va a prendere db diverso
         if (method_exists($this, 'bootCallback')) {
             $this->bootCallback();
         }
@@ -63,7 +61,7 @@ abstract class XotBaseRouteServiceProvider extends RouteServiceProvider
     {
         Route::middleware('web')
             ->namespace($this->moduleNamespace)
-            ->group($this->module_dir . '/../Routes/web.php');
+            ->group($this->module_dir.'/../Routes/web.php');
     }
 
     /**
@@ -76,6 +74,6 @@ abstract class XotBaseRouteServiceProvider extends RouteServiceProvider
         Route::prefix('api')
             ->middleware('api')
             ->namespace($this->moduleNamespace)
-            ->group($this->module_dir . '/../Routes/api.php');
+            ->group($this->module_dir.'/../Routes/api.php');
     }
 }

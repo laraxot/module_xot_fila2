@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Models;
 
 // ------ ext models---
-use App;
-use Eloquent;
-use Exception;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Xot\Models\Traits\WidgetTrait;
 
@@ -31,7 +28,7 @@ use Modules\Xot\Models\Traits\WidgetTrait;
  * @property string|null                                           $updated_by
  * @property \Illuminate\Database\Eloquent\Collection<int, Widget> $containerWidgets
  * @property int|null                                              $container_widgets_count
- * @property \Illuminate\Database\Eloquent\Model|Eloquent         $linked
+ * @property \Illuminate\Database\Eloquent\Model|\Eloquent         $linked
  * @property \Illuminate\Database\Eloquent\Collection<int, Widget> $widgets
  * @property int|null                                              $widgets_count
  *
@@ -102,11 +99,11 @@ class Widget extends BaseModel
          */
         $view = 'pub_theme::layouts.widgets';
         if (null !== $this->layout_position) {
-            $view .= '.' . $this->layout_position;
+            $view .= '.'.$this->layout_position;
         }
-        $view .= '.' . $this->blade;
+        $view .= '.'.$this->blade;
         $view_params = [
-            'lang' => App::getLocale(),
+            'lang' => \App::getLocale(),
             'view' => $view,
             'row' => $this->linked,
             'widget' => $this,
@@ -115,11 +112,11 @@ class Widget extends BaseModel
             $view_params['params'] = $params;
         }
         if (! view()->exists($view)) {
-            dddx(['View [' . $view . '] Not Exists !']);
+            dddx(['View ['.$view.'] Not Exists !']);
         }
         try {
             return view($view, $view_params);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             dddx([$e]);
         }
 

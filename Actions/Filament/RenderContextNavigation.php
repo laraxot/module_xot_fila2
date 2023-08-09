@@ -19,11 +19,11 @@ class RenderContextNavigation
     {
         Filament::registerRenderHook(
             'sidebar.start',
-            fn (): string => Blade::render('<div class="p-2 px-6 bg-primary-100 font-black w-full">' . "{$module} Module</div>")
+            fn (): string => Blade::render('<div class="p-2 px-6 bg-primary-100 font-black w-full">'."{$module} Module</div>")
         );
         Filament::registerRenderHook(
             'sidebar.end',
-            fn (): string => Blade::render('<a class="p-2 px-6 bg-primary-100 font-black w-full inline-flex space-x-2" href="' . route('filament.pages.dashboard') . '"><x-heroicon-o-arrow-left class="w-5"/> Main Module</a>')
+            fn (): string => Blade::render('<a class="p-2 px-6 bg-primary-100 font-black w-full inline-flex space-x-2" href="'.route('filament.pages.dashboard').'"><x-heroicon-o-arrow-left class="w-5"/> Main Module</a>')
         );
 
         Filament::registerRenderHook(

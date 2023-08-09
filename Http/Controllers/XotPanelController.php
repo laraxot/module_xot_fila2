@@ -14,8 +14,8 @@ use Illuminate\Support\Str;
 class XotPanelController extends Controller
 {
     /**
-     * @param  string  $method
-     * @param  array  $arg
+     * @param string $method
+     * @param array  $arg
      */
     public function __call($method, $arg)
     {
@@ -35,7 +35,7 @@ class XotPanelController extends Controller
 
         return $panel->out();
         */
-        $act = '\Modules\Cms\Actions\Panel\\' . Str::studly($method) . 'Action';
+        $act = '\Modules\Cms\Actions\Panel\\'.Str::studly($method).'Action';
         $data = $arg[0];
         if ($arg[0] instanceof Request) {
             $data = $data->all();

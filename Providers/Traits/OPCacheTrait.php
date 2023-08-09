@@ -14,7 +14,7 @@ trait OPCacheTrait
         Cache::extend(
             'opcache',
             function () {
-                $store = new \Modules\Xot\Engines\Opcache\Store;
+                $store = new \Modules\Xot\Engines\Opcache\Store();
 
                 return new \Modules\Xot\Engines\Opcache\Repository($store, new TagSet($store));
             }

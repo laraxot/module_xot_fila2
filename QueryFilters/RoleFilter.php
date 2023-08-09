@@ -24,10 +24,11 @@ class RoleFilter
      *                      next element in array that you have passed
      *                      in through() method
      *
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return mixed => you need to return your filtered data to next element
      */
-    public function handle($request, Closure $next)
+    public function handle($request, \Closure $next)
     {
         if (! request()->has('role')) {
             return $next($request);

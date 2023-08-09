@@ -8,12 +8,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
 
-use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
-
-use function count;
-use function strlen;
 
 /**
  * Undocumented class.
@@ -23,11 +19,12 @@ class Search
     /**
      * Undocumented function.
      *
-     * @param  Builder  $query
-     * @param  array  ...$args
-     * @return Closure
+     * @param Builder $query
+     * @param array   ...$args
+     *
+     * @return \Closure
      */
-    public function handle($query, Closure $next, ...$args)
+    public function handle($query, \Closure $next, ...$args)
     {
         $search_fields = [];
         $model = $query->getModel();
@@ -36,11 +33,11 @@ class Search
          */
         $q = request('q', '');
 
-        if (0 === count($search_fields)) { // se non gli passo nulla, cerco in tutti i fillable
+        if (0 === \count($search_fields)) { // se non gli passo nulla, cerco in tutti i fillable
             $search_fields = $model->getFillable();
         }
         // $table = $model->getTable();
-        if (strlen($q) > 1) {
+        if (\strlen($q) > 1) {
             $query = $query->where(
                 function ($subquery) use ($search_fields, $q): void {
                     foreach ($search_fields as $k => $v) {
@@ -53,14 +50,14 @@ class Search
                                 function (Builder $subquery1) use ($rel_field, $q): void {
                                     // dddx($subquery1->getConnection()->getDatabaseName());
 
-                                    $subquery1->where($rel_field, 'like', '%' . $q . '%');
+                                    $subquery1->where($rel_field, 'like', '%'.$q.'%');
                                     // dddx($subquery1);
                                 }
                             );
 
                             // dddx($subquery);
                         } else {
-                            $subquery = $subquery->orWhere($v, 'like', '%' . $q . '%');
+                            $subquery = $subquery->orWhere($v, 'like', '%'.$q.'%');
                         }
                     }
                 }

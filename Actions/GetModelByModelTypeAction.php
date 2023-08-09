@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
@@ -28,7 +27,7 @@ class GetModelByModelTypeAction
         }
 
         if (null == $model) {
-            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+            throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
 
         return $model;

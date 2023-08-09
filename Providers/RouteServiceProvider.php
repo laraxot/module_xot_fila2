@@ -8,10 +8,11 @@ use Exception;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
-use Modules\Tenant\Services\TenantService;
-use Modules\Xot\Http\Middleware\SetDefaultLocaleForUrlsMiddleware;
 
 use function is_array;
+
+use Modules\Tenant\Services\TenantService;
+use Modules\Xot\Http\Middleware\SetDefaultLocaleForUrlsMiddleware;
 
 // public function boot(\Illuminate\Routing\Router $router)
 
@@ -80,17 +81,17 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
     {
         // ---------- Lang Route Pattern
         $langs = config('laravellocalization.supportedLocales');
-        if (! is_array($langs)) {
+        if (! \is_array($langs)) {
             // throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
             $langs = ['it' => 'it', 'en' => 'en'];
         }
         $lang_pattern = collect(array_keys($langs))->implode('|');
-        $lang_pattern = '/|' . $lang_pattern . '|/i';
+        $lang_pattern = '/|'.$lang_pattern.'|/i';
         $router->pattern('lang', $lang_pattern);
         // -------------------------------------------------------------
         // $models = TenantService::config('morph_map');
         $models = config('morph_map');
-        if (! is_array($models)) {
+        if (! \is_array($models)) {
             // throw new Exception('[' . print_r($models, true) . '][' . __LINE__ . '][' . class_basename(__CLASS__) . ']');
             $models = [];
         }
@@ -103,7 +104,7 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
         )->implode('|');
 
         // $pattern = '/|'.$pattern.'|/i';
-        $container0_pattern = '/|' . $pattern . '|' . $pattern_plural . '|/i';
+        $container0_pattern = '/|'.$pattern.'|'.$pattern_plural.'|/i';
         /*--pattern vuoto
         dddx([
             'lang_pattern' => $lang_pattern,

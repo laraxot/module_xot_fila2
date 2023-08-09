@@ -8,7 +8,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Models\Traits;
 
 use Carbon\Carbon;
-use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,7 +18,6 @@ use Kalnoy\Nestedset\Collection;
 use Kalnoy\Nestedset\DescendantsRelation;
 use Kalnoy\Nestedset\NestedSet;
 use Kalnoy\Nestedset\QueryBuilder;
-use LogicException;
 
 trait HasParent
 {
@@ -44,7 +42,7 @@ trait HasParent
      */
     public static function scoped(array $attributes)
     {
-        $instance = new static;
+        $instance = new static();
 
         $instance->setRawAttributes($attributes);
 
@@ -56,7 +54,7 @@ trait HasParent
      *
      * Use `children` key on `$attributes` to create child nodes.
      *
-     * @param  self  $parent
+     * @param self $parent
      */
     public static function create(array $attributes = [], self $parent = null)
     {
@@ -71,7 +69,7 @@ trait HasParent
         $instance->save();
 
         // Now create children
-        $relation = new EloquentCollection;
+        $relation = new EloquentCollection();
 
         foreach ((array) $children as $child) {
             $relation->add($child = static::create($child, $instance));
@@ -285,7 +283,8 @@ trait HasParent
     }
 
     /**
-     * @param  bool  $after
+     * @param bool $after
+     *
      * @return self
      */
     public function beforeOrAfterNode(self $node, $after = false)
@@ -343,7 +342,8 @@ trait HasParent
     /**
      * Move node up given amount of positions.
      *
-     * @param  int  $amount
+     * @param int $amount
+     *
      * @return bool
      */
     public function up($amount = 1)
@@ -363,7 +363,8 @@ trait HasParent
     /**
      * Move node down given amount of positions.
      *
-     * @param  int  $amount
+     * @param int $amount
+     *
      * @return bool
      */
     public function down($amount = 1)
@@ -405,7 +406,8 @@ trait HasParent
     }
 
     /**
-     * @param  string  $table
+     * @param string $table
+     *
      * @return QueryBuilder
      */
     public function newScopedQuery($table = null)
@@ -414,7 +416,7 @@ trait HasParent
     }
 
     /**
-     * @param  string  $table
+     * @param string $table
      */
     public function applyNestedSetScope($query, $table = null)
     {
@@ -428,7 +430,7 @@ trait HasParent
 
         foreach ($scoped as $attribute) {
             $query->where(
-                $table . '.' . $attribute,
+                $table.'.'.$attribute,
                 '=',
                 $this->getAttributeValue($attribute)
             );
@@ -471,9 +473,9 @@ trait HasParent
      *
      * Behind the scenes node is appended to found parent node.
      *
-     * @param  int  $value
+     * @param int $value
      *
-     * @throws Exception If parent node doesn't exists
+     * @throws \Exception If parent node doesn't exists
      */
     public function setParentIdAttribute($value)
     {
@@ -791,7 +793,7 @@ trait HasParent
             return;
         }
 
-        $method = 'action' . ucfirst(array_shift($this->pending));
+        $method = 'action'.ucfirst(array_shift($this->pending));
         $parameters = $this->pending;
 
         $this->pending = null;
@@ -856,7 +858,7 @@ trait HasParent
     /**
      * Apply parent model.
      *
-     * @param  Model|null  $value
+     * @param Model|null $value
      */
     protected function setParent($value): self
     {
@@ -879,12 +881,13 @@ trait HasParent
     /**
      * Insert node at specific position.
      *
-     * @param  int  $position
+     * @param int $position
+     *
      * @return bool
      */
     protected function insertAt($position)
     {
-        static::$actionsPerformed++;
+        ++static::$actionsPerformed;
 
         $result = $this->exists
             ? $this->moveNode($position)
@@ -898,7 +901,8 @@ trait HasParent
      *
      * @since 2.0
      *
-     * @param  int  $position
+     * @param int $position
+     *
      * @return int
      */
     protected function moveNode($position)
@@ -918,7 +922,8 @@ trait HasParent
      *
      * @since 2.0
      *
-     * @param  int  $position
+     * @param int $position
+     *
      * @return bool
      */
     protected function insertNode($position)
@@ -955,7 +960,7 @@ trait HasParent
             // In case if user wants to re-create the node
             $this->makeRoot();
 
-            static::$actionsPerformed++;
+            ++static::$actionsPerformed;
         }
     }
 
@@ -1017,7 +1022,7 @@ trait HasParent
     protected function assertNotDescendant(self $node)
     {
         if ($node == $this || $node->isDescendantOf($this)) {
-            throw new LogicException('Node must not be a descendant.');
+            throw new \LogicException('Node must not be a descendant.');
         }
 
         return $this;
@@ -1029,7 +1034,7 @@ trait HasParent
     protected function assertNodeExists(self $node)
     {
         if (! $node->getLft() || ! $node->getRgt()) {
-            throw new LogicException('Node must exists.');
+            throw new \LogicException('Node must exists.');
         }
 
         return $this;
@@ -1038,9 +1043,9 @@ trait HasParent
     /**
      * Summary of assertSameScope.
      *
-     * @return void
+     * @throws \LogicException
      *
-     * @throws LogicException
+     * @return void
      */
     protected function assertSameScope(self $node)
     {
@@ -1050,7 +1055,7 @@ trait HasParent
 
         foreach ($scoped as $attr) {
             if ($this->getAttribute($attr) != $node->getAttribute($attr)) {
-                throw new LogicException('Nodes must be in the same scope');
+                throw new \LogicException('Nodes must be in the same scope');
             }
         }
     }

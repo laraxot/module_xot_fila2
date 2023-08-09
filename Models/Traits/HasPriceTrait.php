@@ -54,7 +54,8 @@ trait HasPriceTrait
     }
 
     /**
-     * @param  float  $number
+     * @param float $number
+     *
      * @return \Cknow\Money\Money
      */
     public function getCurrency($number)

@@ -9,11 +9,6 @@ namespace Modules\Xot\ViewModels;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Str;
-use Reflection;
-use ReflectionClass;
-use ReflectionMethod;
-
-use function in_array;
 
 abstract class XotBaseViewModel implements Arrayable
 {
@@ -22,18 +17,18 @@ abstract class XotBaseViewModel implements Arrayable
      */
     public function toArray(): array
     {
-        return collect((new ReflectionClass($this))->getMethods())
+        return collect((new \ReflectionClass($this))->getMethods())
             ->reject(
-                fn (ReflectionMethod $method) => in_array($method->getName(), ['__construct', 'toArray'], true)
+                fn (\ReflectionMethod $method) => \in_array($method->getName(), ['__construct', 'toArray'], true)
             )
             ->filter(
-                fn (ReflectionMethod $method) => in_array(
+                fn (\ReflectionMethod $method) => \in_array(
                     'public',
-                    Reflection::getModifierNames($method->getModifiers()),
+                    \Reflection::getModifierNames($method->getModifiers()),
                     true
                 )
             )
-            ->mapWithKeys(fn (ReflectionMethod $method) => [
+            ->mapWithKeys(fn (\ReflectionMethod $method) => [
                 Str::snake($method->getName()) => $this->{$method->getName()}(),
             ])
             ->toArray();

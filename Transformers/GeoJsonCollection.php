@@ -22,7 +22,8 @@ class GeoJsonCollection extends ResourceCollection
     public $collects = GeoJsonResource::class;
 
     /**
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
+     *
      * @return array
      */
     // ErrorException (Declaration of Modules\Xot\Transformers\GeoJsonResource::toArray(Illuminate\Http\Request

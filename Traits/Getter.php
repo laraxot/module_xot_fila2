@@ -4,10 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
-use InvalidArgumentException;
-use ReflectionClass;
-
-use function is_array;
 use function Safe\preg_match;
 
 /**
@@ -21,7 +17,7 @@ trait Getter
     public static function __merge(string $index, array $value): array
     {
         $tmp = self::__getStatic($index);
-        if (! is_array($tmp)) {
+        if (! \is_array($tmp)) {
             $tmp = [];
         }
         $tmp = array_merge($tmp, $value);
@@ -42,7 +38,7 @@ trait Getter
         }
 
         $params = [];
-        $func = 'get_' . $index;
+        $func = 'get_'.$index;
         $ris = self::$func($params);
         // dd(get_called_class());//XRA\Extend\Services\ThemeService
         // dd(class_basename(get_called_class()));//ThemeService
@@ -50,7 +46,7 @@ trait Getter
         // *
         if ('' === $ris && isset($class::$config_name)) {
             $config_name = $class::$config_name;
-            $ris = config($config_name . '.' . $index);
+            $ris = config($config_name.'.'.$index);
         }
         // */
         self::__setStatic($index, $ris);
@@ -71,22 +67,23 @@ trait Getter
     public static function __concatBeforeStatic(string $index, string $value): void
     {
         $tmp = self::__getStatic($index);
-        $tmp = $value . $tmp;
+        $tmp = $value.$tmp;
         self::__setStatic($index, $tmp);
     }
 
     // * //se lo togli non funziona piu' le funzioni del themeservice
 
     /**
-     * @param  string  $method
-     * @param  array  $args
+     * @param string $method
+     * @param array  $args
+     *
      * @return mixed|void
      */
     public static function __callStatic($method, $args)
     {
         if (preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {
-            $reflector = new ReflectionClass(__CLASS__);
-            $property = mb_strtolower($match[2]) . $match[3];
+            $reflector = new \ReflectionClass(__CLASS__);
+            $property = mb_strtolower($match[2]).$match[3];
             if ($reflector->hasProperty($property)) {
                 $property = $reflector->getProperty($property);
                 switch ($match[1]) {
@@ -98,7 +95,7 @@ trait Getter
                         return;
                 }
             } else {
-                throw new InvalidArgumentException("Property {$property} doesn't exist");
+                throw new \InvalidArgumentException("Property {$property} doesn't exist");
             }
         }
     }
@@ -106,7 +103,8 @@ trait Getter
     // */
 
     /**
-     * @param  string  $index
+     * @param string $index
+     *
      * @return bool
      */
     public function __isset($index)
@@ -117,7 +115,7 @@ trait Getter
     public function __concat(string $index, string $value): void
     {
         $tmp = $this->__get($index);
-        $tmp = $tmp . $value;
+        $tmp = $tmp.$value;
         $this->__set($index, $tmp);
     }
 
@@ -131,7 +129,8 @@ trait Getter
     }
 
     /**
-     * @param  string  $index
+     * @param string $index
+     *
      * @return mixed|null
      */
     public function __get($index)
@@ -144,13 +143,13 @@ trait Getter
     }
 
     /**
-     * @param  string  $index
-     * @param  string  $value
+     * @param string $index
+     * @param string $value
      */
     public function __concatBefore($index, $value): void
     {
         $tmp = $this->__get($index);
-        $tmp = $value . $tmp;
+        $tmp = $value.$tmp;
         $this->__set($index, $tmp);
     }
 

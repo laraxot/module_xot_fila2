@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Actions\Model;
 
 use Illuminate\Database\Eloquent\Model;
-use Session;
 use Spatie\QueueableAction\QueueableAction;
 
 class DestroyAction
@@ -31,9 +30,9 @@ class DestroyAction
 
         $res = $row->delete();
         if ($res) {
-            Session::flash('status', 'eliminato');
+            \Session::flash('status', 'eliminato');
         } else {
-            Session::flash('status', 'NON eliminato');
+            \Session::flash('status', 'NON eliminato');
         }
 
         return $row;

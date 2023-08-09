@@ -18,13 +18,13 @@ class UrlService
     public function __construct()
     {
         // ---
-        require_once __DIR__ . '/vendor/autoload.php';
+        require_once __DIR__.'/vendor/autoload.php';
     }
 
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
 
         return self::$instance;

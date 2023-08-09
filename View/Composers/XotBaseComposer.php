@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Xot\View\Composers;
 
-use Exception;
+use function call_user_func_array;
+
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Modules\UI\Models\Menu;
 use Nwidart\Modules\Facades\Module;
 use Nwidart\Modules\Laravel\Module as LaravelModule;
-
-use function call_user_func_array;
-use function is_object;
 
 /**
  * --.
@@ -37,7 +35,8 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      *
-     * @param  array|string|int|float|null  ...$args
+     * @param array|string|int|float|null ...$args
+     *
      * @return mixed|void
      */
     public function call(string $func, ...$args)
@@ -46,13 +45,13 @@ abstract class XotBaseComposer
          * @var LaravelModule
          */
         $module = Module::find($this->module_name);
-        if (! is_object($module)) {
-            throw new Exception('not find [' . $this->module_name . '] on Modules [' . __LINE__ . '][' . __FILE__ . ']');
+        if (! \is_object($module)) {
+            throw new \Exception('not find ['.$this->module_name.'] on Modules ['.__LINE__.']['.__FILE__.']');
         }
 
-        $view_composer_class = 'Modules\\' . $module->getName() . '\\View\Composers\\' . $module->getName() . 'Composer';
+        $view_composer_class = 'Modules\\'.$module->getName().'\\View\Composers\\'.$module->getName().'Composer';
         if (! class_exists($view_composer_class)) {
-            throw new Exception('[' . $view_composer_class . '][' . __LINE__ . '][' . __FILE__ . ']');
+            throw new \Exception('['.$view_composer_class.']['.__LINE__.']['.__FILE__.']');
         }
         $view_composer = app($view_composer_class);
 
@@ -63,8 +62,9 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      *
-     * @param  string  $name
-     * @param  array  $arguments
+     * @param string $name
+     * @param array  $arguments
+     *
      * @return mixed|void
      */
     public function __call($name, $arguments)
@@ -94,15 +94,15 @@ abstract class XotBaseComposer
         $module = Arr::first(
             $modules,
             function ($module) use ($name) {
-                $class = '\Modules\\' . $module->getName() . '\View\Composers\ThemeComposer';
+                $class = '\Modules\\'.$module->getName().'\View\Composers\ThemeComposer';
 
                 return method_exists($class, $name);
             }
         );
-        if (! is_object($module)) {
-            throw new Exception('create a View\Composers\ThemeComposer.php inside a module with [' . $name . '] method');
+        if (! \is_object($module)) {
+            throw new \Exception('create a View\Composers\ThemeComposer.php inside a module with ['.$name.'] method');
         }
-        $class = '\Modules\\' . $module->getName() . '\View\Composers\ThemeComposer';
+        $class = '\Modules\\'.$module->getName().'\View\Composers\ThemeComposer';
         // Parameter #1 $callback of function call_user_func_array expects callable(): mixed, array{*NEVER*, string} given.
         $app = app($class);
         /**
@@ -110,7 +110,7 @@ abstract class XotBaseComposer
          */
         $callback = [$app, $name];
 
-        return call_user_func_array($callback, $arguments);
+        return \call_user_func_array($callback, $arguments);
     }
 
     /*

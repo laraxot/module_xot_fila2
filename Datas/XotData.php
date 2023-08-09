@@ -56,14 +56,14 @@ class XotData extends Data
 
     public function getProfileClass(): string
     {
-        $profile_class = 'Modules\\' . $this->main_module . '\Models\Profile';
+        $profile_class = 'Modules\\'.$this->main_module.'\Models\Profile';
 
         return $profile_class;
     }
 
     public function getHomeController(): string
     {
-        $class = 'Modules\\' . $this->main_module . '\Http\Controllers\HomeController';
+        $class = 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
 
         return $class;
     }

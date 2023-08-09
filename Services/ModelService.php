@@ -10,20 +10,15 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 // ----------- Requests ----------
-use ErrorException;
+use function get_class;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use ReflectionClass;
-use ReflectionMethod;
 
-use function get_class;
 use function in_array;
-use function is_array;
-use function is_object;
-use function is_string;
 
 // per dizionario morph
 // ------------ services ----------
@@ -45,7 +40,7 @@ class ModelService
     public static function getInstance(): self
     {
         if (! self::$_instance) {
-            self::$_instance = new self;
+            self::$_instance = new self();
         }
 
         return self::$_instance;
@@ -85,16 +80,16 @@ class ModelService
         // Relation::morphMap([$post_type => get_class($model)]);
         $data = collect($data)->filter(
             function ($item, $key) use ($methods) {
-                return in_array($key, $methods, true);
+                return \in_array($key, $methods, true);
             }
         )->map(
             function ($v, $k) use ($model, $data) {
-                if (! is_string($k)) {
+                if (! \is_string($k)) {
                     dddx([$k, $v, $data]);
                 }
                 $rows = $model->$k();
                 $related = null;
-                if (is_object($rows) && method_exists($rows, 'getRelated')) {
+                if (\is_object($rows) && method_exists($rows, 'getRelated')) {
                     $related = $rows->getRelated();
                 }
 
@@ -129,11 +124,11 @@ class ModelService
          */
         $models = config('morph_map');
 
-        $post_type = collect($models)->search(get_class($model));
+        $post_type = collect($models)->search(\get_class($model));
 
         if (false === $post_type) {
             $post_type = snake_case(class_basename($model));
-            Relation::morphMap([$post_type => get_class($model)]);
+            Relation::morphMap([$post_type => \get_class($model)]);
         }
 
         return (string) $post_type;
@@ -146,7 +141,7 @@ class ModelService
     public function getRelations(): array
     {
         $model = $this->model;
-        $reflector = new ReflectionClass($model);
+        $reflector = new \ReflectionClass($model);
         $relations = [];
         $methods = $reflector->getMethods();
 
@@ -156,7 +151,7 @@ class ModelService
             $res = $method->getName(); // ?? $method->__toString(); // 76     Call to an undefined method ReflectionType::getName().
             // $res = PHP_VERSION_ID < 70100 ? $method->__toString() : $method->getName();
 
-            if (0 === $method->getNumberOfRequiredParameters() && $method->class === get_class($model)) {
+            if (0 === $method->getNumberOfRequiredParameters() && $method->class === \get_class($model)) {
                 // $returnType = $method->getReturnType();
                 // if (null !== $returnType && false !== strpos($returnType->getName(), '\\Relations\\')) {
                 // if (in_array(class_basename($returnType->getName()), ['HasOne', 'HasMany', 'BelongsTo', 'BelongsToMany', 'MorphToMany', 'MorphTo'])) {
@@ -182,8 +177,8 @@ class ModelService
         $model = $this->model;
         $relationships = [];
 
-        foreach ((new ReflectionClass($model))->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->class !== get_class($model)
+        foreach ((new \ReflectionClass($model))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
+            if ($method->class !== \get_class($model)
                 || ! empty($method->getParameters())
                 || __FUNCTION__ === $method->getName()
             ) {
@@ -196,11 +191,11 @@ class ModelService
                 if ($return instanceof Relation) {
                     $relationships[$method->getName()] = [
                         'name' => $method->getName(),
-                        'type' => (new ReflectionClass($return))->getShortName(),
-                        'model' => (new ReflectionClass($return->getRelated()))->getName(),
+                        'type' => (new \ReflectionClass($return))->getShortName(),
+                        'model' => (new \ReflectionClass($return->getRelated()))->getName(),
                     ];
                 }
-            } catch (ErrorException $e) {
+            } catch (\ErrorException $e) {
             }
         }
 
@@ -221,12 +216,12 @@ class ModelService
     }
 
     /**
-     * @param  array|string  $index
+     * @param array|string $index
      */
     public function indexIfNotExists($index): void
     {
         $model = $this->model;
-        if (is_array($index)) {
+        if (\is_array($index)) {
             foreach ($index as $i) {
                 $this->indexIfNotExists($i);
             }
@@ -236,7 +231,7 @@ class ModelService
             $dbSchemaManager = $conn->getDoctrineSchemaManager();
             $doctrineTable = $dbSchemaManager->listTableDetails($tbl);
             // faremo dei controlli per non aggiungere troppe chiavi
-            if (! $doctrineTable->hasIndex($tbl . '_' . $index . '_index')) {
+            if (! $doctrineTable->hasIndex($tbl.'_'.$index.'_index')) {
                 Schema::connection($conn->getName())->table(
                     $tbl,
                     function ($table) use ($index): void {
@@ -329,16 +324,16 @@ class ModelService
 
     public function modelExistsByTableName(string $table_name): bool
     {
-        $model_ns = get_class($this->model);
+        $model_ns = \get_class($this->model);
         $model_ns = collect(explode('\\', $model_ns))->slice(0, -1)->implode('\\');
 
         $model_name = Str::singular($table_name);
         $model_name = Str::studly($model_name);
         if (Str::startsWith($table_name, '_')) {
-            $model_name = '_' . $model_name;
+            $model_name = '_'.$model_name;
         }
 
-        $model_class = $model_ns . '\\' . $model_name;
+        $model_class = $model_ns.'\\'.$model_name;
 
         return class_exists($model_class);
     }

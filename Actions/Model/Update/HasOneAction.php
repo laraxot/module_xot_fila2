@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Update;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
-
-use function is_array;
 
 class HasOneAction
 {
@@ -28,12 +25,12 @@ class HasOneAction
     public function execute(Model $row, RelationDTO $relation)
     {
         if (! $relation->rows instanceof HasOne) {
-            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+            throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $rows = $relation->rows;
         // $rows= $row->{$relation->name}();
         if ($rows->exists()) {
-            if (! is_array($relation->data)) {
+            if (! \is_array($relation->data)) {
                 // variabile uguale alla relazione
             } else {
                 // backtrace(true);

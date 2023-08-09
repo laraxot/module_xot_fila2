@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
-use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
@@ -13,13 +12,11 @@ use Illuminate\Support\Str;
 use Modules\Xot\Services\BladeService;
 use Modules\Xot\Services\LivewireService;
 use Nwidart\Modules\Facades\Module;
-use stdClass;
 
 use function Safe\glob;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\realpath;
-use function strlen;
 
 // use Modules;
 
@@ -44,7 +41,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         $this->registerConfig();
         $this->registerViews();
         // $this->registerFactories();
-        $this->loadMigrationsFrom($this->module_dir . '/../Database/Migrations');
+        $this->loadMigrationsFrom($this->module_dir.'/../Database/Migrations');
         if (method_exists($this, 'bootCallback')) {
             $this->bootCallback();
         }
@@ -60,7 +57,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->module_ns = collect(explode('\\', $this->module_ns))->slice(0, -1)->implode('\\');
-        $this->app->register('' . $this->module_ns . '\Providers\RouteServiceProvider');
+        $this->app->register(''.$this->module_ns.'\Providers\RouteServiceProvider');
         if (method_exists($this, 'registerCallback')) {
             $this->registerCallback();
         }
@@ -72,7 +69,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
      */
     public function registerViews(): void
     {
-        $sourcePath = realpath($this->module_dir . '/../Resources/views');
+        $sourcePath = realpath($this->module_dir.'/../Resources/views');
         // if (false === $sourcePath) {
         //    throw new \Exception('realpath not find dir');
         // }
@@ -96,7 +93,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
      */
     public function registerTranslations(): void
     {
-        $langPath = realpath($this->module_dir . '/../Resources/lang');
+        $langPath = realpath($this->module_dir.'/../Resources/lang');
         // if (false === $langPath) {
         //    throw new \Exception('['.__LINE__.']['.__FILE__.']');
         // }
@@ -126,7 +123,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
 
         Blade::componentNamespace($namespace, $module->getLowerName());
         */
-        $namespace = $this->module_ns . '\View\Components';
+        $namespace = $this->module_ns.'\View\Components';
         Blade::componentNamespace($namespace, $this->module_name);
         /*
         dddx([
@@ -136,7 +133,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         ])
         ;
         */
-        BladeService::registerComponents($this->module_dir . '/../View/Components', $this->module_ns);
+        BladeService::registerComponents($this->module_dir.'/../View/Components', $this->module_ns);
     }
 
     /**
@@ -147,7 +144,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         // $prefix=$this->module_name.'::';
         $prefix = '';
         LivewireService::registerComponents(
-            $this->module_dir . '/../Http/Livewire',
+            $this->module_dir.'/../Http/Livewire',
             Str::before($this->module_ns, '\Providers'),
             $prefix,
         );
@@ -174,10 +171,10 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         if (! File::isDirectory($path)) {
             File::makeDirectory($path, 0777, true, true);
         }
-        $events_file = $path . '/_events.json';
+        $events_file = $path.'/_events.json';
         $force_recreate = request()->input('force_recreate', true);
         if (! File::exists($events_file) || $force_recreate) {
-            $filenames = glob($path . '/*.php');
+            $filenames = glob($path.'/*.php');
             // if (false === $filenames) {
             //    $filenames = [];
             // }
@@ -188,10 +185,10 @@ abstract class XotBaseServiceProvider extends ServiceProvider
                 $event_name = $info['filename'];
                 $str = 'Event';
                 if (Str::endsWith($event_name, $str)) {
-                    $listener_name = substr($event_name, 0, -strlen($str)) . 'Listener';
+                    $listener_name = substr($event_name, 0, -\strlen($str)).'Listener';
 
-                    $event = $this->module_base_ns . '\\Events\\' . $event_name;
-                    $listener = $this->module_base_ns . '\\Listeners\\' . $listener_name;
+                    $event = $this->module_base_ns.'\\Events\\'.$event_name;
+                    $listener = $this->module_base_ns.'\\Listeners\\'.$listener_name;
                     $msg = [
                         'event' => $event,
                         'event_exists' => class_exists($event),
@@ -200,7 +197,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
                     ];
                     if (class_exists($event) && class_exists($listener)) {
                         // \Event::listen($event, $listener);
-                        $tmp = new stdClass;
+                        $tmp = new \stdClass();
                         $tmp->event = $event;
                         $tmp->listener = $listener;
                         $events[] = $tmp;
@@ -213,7 +210,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
                 //    throw new \Exception('can not encode json');
                 // }
                 File::put($events_file, $events_content);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 dd($e);
             }
         } else {
@@ -249,7 +246,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         );
         */
         $this->mergeConfigFrom(
-            $this->module_dir . '/../Config/config.php',
+            $this->module_dir.'/../Config/config.php',
             $this->module_name
         );
     }

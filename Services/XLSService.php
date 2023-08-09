@@ -8,11 +8,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Facades\Excel;
-
-use function is_object;
 
 /**
  * Undocumented class.
@@ -25,7 +22,7 @@ class XLSService
     public function __construct()
     {
         // ---
-        require_once __DIR__ . '/vendor/autoload.php';
+        require_once __DIR__.'/vendor/autoload.php';
     }
 
     /**
@@ -34,7 +31,7 @@ class XLSService
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -57,7 +54,7 @@ class XLSService
         $letter = chr(65 + $numeric);
         $num2 = intval($num / 26);
         if ($num2 > 0) {
-            return $this->getNameFromNumber($num2 - 1) . $letter;
+            return $this->getNameFromNumber($num2 - 1).$letter;
         } else {
             return $letter;
         }
@@ -75,7 +72,7 @@ class XLSService
                 if (UrlService::make()->checkValidUrl((string) $column)) {
                     $col_row[] = ['col' => $col_key, 'int_col' => $int_col_key, 'row' => $row_key, 'url' => $column];
                 }
-                $int_col_key++;
+                ++$int_col_key;
             }
         }
 
@@ -89,7 +86,7 @@ class XLSService
     {
         $file = request()->file('file');
         if (null === $file) {
-            throw new Exception('[.__LINE__.][' . class_basename(__CLASS__) . ']');
+            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
         }
 
         return $this->fromRequestFile($file);
@@ -98,24 +95,24 @@ class XLSService
     /**
      * Undocumented function.
      *
-     * @param  array<int,\Illuminate\Http\UploadedFile>|\Illuminate\Http\UploadedFile  $file
+     * @param array<int,\Illuminate\Http\UploadedFile>|\Illuminate\Http\UploadedFile $file
      *
      * @throws \Illuminate\Validation\ValidationException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
     public function fromRequestFile($file): self
     {
-        if (! is_object($file)) {
-            throw new Exception('[.__LINE__.][' . class_basename(__CLASS__) . ']');
+        if (! \is_object($file)) {
+            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
         }
 
         if (! method_exists($file, 'getRealPath')) {
-            throw new Exception('[.__LINE__.][' . class_basename(__CLASS__) . ']');
+            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
         }
         $path = $file->getRealPath();
 
         if (false === $path) {
-            throw new Exception('[.__LINE__.][' . class_basename(__CLASS__) . ']');
+            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
         }
 
         return $this->fromFilePath($path);
@@ -145,7 +142,7 @@ class XLSService
         foreach ($row_range as $row) {
             $tmp = [];
             foreach ($column_range as $col) {
-                $cell = $col . $row;
+                $cell = $col.$row;
                 $tmp[$col] = $sheet->getCell($cell)->getValue();
             }
             $data->push(collect($tmp));

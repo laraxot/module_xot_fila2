@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -12,10 +11,6 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-use function chr;
-use function dirname;
-use function in_array;
-use function is_object;
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fputcsv;
@@ -34,13 +29,13 @@ class ArrayService
     public function __construct()
     {
         // ---
-        include_once __DIR__ . '/vendor/autoload.php';
+        include_once __DIR__.'/vendor/autoload.php';
     }
 
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self;
+            self::$instance = new self();
         }
 
         return self::$instance;
@@ -69,17 +64,18 @@ class ArrayService
         // HHVM fails at __set_state, so just use object cast for now
         $content = str_replace('stdClass::__set_state', '(object)', $content);
 
-        $content = '<?php ' . chr(13) . 'return ' . $content . ';' . chr(13);
+        $content = '<?php '.\chr(13).'return '.$content.';'.\chr(13);
         // $content = str_replace('stdClass::__set_state', '(object)', $content);
-        File::makeDirectory(dirname($filename), 0775, true, true);
+        File::makeDirectory(\dirname($filename), 0775, true, true);
         File::put($filename, $content);
     }
 
     /**
      * Undocumented function.
      *
-     * @param  array|object  $arrObjData
-     * @param  array  $arrSkipIndices
+     * @param array|object $arrObjData
+     * @param array        $arrSkipIndices
+     *
      * @return array
      */
     public static function fromObjects($arrObjData, $arrSkipIndices = [])
@@ -87,16 +83,16 @@ class ArrayService
         $arrData = [];
 
         // if input is object, convert into array
-        if (is_object($arrObjData)) {
+        if (\is_object($arrObjData)) {
             $arrObjData = get_object_vars($arrObjData);
         }
 
         if (\is_array($arrObjData)) {
             foreach ($arrObjData as $index => $value) {
-                if (is_object($value) || \is_array($value)) {
+                if (\is_object($value) || \is_array($value)) {
                     $value = self::fromObjects($value, $arrSkipIndices); // recursive call
                 }
-                if (in_array($index, $arrSkipIndices, true)) {
+                if (\in_array($index, $arrSkipIndices, true)) {
                     continue;
                 }
                 $arrData[$index] = $value;
@@ -109,10 +105,11 @@ class ArrayService
     /**
      * Undocumented function.
      *
-     * @param  int  $a0
-     * @param  int  $b0
-     * @param  int  $a1
-     * @param  int  $b1
+     * @param int $a0
+     * @param int $b0
+     * @param int $a1
+     * @param int $b1
+     *
      * @return array|bool
      */
     public static function rangeIntersect($a0, $b0, $a1, $b1)
@@ -142,7 +139,7 @@ class ArrayService
             ->map(
                 function ($item) {
                     if (! is_array($item)) {
-                        throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
                     $item = collect($item)
                         ->map(
@@ -173,8 +170,8 @@ class ArrayService
         $ris = $coll_1->filter(
             function ($value, $key) use ($arr_2) {
                 try {
-                    return ! in_array($value, $arr_2, true);
-                } catch (Exception $e) {
+                    return ! \in_array($value, $arr_2, true);
+                } catch (\Exception $e) {
                     dddx(['err' => $e->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
                 }
             }
@@ -215,11 +212,11 @@ class ArrayService
     // ret array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
 
     /**
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
      */
     public function toXLS()
     {
@@ -244,8 +241,8 @@ class ArrayService
                 // case 2:return self::toXLS_Maatwebsite($params); //break;
                 // case 3:return self::toXLS_phpexcel($params); //break;
             default:
-                $msg = 'unknown export_processor [' . $this->export_processor . ']';
-                throw new Exception($msg . '[' . __LINE__ . '][' . __FILE__ . ']');
+                $msg = 'unknown export_processor ['.$this->export_processor.']';
+                throw new \Exception($msg.'['.__LINE__.']['.__FILE__.']');
         }
     }
 
@@ -327,7 +324,7 @@ class ArrayService
                 if (filter_var($cell->getValue(), FILTER_VALIDATE_URL)) {
                     $cell_value = $cell->getValue();
                     if (! is_string($cell_value)) {
-                        throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
                     $sheet->getCell($cell->getCoordinate())->getHyperlink()->setUrl($cell_value);
                 }
@@ -364,15 +361,15 @@ class ArrayService
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
-     *
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
      */
     public function toXLS_phpoffice(?string $out = 'download')
     {
-        $spreadsheet = new Spreadsheet;
+        $spreadsheet = new Spreadsheet();
         // ----
         $ltr = 'A1';
         // ----
@@ -400,7 +397,7 @@ class ArrayService
         // $sheet->setCellValue('A1', 'Hello World !');
         $writer = new Xlsx($spreadsheet);
 
-        $pathToFile = Storage::disk('local')->path($filename . '.xlsx');
+        $pathToFile = Storage::disk('local')->path($filename.'.xlsx');
         $writer->save($pathToFile); // $writer->save('php://output'); // per out diretto ?
 
         $view_params = [
@@ -435,6 +432,6 @@ class ArrayService
                 // return [$link, $pathToFile];
         }
         // 231    Unreachable statement - code above always terminates.
-        throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
+        throw new \Exception('['.__LINE__.']['.__FILE__.']');
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions;
 
-use Exception;
 use Illuminate\Support\Str;
 use Modules\Xot\Services\FileService;
 use Spatie\QueueableAction\QueueableAction;
@@ -43,21 +42,21 @@ class GetViewAction
             }
         )->implode('.');
 
-        $view = Str::lower($mod) . '::' . $tmp;
+        $view = Str::lower($mod).'::'.$tmp;
         if ('' != $tpl) {
-            $view .= '.' . $tpl;
+            $view .= '.'.$tpl;
         }
 
         // if (inAdmin()) {
         if (Str::contains($view, '::panels.actions.')) {
-            $to = '::' . (inAdmin() ? 'admin.' : '') . 'home.acts.';
+            $to = '::'.(inAdmin() ? 'admin.' : '').'home.acts.';
             $view = Str::replace('::panels.actions.', $to, $view);
             $view = Str::replace('-action', '', $view);
         }
         // }
         Assert::string($view);
         if (! view()->exists($view)) {
-            throw new Exception('View [' . $view . '] not found');
+            throw new \Exception('View ['.$view.'] not found');
         }
 
         return $view;

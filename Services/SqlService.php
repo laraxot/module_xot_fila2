@@ -25,16 +25,16 @@ class SqlService
             $to_field = $model->getAttributeValue('to_field');
         }
         if (null !== $date_min) {
-            $dal = 'if(' . $from_field . '=0 or ' . $from_field . '<' . $date_min . ' ,' . $date_min . ',' . $from_field . ')';
+            $dal = 'if('.$from_field.'=0 or '.$from_field.'<'.$date_min.' ,'.$date_min.','.$from_field.')';
         } else {
             $dal = $from_field;
         }
         if (null !== $date_max) {
-            $al = 'if(' . $to_field . '=0 or ' . $to_field . '>' . $date_max . ' ,' . $date_max . ',' . $to_field . ')';
+            $al = 'if('.$to_field.'=0 or '.$to_field.'>'.$date_max.' ,'.$date_max.','.$to_field.')';
         } else {
             $al = $from_field;
         }
-        $select = 'COALESCE(sum(greatest(datediff(' . $al . ',' . $dal . ')+1,0)),0)';
+        $select = 'COALESCE(sum(greatest(datediff('.$al.','.$dal.')+1,0)),0)';
 
         return $select;
     }

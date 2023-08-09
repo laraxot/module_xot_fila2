@@ -8,14 +8,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Tests\Feature;
 
-use Exception;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Tests\TestCase;
-
-use function chr;
-use function in_array;
-use function is_string;
 
 class RouteDomTest extends TestCase
 {
@@ -52,25 +47,25 @@ class RouteDomTest extends TestCase
             */
             $url = str_replace('index.php', '', $url);
             if (null === $url) {
-                throw new Exception('url is null');
+                throw new \Exception('url is null');
             }
-            if (! is_string($url)) {
-                throw new Exception('url is not a string');
+            if (! \is_string($url)) {
+                throw new \Exception('url is not a string');
             }
             $response = $this->get($url);
             $html = $response->getContent();
             if (false === $html) {
-                throw new Exception('cannot get content');
+                throw new \Exception('cannot get content');
             }
             // dd(get_class_methods($response));
             // dd($response->streamedContent());The response is not a streamed response
             $status = (int) $response->status();
-            if (! in_array($status, [200, 302], true)) {
-                echo $base_url . $url . ' (FAILED) did not return a 200 or 302 [' . $response->status() . '].' . chr(13);
+            if (! \in_array($status, [200, 302], true)) {
+                echo $base_url.$url.' (FAILED) did not return a 200 or 302 ['.$response->status().'].'.\chr(13);
                 // dd($base_url.$url);
                 static::assertTrue(false);
             } else {
-                echo $base_url . $url . ' (success ?)' . chr(13);
+                echo $base_url.$url.' (success ?)'.\chr(13);
                 static::assertTrue(true);
             }
             echo PHP_EOL;
@@ -101,7 +96,7 @@ class RouteDomTest extends TestCase
     */
     private function dom(string $html): \Symfony\Component\DomCrawler\Crawler
     {
-        $dom = new \Symfony\Component\DomCrawler\Crawler;
+        $dom = new \Symfony\Component\DomCrawler\Crawler();
         $dom->addHTMLContent($html, 'UTF-8');
 
         return $dom;

@@ -72,7 +72,7 @@ class XotServiceProvider extends XotBaseServiceProvider
         // $this->app->bind('profile', \Modules\Xot\Services\ProfileTest::class);
 
         $this->app->bind('profile', function () {
-            return new \Modules\Xot\Services\ProfileTest;
+            return new \Modules\Xot\Services\ProfileTest();
         });
     }
 
