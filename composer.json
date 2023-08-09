@@ -31,7 +31,10 @@
         "thecodingmachine/safe": "*"
     },
     "require-dev": {
+        "barryvdh/laravel-ide-helper": "*",
+        "fakerphp/faker": "*",
         "laravel/pint": "*",
+        "friendsofphp/php-cs-fixer": "*",
         "nunomaduro/collision": "*",
         "nunomaduro/larastan": "*",
         "orchestra/testbench": "*",
