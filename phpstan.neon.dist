@@ -3,9 +3,16 @@ includes:
     - ./vendor/nunomaduro/larastan/extension.neon
 
 parameters:
+
     level: max
+
     paths:
         - .
+
+    ignoreErrors:
+    #    - '#Unsafe usage of new static#'
+        - '#PHPDoc tag @mixin contains unknown class #'
+
     excludePaths:
         - ./build/*
         - ./vendor/*
@@ -22,11 +29,14 @@ parameters:
     scanFiles:
         - ./Helpers/Helper.php
 
-    tmpDir: build/phpstan
+    editorUrl: 'vscode://file/%%file%%:%%line%%'
+
+    tmpDir: ./build/phpstan
+    checkUnusedViews: false
+    checkMissingIterableValueType: false
+    checkGenericClassInNonGenericObjectType: false
+    treatPhpDocTypesAsCertain: false
     reportUnmatchedIgnoredErrors: false
     checkOctaneCompatibility: false
     checkModelProperties: false
-    checkMissingIterableValueType: false
-    checkGenericClassInNonGenericObjectType: false
-    checkImplicitMixed: false
 

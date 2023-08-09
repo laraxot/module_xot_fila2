@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Illuminate\Support\Str;
 use Route;
+use Illuminate\Support\Str;
 
+use Webmozart\Assert\Assert;
 use function Safe\preg_replace;
 
 /**
@@ -65,11 +66,11 @@ class RouteDynService
         }
         $as = (string) mb_strtolower($v['name']).'';
         $as = str_replace('/', '.', $as);
-        $as = (string) preg_replace('/{.*}./', '', $as);
+        Assert::string($as = preg_replace('/{.*}./', '', $as));
 
         $as = str_replace('{', '', $as);
         $as = str_replace('}', '', $as);
-
+        Assert::string($as);
         return $as.'.';
     }
 

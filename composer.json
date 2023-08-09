@@ -18,6 +18,8 @@
         "doctrine/dbal": "*",
         "fidum/laravel-eloquent-morph-to-one": "*",
         "guzzlehttp/guzzle": "*",
+        "illuminate/support": "*",
+        "filament/filament": "*",
         "illuminate/contracts": "*",
         "laravelcollective/html": "*",
         "livewire/livewire": "*",
@@ -28,6 +30,7 @@
         "spatie/laravel-permission": "*",
         "spatie/laravel-queueable-action": "*",
         "spatie/laravel-tags": "*",
+        "savannabits/filament-modules": "dev-main",
         "thecodingmachine/safe": "*"
     },
     "require-dev": {

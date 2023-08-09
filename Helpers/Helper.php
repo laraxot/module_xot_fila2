@@ -1028,7 +1028,7 @@ if (! function_exists('isJson')) {
         return is_string($string) && is_array(json_decode($string, true)) ? true : false;
     }
 }
-
+/*
 if (! function_exists('getExcerpt')) {
     function getExcerpt(string $str, int $length = 225): string
     {
@@ -1047,7 +1047,7 @@ if (! function_exists('getExcerpt')) {
             : $cleaned;
     }
 }
-
+*/
 if (! function_exists('getRouteParameters')) {
     function getRouteParameters(): array
     {
