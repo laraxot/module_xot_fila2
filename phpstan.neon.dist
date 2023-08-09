@@ -28,6 +28,7 @@ parameters:
 
     scanFiles:
         - ./Helpers/Helper.php
+    #   - ./vendor/amenadiel/jpgraph/src/config.inc.php
 
     editorUrl: 'vscode://file/%%file%%:%%line%%'
 
