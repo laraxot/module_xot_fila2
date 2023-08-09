@@ -21,7 +21,7 @@
         "illuminate/support": "*",
         "filament/filament": "*",
         "illuminate/contracts": "*",
-        "laravelcollective/html": "*",
+        //"laravelcollective/html": "*", //Package laravelcollective/html is abandoned,
         "livewire/livewire": "*",
         "nwidart/laravel-modules": "*",
         "spatie/laravel-data": "*",
