@@ -9,7 +9,7 @@
     </tr>
     @endforeach
 </table> --}}
-    {{--  
+    {{--
     @livewire('manage_lang_module', ['module_name' => 'progressioni'])
     --}}
     <livewire:manage-lang-module module_name="progressioni" />

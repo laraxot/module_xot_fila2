@@ -16,7 +16,7 @@ class BladeService
      */
     public static function registerComponents(string $path, string $namespace, string $prefix = ''): void
     {
-        $comps = FileService::getComponents($path, $namespace.'\View\Components', $prefix);
+        $comps = FileService::getComponents($path, $namespace . '\View\Components', $prefix);
         foreach ($comps as $comp) {
             Blade::component($comp->comp_name, $comp->comp_ns);
         }

@@ -2,7 +2,7 @@
 @section('content')
     WIP
     {{--
-    <form method="POST" action="{!!  \Request::fullUrl() !!}">
+    <form method="POST" action="{!! \Request::fullUrl() !!}">
         @csrf
         @method('POST')
 

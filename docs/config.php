@@ -9,8 +9,8 @@ $moduleName = 'Xot';
 return [
     'baseUrl' => '',
     'production' => false,
-    'siteName' => 'Modulo '.$moduleName,
-    'siteDescription' => 'Modulo '.$moduleName,
+    'siteName' => 'Modulo ' . $moduleName,
+    'siteDescription' => 'Modulo ' . $moduleName,
     'lang' => 'it',
 
     'collections' => [
@@ -19,13 +19,13 @@ return [
                 // return $page->lang.'/posts/'.Str::slug($page->getFilename());
                 // return 'posts/' . ($page->featured ? 'featured/' : '') . Str::slug($page->getFilename());
 
-                return 'posts/'.Str::slug($page->getFilename());
+                return 'posts/' . Str::slug($page->getFilename());
             },
         ],
         'docs' => [
             'path' => function ($page) {
                 // return $page->lang.'/docs/'.Str::slug($page->getFilename());
-                return 'docs/'.Str::slug($page->getFilename());
+                return 'docs/' . Str::slug($page->getFilename());
             },
         ],
     ],
@@ -60,7 +60,7 @@ return [
             return $path;
         }
         // return url('/'.$page->lang.'/'.trimPath($path));
-        return url('/'.trimPath($path));
+        return url('/' . trimPath($path));
     },
 
     'children' => function ($page, $docs) {

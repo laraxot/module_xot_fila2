@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -26,16 +27,16 @@ class UpdateAction
 
         try {
             $row = tap($row)->update($data);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             if ('Node must exists.' === $e->getMessage()) {
                 app($row::class)->fixTree();
                 $row = tap($row)->update($data);
             }
         }
 
-        app(__NAMESPACE__.'\\Update\RelationAction')->execute($row, $data);
+        app(__NAMESPACE__ . '\\Update\RelationAction')->execute($row, $data);
 
-        $msg = 'aggiornato! ['.$row->getKey().']!'; // .'['.implode(',',$row->getChanges()).']';
+        $msg = 'aggiornato! [' . $row->getKey() . ']!'; // .'['.implode(',',$row->getChanges()).']';
 
         Session::flash('status', $msg); // .
 

@@ -21,6 +21,8 @@ class XotServiceProvider extends XotBaseServiceProvider
 {
     // use Traits\PresenterTrait;
     use Traits\TranslatorTrait;
+
+    public string $module_name = 'xot';
     /**
      * The module directory.
      */
@@ -30,8 +32,6 @@ class XotServiceProvider extends XotBaseServiceProvider
      * The module namespace.
      */
     protected string $module_ns = __NAMESPACE__;
-
-    public string $module_name = 'xot';
 
     public function bootCallback(): void
     {
@@ -72,8 +72,32 @@ class XotServiceProvider extends XotBaseServiceProvider
         // $this->app->bind('profile', \Modules\Xot\Services\ProfileTest::class);
 
         $this->app->bind('profile', function () {
-            return new \Modules\Xot\Services\ProfileTest();
+            return new \Modules\Xot\Services\ProfileTest;
         });
+    }
+
+    /*
+    public function mergeConfigs(): void {
+        $configs = ['database', 'filesystems', 'auth', 'metatag', 'services', 'xra', 'social'];
+        foreach ($configs as $v) {
+            $tmp = Tenant::config($v);
+            //dddx($tmp);
+        }
+        //DB::purge('mysql');//Call to a member function prepare() on null
+        //DB::purge('liveuser_general');
+        //DB::reconnect();
+    }
+
+    //end mergeConfigs
+    //*/
+    public function loadHelpersFrom(string $path): void
+    {
+        $files = File::files($path);
+        foreach ($files as $file) {
+            if ('php' === $file->getExtension() && false !== $file->getRealPath()) {
+                include_once $file->getRealPath();
+            }
+        }
     }
 
     private function redirectSSL(): void
@@ -136,29 +160,5 @@ class XotServiceProvider extends XotBaseServiceProvider
         // $view->composer('bootstrap-italia::page', BootstrapItaliaComposer::class);
         View::composer('*', XotComposer::class);
         // dddx($res);
-    }
-
-    /*
-    public function mergeConfigs(): void {
-        $configs = ['database', 'filesystems', 'auth', 'metatag', 'services', 'xra', 'social'];
-        foreach ($configs as $v) {
-            $tmp = Tenant::config($v);
-            //dddx($tmp);
-        }
-        //DB::purge('mysql');//Call to a member function prepare() on null
-        //DB::purge('liveuser_general');
-        //DB::reconnect();
-    }
-
-    //end mergeConfigs
-    //*/
-    public function loadHelpersFrom(string $path): void
-    {
-        $files = File::files($path);
-        foreach ($files as $file) {
-            if ('php' === $file->getExtension() && false !== $file->getRealPath()) {
-                include_once $file->getRealPath();
-            }
-        }
     }
 } // end class

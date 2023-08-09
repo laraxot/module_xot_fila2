@@ -17,8 +17,10 @@ class RouteTest extends TestCase
      * A basic test example.
      *
      * @return void
+     *
+     * @test
      */
-    public function testRoutes()
+    public function routes()
     {
         // dddx('/'.App::getlocale().'/home');
 
@@ -36,10 +38,10 @@ class RouteTest extends TestCase
         foreach ($urls as $url) {
             $response = $this->get($url);
             if (200 !== (int) $response->status()) {
-                echo $appURL.$url.' (FAILED) did not return a 200.';
+                echo $appURL . $url . ' (FAILED) did not return a 200.';
                 static::assertTrue(false);
             } else {
-                echo $appURL.$url.' (success ?)';
+                echo $appURL . $url . ' (success ?)';
                 static::assertTrue(true);
             }
             echo PHP_EOL;

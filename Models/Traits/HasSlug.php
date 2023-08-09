@@ -11,6 +11,11 @@ use Illuminate\Support\Str;
  */
 trait HasSlug
 {
+    public static function findBySlug(string $slug): self
+    {
+        return static::where('slug', $slug)->firstOrFail();
+    }
+
     public function slug(): ?string
     {
         return $this->guid;
@@ -24,19 +29,14 @@ trait HasSlug
         $this->attributes['slug'] = $this->generateUniqueSlug($slug);
     }
 
-    public static function findBySlug(string $slug): self
-    {
-        return static::where('slug', $slug)->firstOrFail();
-    }
-
     private function generateUniqueSlug(string $value): string
     {
         $slug = $originalSlug = Str::slug($value) ?: Str::random(5);
         $counter = 0;
 
         while ($this->slugExists($slug, $this->exists ? $this->getKey() : null)) {
-            ++$counter;
-            $slug = $originalSlug.'-'.$counter;
+            $counter++;
+            $slug = $originalSlug . '-' . $counter;
         }
 
         return $slug;

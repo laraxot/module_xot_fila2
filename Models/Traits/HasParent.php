@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Models\Traits;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -18,9 +19,16 @@ use Kalnoy\Nestedset\Collection;
 use Kalnoy\Nestedset\DescendantsRelation;
 use Kalnoy\Nestedset\NestedSet;
 use Kalnoy\Nestedset\QueryBuilder;
+use LogicException;
 
 trait HasParent
 {
+    public static Carbon $deletedAt;
+
+    /**
+     * Keep track of the number of performed operations.
+     */
+    public static int $actionsPerformed = 0;
     /**
      * Pending operation.
      */
@@ -31,121 +39,49 @@ trait HasParent
      */
     protected bool $moved = false;
 
-    public static Carbon $deletedAt;
-
     /**
-     * Keep track of the number of performed operations.
+     * @return self
      */
-    public static int $actionsPerformed = 0;
-
-    /**
-     * Set an action.
-     */
-    protected function setNodeAction(string $action): self
+    public static function scoped(array $attributes)
     {
-        $this->pending = func_get_args();
+        $instance = new static;
 
-        return $this;
+        $instance->setRawAttributes($attributes);
+
+        return $instance->newScopedQuery();
     }
 
     /**
-     * Call pending action.
-     */
-    protected function callPendingAction(): void
-    {
-        $this->moved = false;
-
-        if (! $this->pending && ! $this->exists) {
-            $this->makeRoot();
-        }
-
-        if (! $this->pending) {
-            return;
-        }
-
-        $method = 'action'.ucfirst(array_shift($this->pending));
-        $parameters = $this->pending;
-
-        $this->pending = null;
-
-        /**
-         * @var callable
-         */
-        $callback = [$this, $method];
-        $this->moved = call_user_func_array($callback, $parameters);
-    }
-
-    protected function actionRaw(): bool
-    {
-        return true;
-    }
-
-    /**
-     * Make a root node.
-     */
-    protected function actionRoot(): bool
-    {
-        // Simplest case that do not affect other nodes.
-        if (! $this->exists) {
-            $cut = $this->getLowerBound() + 1;
-
-            $this->setLft($cut);
-            $this->setRgt($cut + 1);
-
-            return true;
-        }
-
-        return $this->insertAt($this->getLowerBound() + 1);
-    }
-
-    /**
-     * Get the lower bound.
-     */
-    protected function getLowerBound(): int
-    {
-        // Call to private method max() of parent class Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>
-        return (int) $this->newNestedSetQuery()->max($this->getRgtName());
-    }
-
-    /**
-     * Append or prepend a node to the parent.
-     */
-    protected function actionAppendOrPrepend(self $parent, bool $prepend = false): bool
-    {
-        $parent->refreshNode();
-
-        $cut = $prepend ? $parent->getLft() + 1 : $parent->getRgt();
-
-        if (! $this->insertAt($cut)) {
-            return false;
-        }
-
-        $parent->refreshNode();
-
-        return true;
-    }
-
-    /**
-     * Apply parent model.
+     * {@inheritdoc}
      *
-     * @param Model|null $value
+     * Use `children` key on `$attributes` to create child nodes.
+     *
+     * @param  self  $parent
      */
-    protected function setParent($value): self
+    public static function create(array $attributes = [], self $parent = null)
     {
-        $this->setParentId($value ? $value->getKey() : null)
-            ->setRelation('parent', $value);
+        $children = Arr::pull($attributes, 'children');
 
-        return $this;
-    }
+        $instance = new static($attributes);
 
-    /**
-     * Insert node before or after another node.
-     */
-    protected function actionBeforeOrAfter(self $node, bool $after = false): bool
-    {
-        $node->refreshNode();
+        if ($parent) {
+            $instance->appendToNode($parent);
+        }
 
-        return $this->insertAt($after ? $node->getRgt() + 1 : $node->getLft());
+        $instance->save();
+
+        // Now create children
+        $relation = new EloquentCollection;
+
+        foreach ((array) $children as $child) {
+            $relation->add($child = static::create($child, $instance));
+
+            $child->setRelation('parent', $instance);
+        }
+
+        $instance->refreshNode();
+
+        return $instance->setRelation('children', $relation);
     }
 
     /**
@@ -349,8 +285,7 @@ trait HasParent
     }
 
     /**
-     * @param bool $after
-     *
+     * @param  bool  $after
      * @return self
      */
     public function beforeOrAfterNode(self $node, $after = false)
@@ -408,8 +343,7 @@ trait HasParent
     /**
      * Move node up given amount of positions.
      *
-     * @param int $amount
-     *
+     * @param  int  $amount
      * @return bool
      */
     public function up($amount = 1)
@@ -429,8 +363,7 @@ trait HasParent
     /**
      * Move node down given amount of positions.
      *
-     * @param int $amount
-     *
+     * @param  int  $amount
      * @return bool
      */
     public function down($amount = 1)
@@ -445,102 +378,6 @@ trait HasParent
         }
 
         return $this->insertAfterNode($sibling);
-    }
-
-    /**
-     * Insert node at specific position.
-     *
-     * @param int $position
-     *
-     * @return bool
-     */
-    protected function insertAt($position)
-    {
-        ++static::$actionsPerformed;
-
-        $result = $this->exists
-            ? $this->moveNode($position)
-            : $this->insertNode($position);
-
-        return $result;
-    }
-
-    /**
-     * Move a node to the new position.
-     *
-     * @since 2.0
-     *
-     * @param int $position
-     *
-     * @return int
-     */
-    protected function moveNode($position)
-    {
-        $updated = $this->newNestedSetQuery()
-                ->moveNode($this->getKey(), $position) > 0;
-
-        if ($updated) {
-            $this->refreshNode();
-        }
-
-        return $updated;
-    }
-
-    /**
-     * Insert new node at specified position.
-     *
-     * @since 2.0
-     *
-     * @param int $position
-     *
-     * @return bool
-     */
-    protected function insertNode($position)
-    {
-        $this->newNestedSetQuery()->makeGap($position, 2);
-
-        $height = $this->getNodeHeight();
-
-        $this->setLft($position);
-        $this->setRgt($position + $height - 1);
-
-        return true;
-    }
-
-    /**
-     * Update the tree when the node is removed physically.
-     */
-    protected function deleteDescendants()
-    {
-        $lft = $this->getLft();
-        $rgt = $this->getRgt();
-
-        $method = $this->usesSoftDelete() && $this->forceDeleting
-            ? 'forceDelete'
-            : 'delete';
-
-        $this->descendants()->{$method}();
-
-        if ($this->hardDeleting()) {
-            $height = $rgt - $lft + 1;
-
-            $this->newNestedSetQuery()->makeGap($rgt + 1, -$height);
-
-            // In case if user wants to re-create the node
-            $this->makeRoot();
-
-            ++static::$actionsPerformed;
-        }
-    }
-
-    /**
-     * Restore the descendants.
-     */
-    protected function restoreDescendants($deletedAt)
-    {
-        $this->descendants()
-            ->where($this->getDeletedAtColumn(), '>=', $deletedAt)
-            ->restore();
     }
 
     /**
@@ -568,8 +405,7 @@ trait HasParent
     }
 
     /**
-     * @param string $table
-     *
+     * @param  string  $table
      * @return QueryBuilder
      */
     public function newScopedQuery($table = null)
@@ -578,7 +414,7 @@ trait HasParent
     }
 
     /**
-     * @param string $table
+     * @param  string  $table
      */
     public function applyNestedSetScope($query, $table = null)
     {
@@ -592,7 +428,7 @@ trait HasParent
 
         foreach ($scoped as $attribute) {
             $query->where(
-                $table.'.'.$attribute,
+                $table . '.' . $attribute,
                 '=',
                 $this->getAttributeValue($attribute)
             );
@@ -601,62 +437,9 @@ trait HasParent
         return $query;
     }
 
-    /**
-     * @return array
-     */
-    protected function getScopeAttributes()
-    {
-        return null;
-    }
-
-    /**
-     * @return self
-     */
-    public static function scoped(array $attributes)
-    {
-        $instance = new static();
-
-        $instance->setRawAttributes($attributes);
-
-        return $instance->newScopedQuery();
-    }
-
     public function newCollection(array $models = [])
     {
         return new Collection($models);
-    }
-
-    /**
-     * {@inheritdoc}
-     *
-     * Use `children` key on `$attributes` to create child nodes.
-     *
-     * @param self $parent
-     */
-    public static function create(array $attributes = [], self $parent = null)
-    {
-        $children = Arr::pull($attributes, 'children');
-
-        $instance = new static($attributes);
-
-        if ($parent) {
-            $instance->appendToNode($parent);
-        }
-
-        $instance->save();
-
-        // Now create children
-        $relation = new EloquentCollection();
-
-        foreach ((array) $children as $child) {
-            $relation->add($child = static::create($child, $instance));
-
-            $child->setRelation('parent', $instance);
-        }
-
-        $instance->refreshNode();
-
-        return $instance->setRelation('children', $relation);
     }
 
     /**
@@ -688,9 +471,9 @@ trait HasParent
      *
      * Behind the scenes node is appended to found parent node.
      *
-     * @param int $value
+     * @param  int  $value
      *
-     * @throws \Exception If parent node doesn't exists
+     * @throws Exception If parent node doesn't exists
      */
     public function setParentIdAttribute($value)
     {
@@ -932,29 +715,6 @@ trait HasParent
     /**
      * @return array
      */
-    protected function getArrayableRelations()
-    {
-        $result = parent::getArrayableRelations();
-
-        // To fix #17 when converting tree to json falling to infinite recursion.
-        unset($result['parent']);
-
-        return $result;
-    }
-
-    /**
-     * Get whether user is intended to delete the model from database entirely.
-     *
-     * @return bool
-     */
-    protected function hardDeleting()
-    {
-        return ! $this->usesSoftDelete() || $this->forceDeleting;
-    }
-
-    /**
-     * @return array
-     */
     public function getBounds()
     {
         return [$this->getLft(), $this->getRgt()];
@@ -991,6 +751,256 @@ trait HasParent
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Model
+     */
+    public function replicate(array $except = null)
+    {
+        $defaults = [
+            $this->getParentIdName(),
+            $this->getLftName(),
+            $this->getRgtName(),
+        ];
+
+        $except = $except ? array_unique(array_merge($except, $defaults)) : $defaults;
+
+        return parent::replicate($except);
+    }
+
+    /**
+     * Set an action.
+     */
+    protected function setNodeAction(string $action): self
+    {
+        $this->pending = func_get_args();
+
+        return $this;
+    }
+
+    /**
+     * Call pending action.
+     */
+    protected function callPendingAction(): void
+    {
+        $this->moved = false;
+
+        if (! $this->pending && ! $this->exists) {
+            $this->makeRoot();
+        }
+
+        if (! $this->pending) {
+            return;
+        }
+
+        $method = 'action' . ucfirst(array_shift($this->pending));
+        $parameters = $this->pending;
+
+        $this->pending = null;
+
+        /**
+         * @var callable
+         */
+        $callback = [$this, $method];
+        $this->moved = call_user_func_array($callback, $parameters);
+    }
+
+    protected function actionRaw(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Make a root node.
+     */
+    protected function actionRoot(): bool
+    {
+        // Simplest case that do not affect other nodes.
+        if (! $this->exists) {
+            $cut = $this->getLowerBound() + 1;
+
+            $this->setLft($cut);
+            $this->setRgt($cut + 1);
+
+            return true;
+        }
+
+        return $this->insertAt($this->getLowerBound() + 1);
+    }
+
+    /**
+     * Get the lower bound.
+     */
+    protected function getLowerBound(): int
+    {
+        // Call to private method max() of parent class Illuminate\Database\Eloquent\Builder<Illuminate\Database\Eloquent\Model>
+        return (int) $this->newNestedSetQuery()->max($this->getRgtName());
+    }
+
+    /**
+     * Append or prepend a node to the parent.
+     */
+    protected function actionAppendOrPrepend(self $parent, bool $prepend = false): bool
+    {
+        $parent->refreshNode();
+
+        $cut = $prepend ? $parent->getLft() + 1 : $parent->getRgt();
+
+        if (! $this->insertAt($cut)) {
+            return false;
+        }
+
+        $parent->refreshNode();
+
+        return true;
+    }
+
+    /**
+     * Apply parent model.
+     *
+     * @param  Model|null  $value
+     */
+    protected function setParent($value): self
+    {
+        $this->setParentId($value ? $value->getKey() : null)
+            ->setRelation('parent', $value);
+
+        return $this;
+    }
+
+    /**
+     * Insert node before or after another node.
+     */
+    protected function actionBeforeOrAfter(self $node, bool $after = false): bool
+    {
+        $node->refreshNode();
+
+        return $this->insertAt($after ? $node->getRgt() + 1 : $node->getLft());
+    }
+
+    /**
+     * Insert node at specific position.
+     *
+     * @param  int  $position
+     * @return bool
+     */
+    protected function insertAt($position)
+    {
+        static::$actionsPerformed++;
+
+        $result = $this->exists
+            ? $this->moveNode($position)
+            : $this->insertNode($position);
+
+        return $result;
+    }
+
+    /**
+     * Move a node to the new position.
+     *
+     * @since 2.0
+     *
+     * @param  int  $position
+     * @return int
+     */
+    protected function moveNode($position)
+    {
+        $updated = $this->newNestedSetQuery()
+            ->moveNode($this->getKey(), $position) > 0;
+
+        if ($updated) {
+            $this->refreshNode();
+        }
+
+        return $updated;
+    }
+
+    /**
+     * Insert new node at specified position.
+     *
+     * @since 2.0
+     *
+     * @param  int  $position
+     * @return bool
+     */
+    protected function insertNode($position)
+    {
+        $this->newNestedSetQuery()->makeGap($position, 2);
+
+        $height = $this->getNodeHeight();
+
+        $this->setLft($position);
+        $this->setRgt($position + $height - 1);
+
+        return true;
+    }
+
+    /**
+     * Update the tree when the node is removed physically.
+     */
+    protected function deleteDescendants()
+    {
+        $lft = $this->getLft();
+        $rgt = $this->getRgt();
+
+        $method = $this->usesSoftDelete() && $this->forceDeleting
+            ? 'forceDelete'
+            : 'delete';
+
+        $this->descendants()->{$method}();
+
+        if ($this->hardDeleting()) {
+            $height = $rgt - $lft + 1;
+
+            $this->newNestedSetQuery()->makeGap($rgt + 1, -$height);
+
+            // In case if user wants to re-create the node
+            $this->makeRoot();
+
+            static::$actionsPerformed++;
+        }
+    }
+
+    /**
+     * Restore the descendants.
+     */
+    protected function restoreDescendants($deletedAt)
+    {
+        $this->descendants()
+            ->where($this->getDeletedAtColumn(), '>=', $deletedAt)
+            ->restore();
+    }
+
+    /**
+     * @return array
+     */
+    protected function getScopeAttributes()
+    {
+        return null;
+    }
+
+    /**
+     * @return array
+     */
+    protected function getArrayableRelations()
+    {
+        $result = parent::getArrayableRelations();
+
+        // To fix #17 when converting tree to json falling to infinite recursion.
+        unset($result['parent']);
+
+        return $result;
+    }
+
+    /**
+     * Get whether user is intended to delete the model from database entirely.
+     *
+     * @return bool
+     */
+    protected function hardDeleting()
+    {
+        return ! $this->usesSoftDelete() || $this->forceDeleting;
+    }
+
+    /**
      * @return $this
      */
     protected function dirtyBounds()
@@ -1007,7 +1017,7 @@ trait HasParent
     protected function assertNotDescendant(self $node)
     {
         if ($node == $this || $node->isDescendantOf($this)) {
-            throw new \LogicException('Node must not be a descendant.');
+            throw new LogicException('Node must not be a descendant.');
         }
 
         return $this;
@@ -1019,7 +1029,7 @@ trait HasParent
     protected function assertNodeExists(self $node)
     {
         if (! $node->getLft() || ! $node->getRgt()) {
-            throw new \LogicException('Node must exists.');
+            throw new LogicException('Node must exists.');
         }
 
         return $this;
@@ -1028,9 +1038,9 @@ trait HasParent
     /**
      * Summary of assertSameScope.
      *
-     * @throws \LogicException
-     *
      * @return void
+     *
+     * @throws LogicException
      */
     protected function assertSameScope(self $node)
     {
@@ -1040,24 +1050,8 @@ trait HasParent
 
         foreach ($scoped as $attr) {
             if ($this->getAttribute($attr) != $node->getAttribute($attr)) {
-                throw new \LogicException('Nodes must be in the same scope');
+                throw new LogicException('Nodes must be in the same scope');
             }
         }
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Model
-     */
-    public function replicate(array $except = null)
-    {
-        $defaults = [
-            $this->getParentIdName(),
-            $this->getLftName(),
-            $this->getRgtName(),
-        ];
-
-        $except = $except ? array_unique(array_merge($except, $defaults)) : $defaults;
-
-        return parent::replicate($except);
     }
 }

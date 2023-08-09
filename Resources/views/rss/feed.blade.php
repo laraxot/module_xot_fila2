@@ -8,7 +8,7 @@
         <description><![CDATA[ {{ config('metatag.description') }} ]]></description>
         <language>{{ $lang }}</language>
         <pubDate>{{ now() }}</pubDate>
-        @foreach($items as $item)
+        @foreach ($items as $item)
             <item>
                 <title><![CDATA[{{ $item->title }}]]></title>
                 <subtitle><![CDATA[{{ $item->subtitle }}]]></subtitle>
@@ -17,7 +17,7 @@
                 <description><![CDATA[{!! $item->txt !!}]]></description>
                 {{-- in category post_type? oppure togliamo il tag? oppure cosa?--}}
                 <category>{{ $item->post_type }}</category>
-                <author><![CDATA[{{ $item->created_by  }}]]></author>
+                <author><![CDATA[{{ $item->created_by }}]]></author>
                 {{-- guid o id?? --}}
                 <guid>{{ $item->id }}</guid>
                 <pubDate>{{ $item->created_at->toRssString() }}</pubDate>

@@ -14,8 +14,8 @@ use Illuminate\Support\Collection;
  */
 class ConfigService
 {
-    protected Collection $data;
     private static ?self $instance = null;
+    protected Collection $data;
 
     public function __construct()
     {
@@ -29,7 +29,7 @@ class ConfigService
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;

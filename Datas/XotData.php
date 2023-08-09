@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Datas;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Spatie\LaravelData\Data;
 use Webmozart\Assert\Assert;
 
@@ -57,14 +56,14 @@ class XotData extends Data
 
     public function getProfileClass(): string
     {
-        $profile_class = 'Modules\\'.$this->main_module.'\Models\Profile';
+        $profile_class = 'Modules\\' . $this->main_module . '\Models\Profile';
 
         return $profile_class;
     }
 
     public function getHomeController(): string
     {
-        $class = 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
+        $class = 'Modules\\' . $this->main_module . '\Http\Controllers\HomeController';
 
         return $class;
     }
@@ -79,7 +78,7 @@ class XotData extends Data
 
     public function getProfileModel(): Model
     {
-        $user_id = strval(Auth::id());
+        $user_id = strval(auth()->id());
 
         return $this->getProfileModelByUserId($user_id);
     }

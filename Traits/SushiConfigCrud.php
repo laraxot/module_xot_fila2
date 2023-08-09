@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
+use function is_array;
 use function Safe\file_put_contents;
 
 trait SushiConfigCrud
@@ -31,12 +32,12 @@ trait SushiConfigCrud
 
                 $config_name = $model->config_name;
                 if (class_exists('\Modules\Tenant\Services\TenantService')) {
-                    $config_name = \Modules\Tenant\Services\TenantService::getName().'/'.$config_name;
+                    $config_name = \Modules\Tenant\Services\TenantService::getName() . '/' . $config_name;
                 }
-                $config_path = config_path($config_name.'.php');
+                $config_path = config_path($config_name . '.php');
 
                 $original = config($model->config_name);
-                if (! \is_array($original)) {
+                if (! is_array($original)) {
                     $original = [];
                 }
                 $new = array_merge($original, [$data]);
@@ -53,7 +54,7 @@ trait SushiConfigCrud
                     })->all();
 
                 file_put_contents($config_path, '<?php
-                    return '.var_export($new, true).';');
+                    return ' . var_export($new, true) . ';');
                 // Artisan::call('cache:clear');
             }
         );
@@ -67,12 +68,12 @@ trait SushiConfigCrud
 
                 $config_name = $model->config_name;
                 if (class_exists('\Modules\Tenant\Services\TenantService')) {
-                    $config_name = \Modules\Tenant\Services\TenantService::getName().'/'.$config_name;
+                    $config_name = \Modules\Tenant\Services\TenantService::getName() . '/' . $config_name;
                 }
-                $config_path = config_path($config_name.'.php');
+                $config_path = config_path($config_name . '.php');
 
                 $original = config($model->config_name);
-                if (! \is_array($original)) {
+                if (! is_array($original)) {
                     $original = [];
                 }
                 $up = collect($original)->groupBy('id')->map(
@@ -83,7 +84,7 @@ trait SushiConfigCrud
                 $up[$id] = $data;
 
                 file_put_contents($config_path, '<?php
-                return '.var_export($up, true).';');
+                return ' . var_export($up, true) . ';');
             }
         );
         // -------------------------------------------------------------------------------------
@@ -97,12 +98,12 @@ trait SushiConfigCrud
 
             $config_name = $model->config_name;
             if (class_exists('\Modules\Tenant\Services\TenantService')) {
-                $config_name = \Modules\Tenant\Services\TenantService::getName().'/'.$config_name;
+                $config_name = \Modules\Tenant\Services\TenantService::getName() . '/' . $config_name;
             }
-            $config_path = config_path($config_name.'.php');
+            $config_path = config_path($config_name . '.php');
 
             $original = config($model->config_name);
-            if (! \is_array($original)) {
+            if (! is_array($original)) {
                 $original = [];
             }
             $up = collect($original)->groupBy('id')->map(
@@ -113,7 +114,7 @@ trait SushiConfigCrud
             unset($up['id']);
 
             file_put_contents($config_path, '<?php
-             return '.var_export($up, true).';');
+             return ' . var_export($up, true) . ';');
         });
 
         // ----------------------

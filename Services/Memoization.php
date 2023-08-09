@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Closure;
+
 class Memoization
 {
     private static ?self $_instance = null;
@@ -28,7 +30,7 @@ class Memoization
     public static function getInstance(): self
     {
         if (! self::$_instance) {
-            self::$_instance = new self();
+            self::$_instance = new self;
         }
 
         return self::$_instance;
@@ -47,7 +49,7 @@ class Memoization
      *
      * @return mixed|void
      */
-    public function memoize(string $key, \Closure $callback)
+    public function memoize(string $key, Closure $callback)
     {
         if (! isset($this->memoized[$key])) {
             return $this->memoized[$key] = $callback();

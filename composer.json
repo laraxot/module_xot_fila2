@@ -21,7 +21,6 @@
         "illuminate/support": "*",
         "filament/filament": "*",
         "illuminate/contracts": "*",
-        //"laravelcollective/html": "*", //Package laravelcollective/html is abandoned,
         "livewire/livewire": "*",
         "nwidart/laravel-modules": "*",
         "spatie/laravel-data": "*",
@@ -36,8 +35,8 @@
     "require-dev": {
         "barryvdh/laravel-ide-helper": "*",
         "fakerphp/faker": "*",
-        "laravel/pint": "*",
         "friendsofphp/php-cs-fixer": "*",
+        "laravel/pint": "*",
         "nunomaduro/collision": "*",
         "nunomaduro/larastan": "*",
         "orchestra/testbench": "*",
@@ -46,9 +45,10 @@
         "pestphp/pest-plugin-laravel": "*",
         "phpstan/phpstan-deprecation-rules": "*",
         "phpstan/phpstan-phpunit": "*",
-        "psalm/plugin-laravel": "*",
+        "psalm/plugin-laravel": "^2.8",
         "spatie/laravel-ray": "*",
-        "thecodingmachine/phpstan-safe-rule": "*"
+        "thecodingmachine/phpstan-safe-rule": "*",
+        "tightenco/duster": "^2.2"
     },
     "autoload": {
         "psr-4": {

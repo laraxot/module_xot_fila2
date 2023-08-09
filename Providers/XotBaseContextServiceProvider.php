@@ -26,7 +26,7 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
     public function registerConfigs(): void
     {
         $this->mergeConfigFrom(
-            app('modules')->findOrFail(static::$module)->getExtraPath('Config/'.static::$name.'.php'),
+            app('modules')->findOrFail(static::$module)->getExtraPath('Config/' . static::$name . '.php'),
             static::$name
         );
     }

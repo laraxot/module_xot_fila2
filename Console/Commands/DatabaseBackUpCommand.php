@@ -8,13 +8,14 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Console\Commands;
 
+use const DIRECTORY_SEPARATOR;
+
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
 
 use function Safe\exec;
-
-use Webmozart\Assert\Assert;
 
 class DatabaseBackUpCommand extends Command
 {
@@ -49,11 +50,11 @@ class DatabaseBackUpCommand extends Command
      */
     public function handle()
     {
-        $filename = 'backup-'.Carbon::now()->format('Y-m-d').'.gz';
-        $backup_path = storage_path('app/backup/'.$filename);
-        Assert::string($backup_path = Str::replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $backup_path), 'wip');
+        $filename = 'backup-' . Carbon::now()->format('Y-m-d') . '.gz';
+        $backup_path = storage_path('app/backup/' . $filename);
+        Assert::string($backup_path = Str::replace(['/', '\\'], [DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR], $backup_path), 'wip');
 
-        $command = 'mysqldump --user='.env('DB_USERNAME').' --password='.env('DB_PASSWORD').' --host='.env('DB_HOST').' '.env('DB_DATABASE').'  | gzip > '.$backup_path;
+        $command = 'mysqldump --user=' . env('DB_USERNAME') . ' --password=' . env('DB_PASSWORD') . ' --host=' . env('DB_HOST') . ' ' . env('DB_DATABASE') . '  | gzip > ' . $backup_path;
 
         $returnVar = null;
         $output = null;

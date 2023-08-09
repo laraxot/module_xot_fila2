@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Database\Migrations;
 
+use const DIRECTORY_SEPARATOR;
+
+use Closure;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Modules\Xot\Services\StubService;
 use Nwidart\Modules\Facades\Module;
+use ReflectionClass;
 
 // ----- models -----
 
@@ -48,16 +53,16 @@ abstract class XotBaseMigration extends Migration
         $name = class_basename($this);
         $name = Str::before(Str::after($name, 'Create'), 'Table');
         $name = Str::singular($name);
-        $reflection_class = new \ReflectionClass($this);
+        $reflection_class = new ReflectionClass($this);
         $filename = (string) $reflection_class->getFilename();
         $mod_path = Module::getPath();
 
         $mod_name = Str::after($filename, $mod_path);
-        $mod_name = explode(\DIRECTORY_SEPARATOR, $mod_name)[1];
+        $mod_name = explode(DIRECTORY_SEPARATOR, $mod_name)[1];
 
-        $model_ns = '\Modules\\'.$mod_name.'\Models\\'.$name;
-        $model_dir = $mod_path.'/'.$mod_name.'/Models/'.$name.'.php';
-        $model_dir = Str::replace('/', \DIRECTORY_SEPARATOR, $model_dir);
+        $model_ns = '\Modules\\' . $mod_name . '\Models\\' . $name;
+        $model_dir = $mod_path . '/' . $mod_name . '/Models/' . $name . '.php';
+        $model_dir = Str::replace('/', DIRECTORY_SEPARATOR, $model_dir);
 
         return $model_ns;
     }
@@ -87,7 +92,7 @@ abstract class XotBaseMigration extends Migration
         // \DB::purge('mysql');
         // \DB::reconnect('mysql');
         if (null === $this->model) {
-            throw new \Exception('model is null');
+            throw new Exception('model is null');
         }
 
         $conn_name = $this->model->getConnectionName();
@@ -111,9 +116,9 @@ abstract class XotBaseMigration extends Migration
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
-     *
      * @return \Doctrine\DBAL\Schema\Table
+     *
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getTableDetails()
     {
@@ -124,9 +129,9 @@ abstract class XotBaseMigration extends Migration
     }
 
     /**
-     * @throws \Doctrine\DBAL\Exception
-     *
      * @return \Doctrine\DBAL\Schema\Index[]
+     *
+     * @throws \Doctrine\DBAL\Exception
      */
     public function getTableIndexes()
     {
@@ -193,7 +198,7 @@ abstract class XotBaseMigration extends Migration
         $doctrineTable = $this->getTableDetails();
 
         // $indexes=$this->getTableIndexes();
-        $has_index = $doctrineTable->hasIndex($tbl.'_'.$index.'_index');
+        $has_index = $doctrineTable->hasIndex($tbl . '_' . $index . '_index');
         // dddx(['indexes'=>$indexes,'has_index'=>$has_index]);
         return $has_index;
     }
@@ -220,7 +225,7 @@ abstract class XotBaseMigration extends Migration
     {
         $table_details = $this->getTableDetails();
         $table_details->dropPrimaryKey();
-        $sql = 'ALTER TABLE '.$this->getTable().' DROP PRIMARY KEY;';
+        $sql = 'ALTER TABLE ' . $this->getTable() . ' DROP PRIMARY KEY;';
         $this->query($sql);
     }
 
@@ -268,7 +273,7 @@ abstract class XotBaseMigration extends Migration
      *
      * @return void
      */
-    public function tableCreate(\Closure $next)
+    public function tableCreate(Closure $next)
     {
         if (! $this->tableExists()) {
             $this->getConn()->create(
@@ -283,7 +288,7 @@ abstract class XotBaseMigration extends Migration
      *
      * @return void
      */
-    public function tableUpdate(\Closure $next)
+    public function tableUpdate(Closure $next)
     {
         $this->getConn()->table(
             $this->getTable(),

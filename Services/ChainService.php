@@ -7,6 +7,9 @@ namespace Modules\Xot\Services;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
+use function array_key_exists;
+use function is_array;
+
 /**
  * https://github.com/Tinyportal/TinyPortal/blob/master/Sources/TPSubs.php.
  */
@@ -67,8 +70,8 @@ class ChainService
     }
 
     /**
-     * @param int $rootcatid
-     * @param int $maxlevel
+     * @param  int  $rootcatid
+     * @param  int  $maxlevel
      */
     public function buildChain($rootcatid, $maxlevel): void
     {
@@ -87,17 +90,17 @@ class ChainService
     }
 
     /**
-     * @param int $parent_id
-     * @param int $level
-     * @param int $maxlevel
+     * @param  int  $parent_id
+     * @param  int  $level
+     * @param  int  $maxlevel
      */
     public function makeBranch($parent_id, $level, $maxlevel): void
     {
-        if (! \is_array($this->table)) {
+        if (! is_array($this->table)) {
             $this->table = [];
         }
         // dddx([$this->table, $parent_id]);
-        if (! \array_key_exists($parent_id, $this->table)) {
+        if (! array_key_exists($parent_id, $this->table)) {
             return;
         }
         $rows = $this->table[$parent_id];
@@ -115,9 +118,8 @@ class ChainService
     }
 
     /**
-     * @param array $a
-     * @param array $b
-     *
+     * @param  array  $a
+     * @param  array  $b
      * @return int
      */
     public function chainCMP($a, $b)

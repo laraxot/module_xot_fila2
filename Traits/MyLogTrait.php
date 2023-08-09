@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
-use Illuminate\Support\Facades\Auth;
+use function is_object;
 
 // /laravel/app/Updater.php
 // Str::camel() 'foo_bar' fooBar
@@ -28,14 +28,14 @@ trait MyLogTrait
         */
         static::creating(
             /**
-             * @param Model $model
+             * @param  Model  $model
              */
             function ($model) {
                 // dddx(static::$logModel);
-                $user = Auth::user();
+                $user = auth()->user();
                 if (null !== $user) {
                     $model->created_by = $user->handle;
-                    $model->updated_by = $user->handle.'';
+                    $model->updated_by = $user->handle . '';
                 }
                 // $model->uuid = (string)Uuid::generate();
             }
@@ -43,7 +43,7 @@ trait MyLogTrait
 
         static::updating(
             /**
-             * @param Model $model
+             * @param  Model  $model
              */
             function ($model) {
                 // $tmp = ;
@@ -51,7 +51,7 @@ trait MyLogTrait
                 $parz = [];
                 $parz['tbl'] = $model->getTable(); // work
                 $parz['id_tbl'] = $model->getKey(); // work
-                if (\is_object($model)) {
+                if (is_object($model)) {
                     $data = collect((array) $model)->filter(
                         function ($value, $key) {
                             $key = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $key);
@@ -65,10 +65,10 @@ trait MyLogTrait
                 $log = static::$logModel;
                 $res = $log::create($parz);
 
-                if (Auth::check()) {
-                    $user = Auth::user();
+                if (auth()->check()) {
+                    $user = auth()->user();
                     if (null !== $user) {
-                        $model->updated_by = $user->handle.'';
+                        $model->updated_by = $user->handle . '';
                     }
                 }
             }

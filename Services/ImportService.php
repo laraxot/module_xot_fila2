@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Cookie\CookieJarInterface;
 // use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Cookie\CookieJarInterface;
 use GuzzleHttp\Cookie\FileCookieJar;
-use GuzzleHttp\Cookie\SetCookie;
 // https://www.sitepoint.com/guzzle-php-http-client/
 // /*
+use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
@@ -20,7 +21,13 @@ use Nette\Utils\Json;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+use Request;
+use Route;
+use stdClass;
+use Storage;
+use Symfony\Component\DomCrawler\Crawler;
 
+use function is_string;
 use function Safe\fclose;
 use function Safe\file_get_contents;
 use function Safe\fopen;
@@ -28,8 +35,7 @@ use function Safe\ini_set;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\parse_url;
-
-use Symfony\Component\DomCrawler\Crawler;
+use function strlen;
 
 // */
 
@@ -38,13 +44,12 @@ use Symfony\Component\DomCrawler\Crawler;
  */
 class ImportService
 {
+    private static ?self $instance = null;
     protected ClientInterface $client;
     protected ?CookieJarInterface $cookieJar = null;
     protected ResponseInterface $res;
 
     protected array $client_options = [];
-
-    private static ?self $instance = null;
 
     public function __construct()
     {
@@ -54,7 +59,7 @@ class ImportService
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -83,7 +88,7 @@ class ImportService
     {
         ini_set('max_execution_time', '3000');
 
-        $route_current = \Route::current();
+        $route_current = Route::current();
         $params = [];
         if (null !== $route_current) {
             $params = $route_current->parameters();
@@ -98,7 +103,7 @@ class ImportService
         $headers = [];
         $fields = ['User-Agent', 'Accept', 'Accept-Language', 'Accept-Encoding', 'Connection', 'Cookie', 'Upgrade-Insecure-Requests', 'Cache-Control'];
         foreach ($fields as $field) {
-            $headers[$field] = \Request::header($field);
+            $headers[$field] = Request::header($field);
         }
         $this->enableRedirect();
         $this->client_options['headers'] = $headers;
@@ -161,7 +166,7 @@ class ImportService
     public function enableRedirect(): void
     {
         $onRedirect = function (RequestInterface $request, ResponseInterface $response, UriInterface $uri) {
-            echo '<hr/>Redirecting! '.$request->getUri().' to '.$uri."\n";
+            echo '<hr/>Redirecting! ' . $request->getUri() . ' to ' . $uri . "\n";
         };
         $redirect_params = [
             'max' => 10,        // allow at most 10 redirects.
@@ -230,7 +235,7 @@ class ImportService
              * @var array
              */
             $url_info = parse_url($url);
-            $this->client_options['base_uri'] = collect($url_info)->get('scheme').'://'.collect($url_info)->get('host');
+            $this->client_options['base_uri'] = collect($url_info)->get('scheme') . '://' . collect($url_info)->get('host');
 
             // $url = isset($url_info['path']) ? $url_info['path'] : '';
             $url = collect($url_info)->get('path');
@@ -239,20 +244,20 @@ class ImportService
             // }
             $query = collect($url_info)->get('query');
             if ('' !== $query) {
-                $url .= '?'.$query;
+                $url .= '?' . $query;
             }
         }
         $url = (string) $url;
 
         $base_uri = $this->client_options['base_uri'];
         if (Str::startsWith($url, $base_uri)) {
-            $url = substr($url, \strlen($base_uri));
+            $url = substr($url, strlen($base_uri));
         }
         try {
             $res = $this->client->request($method, $url, array_merge($this->client_options, $attrs));
             $this->res = $res;
 
-            $this->client_options['headers']['Referer'] = $this->client_options['base_uri'].$url;
+            $this->client_options['headers']['Referer'] = $this->client_options['base_uri'] . $url;
             $html = (string) $res->getBody();
         } catch (GuzzleException $e) {
             $html = null;
@@ -308,10 +313,9 @@ class ImportService
     */
 
     /**
-     * @param string $method
-     * @param string $url
-     * @param array  $attrs
-     *
+     * @param  string  $method
+     * @param  string  $url
+     * @param  array  $attrs
      * @return string
      */
     public function getCacheKey($method, $url, $attrs = [])
@@ -334,8 +338,8 @@ class ImportService
             }
         );
         $this->client_options['headers']['referer'] = $url;
-        if (! \is_string($value)) {
-            throw new \Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
+        if (! is_string($value)) {
+            throw new Exception('[' . __LINE__ . '][' . class_basename(__CLASS__) . ']');
         }
 
         return $value;
@@ -354,22 +358,22 @@ class ImportService
             $parse_url = parse_url($url);
             $url_info = collect($parse_url);
             if (null !== $url_info->get('scheme') && null !== $url_info->get('host')) {
-                $this->client_options['base_uri'] = $url_info->get('scheme').'://'.$url_info->get('host');
+                $this->client_options['base_uri'] = $url_info->get('scheme') . '://' . $url_info->get('host');
             } else {
                 $this->client_options['base_uri'] = '';
             }
             $url = $url_info->get('path');
             if (null !== $url_info->get('query')) {
-                $url .= '?'.$url_info->get('query');
+                $url .= '?' . $url_info->get('query');
             }
         }
 
-        $file_path = (Str::slug((string) $this->client_options['base_uri'], '_').'/'.Str::slug((string) $url, '_').'.json');
+        $file_path = (Str::slug((string) $this->client_options['base_uri'], '_') . '/' . Str::slug((string) $url, '_') . '.json');
         // $params=['method'=>$method,'url'=>$url,'attrs'=>$attrs];
         // $key=json_encode(array_values($params));
         // $key=str_slug
-        if (\Storage::disk('cache')->exists($file_path)) {
-            $content = \Storage::disk('cache')->get($file_path);
+        if (Storage::disk('cache')->exists($file_path)) {
+            $content = Storage::disk('cache')->get($file_path);
             $this->client_options['headers']['referer'] = $url;
 
             return (string) $content;
@@ -383,14 +387,14 @@ class ImportService
         }
         */
 
-        $res = \Storage::disk('cache')->put($file_path, (string) $body);
+        $res = Storage::disk('cache')->put($file_path, (string) $body);
         $this->client_options['headers']['referer'] = $url;
         // echo '<br/>da sito ['.$url.']';
         return (string) $body;
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function getAddressFields(array $params): array
     {
@@ -400,9 +404,9 @@ class ImportService
 
             return [];
         }
-        $linked = new \stdClass();
-        $location_url = config('services.bing.url_location_api').'?query='.urlencode($address).'&maxResults=5&key='.config('services.bing.maps_key');
-        $location_url = config('services.google.url_location_api').'?address='.urlencode($address).'&key='.config('services.google.maps_key');
+        $linked = new stdClass;
+        $location_url = config('services.bing.url_location_api') . '?query=' . urlencode($address) . '&maxResults=5&key=' . config('services.bing.maps_key');
+        $location_url = config('services.google.url_location_api') . '?address=' . urlencode($address) . '&key=' . config('services.google.maps_key');
         $loc_json = $this->cacheRequest('GET', $location_url);
 
         $loc_obj = (object) json_decode($loc_json);
@@ -425,7 +429,7 @@ class ImportService
                 'address' => $address,
                 'obj' => $loc_obj,
             ];
-            throw new \Exception('address not valide');
+            throw new Exception('address not valide');
             // dddx($msg);
         }
 
@@ -483,7 +487,7 @@ class ImportService
         }
         $resource = fopen($filename, 'w');
         if (false === $resource) {
-            throw new \Exception('can open '.$filename);
+            throw new Exception('can open ' . $filename);
         }
         $stream = \GuzzleHttp\Psr7\Utils::streamFor($resource);
         $this->gRequest(
@@ -493,7 +497,7 @@ class ImportService
                 'sink' => $stream,
                 'progress' => function ($download_size, $downloaded, $upload_size, $uploaded) {
                     // $this->downloadProgress($download_size, $downloaded, $upload_size, $uploaded);
-                    echo '<br>['.$download_size.']['.$downloaded.']['.$upload_size.']['.$uploaded.']';
+                    echo '<br>[' . $download_size . '][' . $downloaded . '][' . $upload_size . '][' . $uploaded . ']';
                 },
             ]
         );
@@ -534,9 +538,9 @@ class ImportService
         $q = 'necessary';
         extract($params);
         $pixabay_url = 'https://pixabay.com/api/?key=7945761-cdc8fef41b0600630fdabe778';
-        $pixabay_url .= '&lang='.$lang;
-        $pixabay_url .= '&image_type='.$image_type;
-        $pixabay_url .= '&q='.$q;
+        $pixabay_url .= '&lang=' . $lang;
+        $pixabay_url .= '&image_type=' . $image_type;
+        $pixabay_url .= '&q=' . $q;
         $pixabay_url = str_replace(' ', '%20', $pixabay_url);
         $json = $this->cacheRequest('GET', $pixabay_url);
         /**
@@ -567,7 +571,7 @@ class ImportService
         extract($params);
         // --- devono mandare via mail api key ..
         // dd($this->client);
-        $url = 'https://api.pexels.com/v1/search?query='.$q.'&per_page=15&page=1';
+        $url = 'https://api.pexels.com/v1/search?query=' . $q . '&per_page=15&page=1';
     }
 
     // -------------------------------------------------------------------------
@@ -607,10 +611,10 @@ class ImportService
         $to = 'it';
         extract($params);
         $q = urlencode($q);
-        $urldata = file_get_contents("https://translate.googleapis.com/translate_a/single?client=gtx&sl=$from&tl=$to&dt=t&q=$q");
+        $urldata = file_get_contents("https://translate.googleapis.com/translate_a/single?client=gtx&sl={$from}&tl={$to}&dt=t&q={$q}");
         $tr = (string) $urldata;
         $tr = mb_substr($tr, 3, -6);
-        $tr = $tr.'["';
+        $tr = $tr . '["';
         $tr = explode('],[', $tr);
         $trans = [];
         foreach ($tr as $tran) {
@@ -632,7 +636,7 @@ class ImportService
         $to = 'it';
         extract($params);
         $q = urlencode($q);
-        $url = 'http://'.$host.'/get?q='.$q.'&langpair='.$from.'|'.$to.'';
+        $url = 'http://' . $host . '/get?q=' . $q . '&langpair=' . $from . '|' . $to . '';
         $urldata = file_get_contents($url);
         // if (false === $urldata) {
         //    throw new \Exception('can not get '.$urldata);

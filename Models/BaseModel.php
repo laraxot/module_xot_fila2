@@ -31,6 +31,16 @@ abstract class BaseModel extends Model
      */
     public static $snakeAttributes = true;
 
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
+
     protected $perPage = 30;
 
     /**
@@ -57,20 +67,13 @@ abstract class BaseModel extends Model
      * @var string
      */
     protected $primaryKey = 'id';
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
+
     /**
      * @var array<int, string>
      */
     protected $hidden = [
         // 'password'
     ];
-    /**
-     * @var bool
-     */
-    public $timestamps = true;
 
     /* -- spatie
     public function images():MorphMany {

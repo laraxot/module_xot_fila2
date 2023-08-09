@@ -22,6 +22,16 @@ abstract class BaseMorphPivot extends MorphPivot
      */
     public static $snakeAttributes = true;
 
+    /**
+     * @var bool
+     */
+    public $incrementing = true;
+
+    /**
+     * @var bool
+     */
+    public $timestamps = true;
+
     protected $perPage = 30;
 
     protected $connection = 'mysql'; // this will use the specified database connection
@@ -36,18 +46,7 @@ abstract class BaseMorphPivot extends MorphPivot
      */
     protected $primaryKey = 'id';
 
-    /**
-     * @var bool
-     */
-    public $incrementing = true;
-
-    /**
-     * @var bool
-     */
-    public $timestamps = true;
-
     // protected $attributes = ['related_type' => 'cuisine_cat'];
-
     /**
      * @var string[]
      */

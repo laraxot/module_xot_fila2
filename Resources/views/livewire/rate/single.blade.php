@@ -13,8 +13,8 @@
     --}}
     <nav class="rating" wire:ignore.self>
       <ul>
-        @for($i=1;$i<=5;$i++)
-        <li wire:click="update({{ $i }})" @if($val==$i)class="current"@endif><svg><use xlink:href="#star"></use></svg></li>
+        @for ($i=1;$i<=5;$i++)
+        <li wire:click="update({{ $i }})" @if ($val==$i)class="current"@endif><svg><use xlink:href="#star"></use></svg></li>
         @endfor
       </ul>
       <div>

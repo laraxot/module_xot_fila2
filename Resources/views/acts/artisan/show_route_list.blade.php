@@ -15,24 +15,24 @@
         </tr>
     </thead>
     <tbody>
-        @if(request()->has('only') == true)
+        @if (request()->has('only') == true)
         @foreach ($routeCollection->getIterator() as $data)
         @if (strpos($data->uri, 'api') !== false)
         <tr>
-            <td>{{$data->methods()[0]}}</td>
-            <td>{{$data->uri()}}</td>
-            <td>{{$data->getName()}}</td>
-            <td>{{$data->getActionName()}}</td>
+            <td>{{ $data->methods()[0] }}</td>
+            <td>{{ $data->uri() }}</td>
+            <td>{{ $data->getName() }}</td>
+            <td>{{ $data->getActionName() }}</td>
         </tr>
         @endif
         @endforeach
         @else
         @foreach ($routeCollection as $data)
         <tr>
-            <td>{{$data->methods()[0]}}</td>
-            <td>{{$data->uri()}}</td>
-            <td>{{$data->getName()}}</td>
-            <td>{{$data->getActionName()}}</td>
+            <td>{{ $data->methods()[0] }}</td>
+            <td>{{ $data->uri() }}</td>
+            <td>{{ $data->getName() }}</td>
+            <td>{{ $data->getActionName() }}</td>
         </tr>
         @endforeach
         @endif

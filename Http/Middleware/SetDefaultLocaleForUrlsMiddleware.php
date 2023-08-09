@@ -8,6 +8,7 @@ namespace Modules\Xot\Http\Middleware;
  * https://laravel.com/docs/8.x/urls#default-values
  */
 
+use Closure;
 use Illuminate\Support\Facades\URL;
 
 /**
@@ -20,7 +21,7 @@ class SetDefaultLocaleForUrlsMiddleware
      *
      * @return \Illuminate\Http\Response
      */
-    public function handle(\Illuminate\Http\Request $request, \Closure $next)
+    public function handle(\Illuminate\Http\Request $request, Closure $next)
     {
         URL::defaults(
             [

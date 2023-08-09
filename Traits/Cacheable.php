@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Modules\Xot\Traits;
 
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Eloquent\Model;
+
+use function call_user_func;
+use function get_class;
 
 /**
  * Trait Cacheable.
@@ -73,12 +77,12 @@ trait Cacheable
         // Sort through arguments
         foreach ($args as &$a) {
             if ($a instanceof Model) {
-                $a = \get_class($a).'|'.$a->getKey();
+                $a = get_class($a) . '|' . $a->getKey();
             }
         }
 
         // Create hash from arguments and query
-        $args = serialize($args).serialize($this->getScopeQuery());
+        $args = serialize($args) . serialize($this->getScopeQuery());
 
         return sprintf(
             '%s-%s@%s-%s',
@@ -92,13 +96,13 @@ trait Cacheable
     /**
      * Get an item from the cache, or store the default value.
      *
-     * @param mixed|null $time
+     * @param  mixed|null  $time
      */
-    public function cacheCallback(string $method, array $args, \Closure $callback, $time = null)
+    public function cacheCallback(string $method, array $args, Closure $callback, $time = null)
     {
         // Cache disabled, just execute query & return result
         if (true === $this->skippedCache()) {
-            return \call_user_func($callback);
+            return call_user_func($callback);
         }
 
         // Use the called class name as the tag
@@ -132,8 +136,7 @@ trait Cacheable
     /**
      * Return the time until expires in minutes.
      *
-     * @param int $time
-     *
+     * @param  int  $time
      * @return int
      */
     protected function getCacheExpiresTime($time = null)

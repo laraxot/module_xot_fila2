@@ -8,9 +8,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
+
+use function strlen;
 
 // ---- services ----
 
@@ -19,6 +22,7 @@ use Intervention\Image\Facades\Image;
  */
 class ImageService
 {
+    private static ?self $_instance = null;
     protected \Intervention\Image\Image $img;
     protected int $width;
     protected int $height;
@@ -26,15 +30,13 @@ class ImageService
     protected string $dirname;
     protected ?string $filename = null;
 
-    private static ?self $_instance = null;
-
     /**
      * Undocumented function.
      */
     public static function getInstance(): self
     {
         if (null === self::$_instance) {
-            self::$_instance = new self();
+            self::$_instance = new self;
         }
 
         return self::$_instance;
@@ -54,7 +56,7 @@ class ImageService
     public function setVars(array $params): self
     {
         foreach ($params as $k => $v) {
-            $func = 'set'.Str::studly((string) $k);
+            $func = 'set' . Str::studly((string) $k);
             if (null === $v) {
                 $v = '';
             }
@@ -74,14 +76,14 @@ class ImageService
             $val = $nophoto_path;
         }
         if (Str::startsWith($val, '//')) {
-            $val = 'http:'.$val;
+            $val = 'http:' . $val;
         }
         if (Str::startsWith($val, '/photos/')) {
             $val = public_path($val);
         }
         try {
             $this->img = Image::make($val);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->img = Image::make($nophoto_path);
         }
 
@@ -97,11 +99,11 @@ class ImageService
             $val = public_path('img/nophoto.jpg');
         }
         if (Str::startsWith($val, url(''))) { // se e' una immagine locale
-            $val = public_path(substr($val, \strlen(url(''))));
+            $val = public_path(substr($val, strlen(url(''))));
         }
         $str = '/laravel-filemanager/';
         if (Str::startsWith($val, $str)) {
-            $val = public_path(substr($val, \strlen($str)));
+            $val = public_path(substr($val, strlen($str)));
         }
         $this->src = $val;
 
@@ -127,9 +129,9 @@ class ImageService
             $info['extension'] = 'jpg';
         }
 
-        $basename = Str::slug($info['filename']).'.'.$info['extension'];
+        $basename = Str::slug($info['filename']) . '.' . $info['extension'];
 
-        $this->filename = $this->dirname.'/'.$this->width.'x'.$this->height.'/'.$basename;
+        $this->filename = $this->dirname . '/' . $this->width . 'x' . $this->height . '/' . $basename;
 
         return $this->filename;
     }
@@ -143,7 +145,7 @@ class ImageService
         try {
             // Storage::disk('photos')->put($this->filename, $this->out());
             $this->img->save($filename);
-        } catch (\Exception $e) {// ftp_mkdir(): Can't create directory: File exists
+        } catch (Exception $e) {// ftp_mkdir(): Can't create directory: File exists
             // $r = $this->img->save(self::$filename, 75);
         }
 
@@ -174,9 +176,9 @@ class ImageService
     public function src(): string
     {
         if (null === $this->filename) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+            throw new Exception('[.__LINE__.][' . class_basename(__CLASS__) . ']');
         }
-        $src = '/'.str_replace(public_path('/'), '', $this->filename);
+        $src = '/' . str_replace(public_path('/'), '', $this->filename);
         $src = str_replace('//', '/', $src);
 
         return $src;

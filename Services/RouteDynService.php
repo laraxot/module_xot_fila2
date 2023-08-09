@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
 use Illuminate\Support\Str;
 use Route;
-
-use function Safe\preg_replace;
-
 use Webmozart\Assert\Assert;
+
+use function in_array;
+use function is_array;
+use function is_string;
+use function Safe\preg_replace;
 
 /**
  * Class RouteDynService.
@@ -35,7 +38,7 @@ class RouteDynService
 
     public static function getPrefix(array $v, ?string $namespace): string
     {
-        if (\in_array('prefix', array_keys($v), true)) {
+        if (in_array('prefix', array_keys($v), true)) {
             return $v['prefix'];
         }
         $prefix = mb_strtolower($v['name']);
@@ -48,7 +51,7 @@ class RouteDynService
                 return $prefix.'/{'.\implode('}/{', $param_name).'}';
             }
             */
-            return $prefix.'/{'.$param_name.'}';
+            return $prefix . '/{' . $param_name . '}';
         }
         // */
         /*
@@ -62,10 +65,10 @@ class RouteDynService
 
     public static function getAs(array $v, ?string $namespace): string
     {
-        if (\in_array('as', array_keys($v), true)) {
+        if (in_array('as', array_keys($v), true)) {
             return $v['as'];
         }
-        $as = (string) mb_strtolower($v['name']).'';
+        $as = (string) mb_strtolower($v['name']) . '';
         $as = str_replace('/', '.', $as);
         Assert::string($as = preg_replace('/{.*}./', '', $as));
 
@@ -73,12 +76,12 @@ class RouteDynService
         $as = str_replace('}', '', $as);
         Assert::string($as);
 
-        return $as.'.';
+        return $as . '.';
     }
 
     public static function getNamespace(array $v, ?string $namespace): ?string
     {
-        if (\in_array('namespace', array_keys($v), true)) {
+        if (in_array('namespace', array_keys($v), true)) {
             return $v['namespace'];
         }
         // if($namespace!=null){
@@ -89,8 +92,8 @@ class RouteDynService
         if ('' === $namespace) {
             return null;
         }
-        if (\is_array($namespace)) {
-            throw new \Exception('namespace is array');
+        if (is_array($namespace)) {
+            throw new Exception('namespace is array');
         }
 
         return Str::studly($namespace);
@@ -98,7 +101,7 @@ class RouteDynService
 
     public static function getAct(array $v, ?string $namespace): string
     {
-        if (\in_array('act', array_keys($v), true)) {
+        if (in_array('act', array_keys($v), true)) {
             return $v['act'];
         }
         $v['act'] = $v['name'];
@@ -107,8 +110,8 @@ class RouteDynService
             $v['act'] = '';
         }
         $v['act'] = str_replace('/', '_', $v['act']);
-        if (! \is_string($v['act'])) {
-            throw new \Exception('act is not a string');
+        if (! is_string($v['act'])) {
+            throw new Exception('act is not a string');
         }
         $v['act'] = Str::camel($v['act']);
         $v['act'] = str_replace('{', '', $v['act']);
@@ -120,10 +123,10 @@ class RouteDynService
 
     public static function getParamName(array $v, ?string $namespace): string
     {
-        if (\in_array('param_name', array_keys($v), true)) {
+        if (in_array('param_name', array_keys($v), true)) {
             return $v['param_name'];
         }
-        $param_name = 'id_'.$v['name'];
+        $param_name = 'id_' . $v['name'];
         $param_name = str_replace('{', '', $param_name);
         $param_name = str_replace('}', '', $param_name);
         // $param_name=null;
@@ -155,8 +158,8 @@ class RouteDynService
     {
         $param_name = self::getParamName($v, $namespace);
         $params_name = self::getParamsName($v, $namespace);
-        if (! \is_array($params_name)) {
-            throw new \Exception('params_name is not an array');
+        if (! is_array($params_name)) {
+            throw new Exception('params_name is not an array');
         }
         $opts = [
             'parameters' => [(string) mb_strtolower($v['name']) => implode('}/{', $params_name)],
@@ -179,21 +182,21 @@ class RouteDynService
 
     public static function getController(array $v, ?string $namespace): string
     {
-        if (\in_array('controller', array_keys($v), true)) {
+        if (in_array('controller', array_keys($v), true)) {
             return $v['controller'];
         }
         $v['controller'] = $v['name'];
         $v['controller'] = str_replace('/', '_', $v['controller']);
         $v['controller'] = str_replace('{', '', $v['controller']);
         $v['controller'] = str_replace('}', '', $v['controller']);
-        if (! \is_string($v['controller'])) {
-            throw new \Exception('controller is not a string');
+        if (! is_string($v['controller'])) {
+            throw new Exception('controller is not a string');
         }
 
         $v['controller'] = Str::studly($v['controller']);
         // camel_case foo_bar  => fooBar
         // studly_case foo_bar => FooBar
-        $v['controller'] = $v['controller'].'Controller';
+        $v['controller'] = $v['controller'] . 'Controller';
 
         return $v['controller'];
     }
@@ -212,7 +215,7 @@ class RouteDynService
 
     public static function getMethod(array $v, ?string $namespace): array
     {
-        if (\in_array('method', array_keys($v), true)) {
+        if (in_array('method', array_keys($v), true)) {
             return $v['method'];
         }
 
@@ -223,7 +226,7 @@ class RouteDynService
     {
         $controller = self::getController($v, $namespace);
         $act = self::getAct($v, $namespace);
-        $uses = $controller.'@'.$act;
+        $uses = $controller . '@' . $act;
 
         return $uses;
     }
@@ -233,9 +236,9 @@ class RouteDynService
         $as = Str::slug($v['name']); // !!!!!! test da controllare
         $uses = self::getUses($v, $namespace);
         if (null !== $curr) {
-            $uses = '\\'.self::$namespace_start.'\\'.$curr.'\\'.$uses;
+            $uses = '\\' . self::$namespace_start . '\\' . $curr . '\\' . $uses;
         } else {
-            $uses = '\\'.self::$namespace_start.'\\'.$uses;
+            $uses = '\\' . self::$namespace_start . '\\' . $uses;
         }
         $callback = ['as' => $as, 'uses' => $uses];
 
@@ -255,7 +258,7 @@ class RouteDynService
             $group_opts = self::getGroupOpts($v, $namespace);
             $v['group_opts'] = $group_opts;
             self::createRouteResource($v, $namespace);
-            \Route::group(
+            Route::group(
                 $group_opts,
                 function () use ($v, $namespace, $curr) {
                     self::createRouteActs($v, $namespace, $curr);
@@ -277,10 +280,9 @@ class RouteDynService
         $opts = self::getResourceOpts($v, $namespace);
         $controller = self::getController($v, $namespace);
         $name = mb_strtolower($v['name']);
-        \Route::resource($name, $controller, $opts)
-            // ->where(['container1' => "^((?!create|edit).)*$"])  //BadMethodCallException Method Illuminate\Routing\PendingResourceRegistration::where does not exist.
-            //  ->middleware('manageContainer','container1')
-        ; // ->where(['id_'.$v['name'] => '[0-9]+']);
+        Route::resource($name, $controller, $opts);
+        // ->where(['container1' => "^((?!create|edit).)*$"])  //BadMethodCallException Method Illuminate\Routing\PendingResourceRegistration::where does not exist.
+        //  ->middleware('manageContainer','container1')// ->where(['id_'.$v['name'] => '[0-9]+']);
     }
 
     // ------------------------------------------------------------------------------
@@ -305,7 +307,7 @@ class RouteDynService
         } else {
             $piece = explode('\\', $curr);
             if (last($piece) !== $sub_namespace && $curr !== $sub_namespace) {
-                $curr .= '\\'.$sub_namespace;
+                $curr .= '\\' . $sub_namespace;
             }
         }
 
@@ -344,7 +346,7 @@ class RouteDynService
                 Route::$method($uri, $callback);
             }
             */
-            \Route::match($method, $uri, $callback);
+            Route::match($method, $uri, $callback);
         } // endforeach
     }
 
@@ -381,11 +383,11 @@ class RouteDynService
         // Strict comparison using === between null and non-empty-string will always evaluate to false.
         // if ('' === $prefix || null === $prefix) {
         if ('' === $prefix) {
-            return ['index' => $prefix.'index', 'create' => $prefix.'create', 'store' => $prefix.'store', 'show' => $prefix.'show', 'edit' => $prefix.'edit', 'update' => $prefix.'update', 'destroy' => $prefix.'destroy'];
+            return ['index' => $prefix . 'index', 'create' => $prefix . 'create', 'store' => $prefix . 'store', 'show' => $prefix . 'show', 'edit' => $prefix . 'edit', 'update' => $prefix . 'update', 'destroy' => $prefix . 'destroy'];
         }
         $prefix = mb_strtolower($prefix);
 
-        return ['index' => $prefix.'.index', 'create' => $prefix.'.create', 'store' => $prefix.'.store', 'show' => $prefix.'.show', 'edit' => $prefix.'.edit', 'update' => $prefix.'.update', 'destroy' => $prefix.'.destroy'];
+        return ['index' => $prefix . '.index', 'create' => $prefix . '.create', 'store' => $prefix . '.store', 'show' => $prefix . '.show', 'edit' => $prefix . '.edit', 'update' => $prefix . '.update', 'destroy' => $prefix . '.destroy'];
     }
 
     // end prefixedResourceNames
@@ -432,15 +434,15 @@ class RouteDynService
 
         return [
             [
-                'name' => '{container'.$n.'}',
+                'name' => '{container' . $n . '}',
                 'param_name' => '',
-                'as' => 'container'.$n.'.index_',
+                'as' => 'container' . $n . '.index_',
                 'acts' => self::getContainerActs(),
                 // 'only'=>[],
             ],
             [
-                'name' => '{container'.$n.'}',
-                'param_name' => 'item'.$n.'',
+                'name' => '{container' . $n . '}',
+                'param_name' => 'item' . $n . '',
                 'acts' => self::getItemActs(),
                 'subs' => self::generate($n + 1),
             ],

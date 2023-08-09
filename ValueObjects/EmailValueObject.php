@@ -11,6 +11,8 @@ This decrease amount of guard logic within the system.
 
 namespace Modules\Xot\ValueObjects;
 
+use InvalidArgumentException;
+
 class EmailValueObject
 {
     // public readonly string $email;
@@ -20,7 +22,7 @@ class EmailValueObject
     {
         $this->email = $email;
         if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new \InvalidArgumentException(sprintf('Email address %s is considered valid.', $email));
+            throw new InvalidArgumentException(sprintf('Email address %s is considered valid.', $email));
         }
     }
 }

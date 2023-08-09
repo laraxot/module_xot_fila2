@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Filament;
 
+use Exception;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Str;
@@ -24,24 +25,24 @@ class RegisterFilamentNavigationItem
         $module_lower = Module::findOrFail($module)->getLowerName();
         // $can = static::hasAuthorizedAccess($context);
         $can = true;
-        $icon = config($module_lower.'.icon');
+        $icon = config($module_lower . '.icon');
         if (! is_string($icon)) {
             $enabled = Module::isEnabled($module);
             if (! $enabled) {
-                throw new \Exception('module ['.$module.'] NOT ENABLED ! ');
+                throw new Exception('module [' . $module . '] NOT ENABLED ! ');
             }
-            throw new \Exception('check config ['.$module_lower.'].icon');
+            throw new Exception('check config [' . $module_lower . '].icon');
         }
 
         $navItem = NavigationItem::make($context)
             ->visible($can)
-            ->url(route($context.'.pages.dashboard'))
+            ->url(route($context . '.pages.dashboard'))
             // ->icon('heroicon-o-bookmark')
             ->icon($icon)
             ->group('Modules');
         // if ($can) {
         Filament::registerNavigationItems([
-            1 === $moduleContexts->count() ? $navItem->label("$module") : $navItem->label("$panel Panel")->group("$module Module"),
+            1 === $moduleContexts->count() ? $navItem->label("{$module}") : $navItem->label("{$panel} Panel")->group("{$module} Module"),
         ]);
         // }
     }

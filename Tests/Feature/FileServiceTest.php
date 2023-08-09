@@ -8,57 +8,90 @@ use Tests\TestCase;
 
 class FileServiceTest extends TestCase
 {
-    public function testAsset()
+    /**
+     * @test
+     */
+    public function asset()
     {
         static::assertTrue(true);
     }
 
-    public function testViewNamespaceToDir()
+    /**
+     * @test
+     */
+    public function viewNamespaceToDir()
     {
         static::assertTrue(true);
     }
 
-    public function testGetViewNameSpacePath()
+    /**
+     * @test
+     */
+    public function getViewNameSpacePath()
     {
         static::assertTrue(true);
     }
 
-    public function testGetViewNameSpaceUrl()
+    /**
+     * @test
+     */
+    public function getViewNameSpaceUrl()
     {
         static::assertTrue(true);
     }
 
-    public function testGetViewNameSpaceUrlNomodule()
+    /**
+     * @test
+     */
+    public function getViewNameSpaceUrlNomodule()
     {
         static::assertTrue(true);
     }
 
-    public function testPath2Url()
+    /**
+     * @test
+     */
+    public function path2Url()
     {
         static::assertTrue(true);
     }
 
-    public function testViewThemeNamespaceToAsset()
+    /**
+     * @test
+     */
+    public function viewThemeNamespaceToAsset()
     {
         static::assertTrue(true);
     }
 
-    public function testViewNamespaceToAsset()
+    /**
+     * @test
+     */
+    public function viewNamespaceToAsset()
     {
         static::assertTrue(true);
     }
 
-    public function testGetFileUrl()
+    /**
+     * @test
+     */
+    public function getFileUrl()
     {
         static::assertTrue(true);
     }
 
-    public function testViewNamespaceToUrl()
+    /**
+     * @test
+     */
+    public function viewNamespaceToUrl()
     {
         static::assertTrue(true);
     }
 
-    public function testGetRealFile()
+    /**
+     * @test
+     */
+    public function getRealFile()
     {
         static::assertTrue(true);
     }

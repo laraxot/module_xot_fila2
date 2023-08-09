@@ -16,6 +16,7 @@ use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;
 use Modules\Xot\Services\ModuleService;
 use Nwidart\Modules\Facades\Module;
+use Webmozart\Assert\Assert;
 
 use function Safe\define;
 use function Safe\glob;
@@ -23,8 +24,6 @@ use function Safe\json_decode;
 use function Safe\parse_url;
 use function Safe\preg_match;
 use function Safe\preg_replace;
-
-use Webmozart\Assert\Assert;
 
 // ------------------------------------------------
 
@@ -44,8 +43,7 @@ if (! function_exists('get_current_theme_name')) {
 
 if (! function_exists('snake_case')) {
     /**
-     * @param string $str
-     *
+     * @param  string  $str
      * @return string
      */
     function snake_case($str)
@@ -56,8 +54,7 @@ if (! function_exists('snake_case')) {
 
 if (! function_exists('str_slug')) {
     /**
-     * @param string $str
-     *
+     * @param  string  $str
      * @return string
      */
     function str_slug($str)
@@ -68,8 +65,7 @@ if (! function_exists('str_slug')) {
 
 if (! function_exists('str_singular')) {
     /**
-     * @param string $str
-     *
+     * @param  string  $str
      * @return string
      */
     function str_singular($str)
@@ -80,9 +76,8 @@ if (! function_exists('str_singular')) {
 
 if (! function_exists('starts_with')) {
     /**
-     * @param string $str
-     * @param string $str1
-     *
+     * @param  string  $str
+     * @param  string  $str1
      * @return bool
      */
     function starts_with($str, $str1)
@@ -93,9 +88,8 @@ if (! function_exists('starts_with')) {
 
 if (! function_exists('ends_with')) {
     /**
-     * @param string $str
-     * @param string $str1
-     *
+     * @param  string  $str
+     * @param  string  $str1
      * @return bool
      */
     function ends_with($str, $str1)
@@ -106,9 +100,8 @@ if (! function_exists('ends_with')) {
 
 if (! function_exists('str_contains')) {
     /**
-     * @param string $str
-     * @param string $str1
-     *
+     * @param  string  $str
+     * @param  string  $str1
      * @return bool
      */
     function str_contains($str, $str1)
@@ -119,8 +112,7 @@ if (! function_exists('str_contains')) {
 
 if (! function_exists('dddx')) {
     /**
-     * @param array|string|mixed $params
-     *
+     * @param  array|string|mixed  $params
      * @return string
      */
     function dddx($params)
@@ -203,9 +195,9 @@ if (! function_exists('getFilename')) {
         $func = (string) $tmp[1]['function'];
         $params_list = collect($params)->except(['_token', '_method'])->implode('_');
         $filename = Str::slug(
-            (string) str_replace('Controller', '', $class).
-                '_'.str_replace('do_', '', $func).
-                '_'.$params_list
+            (string) str_replace('Controller', '', $class) .
+                '_' . str_replace('do_', '', $func) .
+                '_' . $params_list
         );
 
         return $filename;
@@ -319,8 +311,7 @@ if (! function_exists('isAdmin')) {
 if (! function_exists('fullTextWildcards')) {
     /* protected */
     /**
-     * @param string $term
-     *
+     * @param  string  $term
      * @return string
      */
     function fullTextWildcards($term)
@@ -337,7 +328,7 @@ if (! function_exists('fullTextWildcards')) {
              * because smaller ones are not indexed by mysql
              */
             if (strlen($word) >= 3) {
-                $words[$key] = '+'.$word.'*';
+                $words[$key] = '+' . $word . '*';
             }
         }
 
@@ -372,8 +363,7 @@ if (! function_exists('isItem')) {
 
 if (! function_exists('params2ContainerItem')) {
     /**
-     * @param array $params
-     *
+     * @param  array  $params
      * @return array[]
      */
     function params2ContainerItem(array $params = null)
@@ -419,16 +409,16 @@ if (! function_exists('getModelFields')) {
 if (! function_exists('getModelByName')) {
     function getModelByName(string $name): Model
     {
-        $registered = config('morph_map.'.$name);
+        $registered = config('morph_map.' . $name);
         if (is_string($registered) && class_exists($registered)) {
             return app($registered);
         }
 
         // getFirst..
-        $files_path = base_path('Modules').'/*/Models/*.php';
+        $files_path = base_path('Modules') . '/*/Models/*.php';
         $files = glob($files_path);
         if (false == $files) {
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
         }
         $path = collect($files)->first(
             function ($file) use ($name) {
@@ -443,13 +433,13 @@ if (! function_exists('getModelByName')) {
         // dddx($registered);
 
         if (null === $path) {
-            throw new Exception('['.$name.'] not in morph_map ['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . $name . '] not in morph_map [' . __LINE__ . '][' . __FILE__ . ']');
         }
         $path = FileService::fixPath($path);
         $info = pathinfo($path);
-        $module_name = Str::between($path, 'Modules'.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.'Models');
+        $module_name = Str::between($path, 'Modules' . DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR . 'Models');
 
-        $class = 'Modules\\'.$module_name.'\Models\\'.$info['filename'];
+        $class = 'Modules\\' . $module_name . '\Models\\' . $info['filename'];
 
         return app($class);
     }
@@ -459,7 +449,7 @@ if (! function_exists('getUserClass')) {
     {
         $class = config('auth.providers.users.model');
         if (! is_string($class)) {
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
         }
 
         return $class;
@@ -468,8 +458,7 @@ if (! function_exists('getUserClass')) {
 
 if (! function_exists('getModuleFromModel')) {
     /**
-     * @param object $model
-     *
+     * @param  object  $model
      * @return \Nwidart\Modules\Module|null
      */
     function getModuleFromModel($model)
@@ -507,9 +496,9 @@ if (! function_exists('getModuleNameFromModel')) {
 if (! function_exists('getModuleNameFromModelName')) {
     function getModuleNameFromModelName(string $model_name): string
     {
-        $model_class = config('morph_map.'.$model_name);
+        $model_class = config('morph_map.' . $model_name);
         if (! is_string($model_class)) {
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
         }
         $model = app($model_class);
 
@@ -519,16 +508,15 @@ if (! function_exists('getModuleNameFromModelName')) {
 
 if (! function_exists('getTransformerFromModel')) {
     /**
-     * @param object $model
-     * @param string $type
-     *
+     * @param  object  $model
+     * @param  string  $type
      * @return mixed|string
      */
     function getTransformerFromModel($model, $type = 'Resource')
     {
         $class = get_class($model);
         $module_name = getModuleNameFromModel($model);
-        $transformer = '\\Modules\\'.$module_name.'\Transformers\\'.class_basename($model).''.$type;
+        $transformer = '\\Modules\\' . $module_name . '\Transformers\\' . class_basename($model) . '' . $type;
         // dddx($transformer.' '.class_exists($transformer));
         if (! class_exists($transformer)) {
             dddx('preso');
@@ -540,9 +528,9 @@ if (! function_exists('getTransformerFromModel')) {
 
 if (! function_exists('getAllModulesModels')) {
     /**
-     * @throws ReflectionException
-     *
      * @return array
+     *
+     * @throws ReflectionException
      */
     function getAllModulesModels()
     {
@@ -559,11 +547,10 @@ if (! function_exists('getAllModulesModels')) {
 
 if (! function_exists('getModuleModels')) {
     /**
-     * @param string $module
+     * @param  string  $module
+     * @return array
      *
      * @throws ReflectionException
-     *
-     * @return array
      */
     function getModuleModels($module)
     {
@@ -600,9 +587,9 @@ if (! function_exists('xotModel')) {
     function xotModel(string $name): Model
     {
         // return TenantService::model($name);
-        $model_class = config('morph_map.'.$name);
+        $model_class = config('morph_map.' . $name);
         if (! is_string($model_class)) {
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
         }
 
         return app($model_class);
@@ -612,7 +599,7 @@ if (! function_exists('xotModel')) {
 if (! function_exists('deltaTime')) {
     function deltaTime(): void
     {
-        echo '<h3>Time : '.(microtime(true) - LARAVEL_START).'</h3>';
+        echo '<h3>Time : ' . (microtime(true) - LARAVEL_START) . '</h3>';
     }
 }
 
@@ -690,9 +677,9 @@ function ($item) use ($obj) {
     */
 
     /**
-     * @throws ReflectionException
-     *
      * @return array|null
+     *
+     * @throws ReflectionException
      */
     function debug_getter_obj(array $params)
     {
@@ -764,16 +751,15 @@ if (! function_exists('bracketsToDotted')) {
 if (! function_exists('dottedToBrackets')) {
     // privacies.111.pivot.title => privacies[111][pivot][title]
     /**
-     * @param string $str
-     * @param string $quotation_marks
-     *
+     * @param  string  $str
+     * @param  string  $quotation_marks
      * @return string
      */
     function dottedToBrackets($str, $quotation_marks = '')
     {
         $str = collect(explode('.', $str))->map(
             function ($v, $k) {
-                return 0 === $k ? $v : '['.$v.']';
+                return 0 === $k ? $v : '[' . $v . ']';
             }
         )->implode('');
 
@@ -819,9 +805,8 @@ if (! function_exists('url_queries')) {
     /**
      * Modifies the query strings in a given (or the current) URL.
      *
-     * @param array       $queries Indexed array of query parameters
-     * @param string|null $url     URL to use parse. If none is supplied, the current URL of the page load will be used
-     *
+     * @param  array  $queries Indexed array of query parameters
+     * @param  string|null  $url     URL to use parse. If none is supplied, the current URL of the page load will be used
      * @return string The updated query string
      */
     function url_queries(array $queries, string $url = null)
@@ -835,7 +820,7 @@ if (! function_exists('url_queries')) {
         $url_parsed = parse_url($url);
 
         if (false === $url_parsed) {
-            throw new \Exception('error parsing url ['.$url.']');
+            throw new \Exception('error parsing url [' . $url . ']');
         }
         // Turn the query string into an array
         $url_params = [];
@@ -863,30 +848,29 @@ if (! function_exists('build_url')) {
     /**
      * Rebuilds the URL parameters into a string from the native parse_url() function.
      *
-     * @param array $parts The parts of a URL
-     *
+     * @param  array  $parts The parts of a URL
      * @return string The constructed URL
      */
     function build_url(array $parts)
     {
-        return (isset($parts['scheme']) ? "{$parts['scheme']}:" : '').
-            ((isset($parts['user']) || isset($parts['host'])) ? '//' : '').
-            (isset($parts['user']) ? "{$parts['user']}" : '').
-            (isset($parts['pass']) ? ":{$parts['pass']}" : '').
-            (isset($parts['user']) ? '@' : '').
-            (isset($parts['host']) ? "{$parts['host']}" : '').
-            (isset($parts['port']) ? ":{$parts['port']}" : '').
-            (isset($parts['path']) ? "{$parts['path']}" : '').
-            (isset($parts['query']) ? "?{$parts['query']}" : '').
+        return (isset($parts['scheme']) ? "{$parts['scheme']}:" : '') .
+            ((isset($parts['user']) || isset($parts['host'])) ? '//' : '') .
+            (isset($parts['user']) ? "{$parts['user']}" : '') .
+            (isset($parts['pass']) ? ":{$parts['pass']}" : '') .
+            (isset($parts['user']) ? '@' : '') .
+            (isset($parts['host']) ? "{$parts['host']}" : '') .
+            (isset($parts['port']) ? ":{$parts['port']}" : '') .
+            (isset($parts['path']) ? "{$parts['path']}" : '') .
+            (isset($parts['query']) ? "?{$parts['query']}" : '') .
             (isset($parts['fragment']) ? "#{$parts['fragment']}" : '');
     }
 }
 
 if (! function_exists('getRelationships')) {
     /**
-     * @throws ReflectionException
-     *
      * @return array
+     *
+     * @throws ReflectionException
      */
     function getRelationships(Model $model)
     {
@@ -973,7 +957,7 @@ if (! function_exists('removeQueryParams')) {
             unset($query[$param]); // loop through the array of parameters we wish to remove and unset the parameter from the query array
         }
         // 924    Parameter #1 $querydata of function http_build_query expects array|object, array|string given.
-        return $query ? $url.'?'.http_build_query($query) : $url; // rebuild the URL with the remaining parameters, don't append the "?" if there aren't any query parameters left
+        return $query ? $url . '?' . http_build_query($query) : $url; // rebuild the URL with the remaining parameters, don't append the "?" if there aren't any query parameters left
     }
 }
 
@@ -1000,7 +984,7 @@ if (! function_exists('addQueryParams')) {
             $params
         ); // merge the existing query parameters with the ones we want to add
 
-        return url()->current().'?'.http_build_query($query); // rebuild the URL with the new parameters array
+        return url()->current() . '?' . http_build_query($query); // rebuild the URL with the new parameters array
     }
 }
 
@@ -1019,8 +1003,7 @@ if (! function_exists('isJson')) {
     }
     */
     /**
-     * @param string $string
-     *
+     * @param  string  $string
      * @return bool
      */
     function isJson($string)
@@ -1099,7 +1082,7 @@ if (! function_exists('getModTradFilepath')) {
         $ns = Str::of($file_path)->after('/Modules/')->before('/')->lower();
         $info = pathinfo($file_path);
         $group = Str::snake($info['filename']);
-        $mod_trad = $ns.'::'.$group;
+        $mod_trad = $ns . '::' . $group;
 
         return $mod_trad;
     }
@@ -1169,7 +1152,7 @@ if (! function_exists('debugStack')) {
             XDEBUG_FILTER_TRACING,
             XDEBUG_PATH_EXCLUDE,
             // [LARAVEL_DIR.'/vendor/']
-            [__DIR__.'/../../vendor/']
+            [__DIR__ . '/../../vendor/']
         );
 
         xdebug_print_function_stack();
@@ -1185,9 +1168,9 @@ if (! function_exists('secondsToHms')) {
         $seconds -= $minutes * 60;
         $str = '';
         if ($hours > 0) {
-            $str .= ($hours < 9 ? '0'.$hours : $hours).':';
+            $str .= ($hours < 9 ? '0' . $hours : $hours) . ':';
         }
-        $str .= ($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal);
+        $str .= ($minutes < 9 ? '0' . $minutes : $minutes) . ':' . round($seconds, $decimal);
 
         return $str;
     }
@@ -1197,7 +1180,7 @@ if (! function_exists('rowsToSql')) {
     /**
      * Undocumented function.
      *
-     * @param \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $rows
+     * @param  \Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder  $rows
      */
     function rowsToSql($rows): string
     {

@@ -8,18 +8,18 @@ use Doctrine\DBAL\Types\Type;
 use Doctrine\DBAL\Types\Types;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
+use InvalidArgumentException;
 
 class TypeGuesser
 {
     /**
-     * @var \Faker\Generator
-     */
-    protected $generator;
-
-    /**
      * @var string
      */
     protected static $default = 'word';
+    /**
+     * @var \Faker\Generator
+     */
+    protected $generator;
 
     /**
      * Create a new TypeGuesser instance.
@@ -30,9 +30,8 @@ class TypeGuesser
     }
 
     /**
-     * @param string   $name
-     * @param int|null $size Length of field, if known
-     *
+     * @param  string  $name
+     * @param  int|null  $size Length of field, if known
      * @return string
      */
     public function guess($name, Type $type, $size = null)
@@ -57,60 +56,16 @@ class TypeGuesser
     }
 
     /**
-     * Get type guess.
-     *
-     * @param string   $name
-     * @param int|null $size
-     *
-     * @return string
-     */
-    private function guessBasedOnName($name, $size = null)
-    {
-        switch ($name) {
-            case 'login':
-                return 'userName';
-            case 'emailaddress':
-                return 'email';
-            case 'phone':
-            case 'telephone':
-            case 'telnumber':
-                return 'phoneNumber';
-            case 'town':
-                return 'city';
-            case 'zipcode':
-                return 'postcode';
-            case 'county':
-                return $this->predictCountyType();
-            case 'country':
-                // Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictCountryType() expects int, int|null  given.
-                return $this->predictCountryType($size);
-            case 'currency':
-                return 'currencyCode';
-            case 'website':
-                return 'url';
-            case 'companyname':
-            case 'employer':
-                return 'company';
-            case 'title':
-                // 91     Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictTitleType() expects int, int|null   given.
-                return $this->predictTitleType($size);
-            default:
-                return self::$default;
-        }
-    }
-
-    /**
      * Check if faker instance has a native resolver for the given property.
      *
-     * @param string $property
-     *
+     * @param  string  $property
      * @return bool
      */
     protected function hasNativeResolverFor($property)
     {
         try {
             $this->generator->getFormatter($property);
-        } catch (\InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             return false;
         }
 
@@ -120,8 +75,7 @@ class TypeGuesser
     /**
      * Try to guess the right faker method for the given type.
      *
-     * @param int|null $size
-     *
+     * @param  int|null  $size
      * @return string
      */
     protected function guessBasedOnType(Type $type, $size)
@@ -134,7 +88,7 @@ class TypeGuesser
             case Types::BIGINT:
             case Types::INTEGER:
             case Types::SMALLINT:
-                return 'randomNumber'.($size ? "($size)" : '');
+                return 'randomNumber' . ($size ? "({$size})" : '');
             case Types::DATE_MUTABLE:
             case Types::DATE_IMMUTABLE:
                 return 'date';
@@ -143,7 +97,7 @@ class TypeGuesser
                 return 'dateTime';
             case Types::DECIMAL:
             case Types::FLOAT:
-                return 'randomFloat'.($size ? "($size)" : '');
+                return 'randomFloat' . ($size ? "({$size})" : '');
             case Types::TEXT:
                 return 'text';
             case Types::TIME_MUTABLE:
@@ -194,5 +148,47 @@ class TypeGuesser
         }
 
         return 'sentence';
+    }
+
+    /**
+     * Get type guess.
+     *
+     * @param  string  $name
+     * @param  int|null  $size
+     * @return string
+     */
+    private function guessBasedOnName($name, $size = null)
+    {
+        switch ($name) {
+            case 'login':
+                return 'userName';
+            case 'emailaddress':
+                return 'email';
+            case 'phone':
+            case 'telephone':
+            case 'telnumber':
+                return 'phoneNumber';
+            case 'town':
+                return 'city';
+            case 'zipcode':
+                return 'postcode';
+            case 'county':
+                return $this->predictCountyType();
+            case 'country':
+                // Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictCountryType() expects int, int|null  given.
+                return $this->predictCountryType($size);
+            case 'currency':
+                return 'currencyCode';
+            case 'website':
+                return 'url';
+            case 'companyname':
+            case 'employer':
+                return 'company';
+            case 'title':
+                // 91     Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictTitleType() expects int, int|null   given.
+                return $this->predictTitleType($size);
+            default:
+                return self::$default;
+        }
     }
 }

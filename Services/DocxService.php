@@ -22,6 +22,9 @@ https://code-boxx.com/convert-html-to-docx-using-php/
 
 */
 
+use function is_array;
+use function is_object;
+use function is_string;
 use function Safe\json_decode;
 
 /**
@@ -29,11 +32,10 @@ use function Safe\json_decode;
  */
 class DocxService
 {
+    private static ?self $instance = null;
     public string $docx_input;
 
     public array $values;
-
-    private static ?self $instance = null;
 
     public function __construct()
     {
@@ -42,7 +44,7 @@ class DocxService
     public static function getInstance(): self
     {
         if (null === self::$instance) {
-            self::$instance = new self();
+            self::$instance = new self;
         }
 
         return self::$instance;
@@ -72,15 +74,15 @@ class DocxService
     }
 
     /**
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     *
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
     public function out(array $params = [])
     {
         extract($params);
-        include __DIR__.'/vendor/autoload.php'; // carico la mia libreria che uso solo qui..
+        include __DIR__ . '/vendor/autoload.php'; // carico la mia libreria che uso solo qui..
 
         // return response()->download($this->docx_input);
         $tpl = new TemplateProcessor($this->docx_input);
@@ -92,7 +94,7 @@ class DocxService
         $filename_out_path = storage_path($filename_out);
         try {
             $tpl->saveAs($filename_out_path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle exception
             dddx([$e]);
         }
@@ -101,14 +103,13 @@ class DocxService
     }
 
     /**
-     * @param \Illuminate\Contracts\Support\Arrayable $row
-     * @param string                                  $prefix
-     *
+     * @param  \Illuminate\Contracts\Support\Arrayable  $row
+     * @param  string  $prefix
      * @return array
      */
     public function rows2Data_test($row, $prefix)
     {
-        if (! \is_object($row)) {
+        if (! is_object($row)) {
             return [];
         }
 
@@ -119,8 +120,8 @@ class DocxService
                     $item_year = $row->$key->format('Y');
 
                     return [
-                        $prefix.'.'.$key => $item,
-                        $prefix.'.'.$key.'_year' => $item_year,
+                        $prefix . '.' . $key => $item,
+                        $prefix . '.' . $key . '_year' => $item_year,
                     ];
                 }
 
@@ -129,19 +130,19 @@ class DocxService
                     $tmp = (array) json_decode($row->$key);
                     $data = [];
                     foreach ($tmp as $k => $v) {
-                        if (! \is_array($v) && ! \is_object($v)) {
-                            $data[$prefix.'.'.$key.'_'.$k] = $v;
+                        if (! is_array($v) && ! is_object($v)) {
+                            $data[$prefix . '.' . $key . '_' . $k] = $v;
                         }
                     }
                     // dddx($data);
                     return $data;
                 }
-                if (\is_string($item)) {
+                if (is_string($item)) {
                     $item = str_replace('&', '&amp;', $item);
                 }
 
                 return [
-                    $prefix.'.'.$key => $item,
+                    $prefix . '.' . $key => $item,
                 ];
             }
         )
@@ -152,14 +153,13 @@ class DocxService
     }
 
     /**
-     * @param Model  $row
-     * @param string $prefix
-     *
+     * @param  Model  $row
+     * @param  string  $prefix
      * @return array
      */
     public function rows2Data($row, $prefix)
     {
-        if (! \is_object($row)) {
+        if (! is_object($row)) {
             return [];
         }
 
@@ -179,21 +179,21 @@ class DocxService
         $data = collect($arr)->map(
             function ($item, $key) use ($row, $prefix, $arr) {
                 // *
-                if ('' !== $arr[$key] && \is_object($row->$key)) {
+                if ('' !== $arr[$key] && is_object($row->$key)) {
                     if ($row->$key instanceof Carbon) {
                         try {
                             $item = $row->$key->format('d/m/Y');
-                        } catch (\Exception $e) {
+                        } catch (Exception $e) {
                             return [
-                                $prefix.'.'.$key => $item,
+                                $prefix . '.' . $key => $item,
                             ];
                         }
                         // Carbon::setLocale('it');
                         return [
-                            $prefix.'.'.$key => $item,
-                            $prefix.'.'.$key.'_locale' => ucfirst($row->$key->translatedFormat('d F Y')),
-                            $prefix.'.'.$key.'_dm' => ucfirst($row->$key->translatedFormat('d F')),
-                            $prefix.'.'.$key.'_year' => $row->$key->format('Y'),
+                            $prefix . '.' . $key => $item,
+                            $prefix . '.' . $key . '_locale' => ucfirst($row->$key->translatedFormat('d F Y')),
+                            $prefix . '.' . $key . '_dm' => ucfirst($row->$key->translatedFormat('d F')),
+                            $prefix . '.' . $key . '_year' => $row->$key->format('Y'),
                         ];
                     }
                 }
@@ -204,21 +204,21 @@ class DocxService
                     $tmp = (array) json_decode($row->$key);
                     $data = [];
                     foreach ($tmp as $k => $v) {
-                        if (! \is_array($v) && ! \is_object($v)) {
-                            $data[$prefix.'.'.$key.'_'.$k] = $v;
+                        if (! is_array($v) && ! is_object($v)) {
+                            $data[$prefix . '.' . $key . '_' . $k] = $v;
                         }
                     }
                     // dddx($data);
                     return $data;
                 }
-                if (\is_string($item)) {
+                if (is_string($item)) {
                     $item = str_replace('&', '&amp;', $item);
                 }
 
-                return [$prefix.'.'.$key => $item];
+                return [$prefix . '.' . $key => $item];
             }
         )->collapse()
-        ->all();
+            ->all();
         // 212    Offset non-empty-string on array<int, mixed> in isset() does not exist.
         // if (isset($data[$prefix.'.postal_code'])) {
         // $data[$prefix.'.zip_code'] = $data[$prefix.'.postal_code'] ?? '';

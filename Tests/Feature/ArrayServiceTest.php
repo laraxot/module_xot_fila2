@@ -8,17 +8,26 @@ use Tests\TestCase;
 
 class ArrayServiceTest extends TestCase
 {
-    public function testToXLS()
+    /**
+     * @test
+     */
+    public function toXLS()
     {
         static::assertTrue(true);
     }
 
-    public function testToXLSPhpoffice()
+    /**
+     * @test
+     */
+    public function toXLSPhpoffice()
     {
         static::assertTrue(true);
     }
 
-    public function testSave()
+    /**
+     * @test
+     */
+    public function save()
     {
         static::assertTrue(true);
     }

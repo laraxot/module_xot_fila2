@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Update;
 
+use App;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Xot\DTOs\RelationDTO;
@@ -27,14 +29,14 @@ class MorphOneAction
         /* con update or create crea sempre uno nuovo, con update e basta se non esiste non va a crearlo */
         // $rows = $model->$name();
         if (! $relation->rows instanceof MorphOne) {
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('[' . __LINE__ . '][' . __FILE__ . ']');
         }
         $rows = $relation->rows;
         if ($rows->exists()) {
             $rows->update($relation->data);
         } else {
             if (! isset($relation->data['lang'])) {
-                $relation->data['lang'] = \App::getLocale();
+                $relation->data['lang'] = App::getLocale();
             }
             $rows->create($relation->data);
         }

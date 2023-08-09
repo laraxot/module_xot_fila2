@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
-use Illuminate\Support\Facades\Auth;
-
 /**
  * Trait Updater.
  * https://dev.to/hasanmn/automatically-update-createdby-and-updatedby-in-laravel-using-bootable-traits-28g9.
@@ -45,9 +43,9 @@ trait Updater
          **/
         static::creating(
             function ($model) {
-                if (null !== Auth::user()) {
-                    $model->created_by = Auth::user()->handle ?? '';
-                    $model->updated_by = Auth::user()->handle ?? '';
+                if (null !== auth()->user()) {
+                    $model->created_by = auth()->user()->handle ?? '';
+                    $model->updated_by = auth()->user()->handle ?? '';
                 }
             }
         );
@@ -57,7 +55,7 @@ trait Updater
          */
         static::updating(
             function ($model) {
-                $model->updated_by = Auth::user()->handle ?? '';
+                $model->updated_by = auth()->user()->handle ?? '';
             }
         );
         // -------------------------------------------------------------------------------------

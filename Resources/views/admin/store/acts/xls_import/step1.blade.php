@@ -2,15 +2,15 @@
 @section('content')
 PASSO 1
 {!! $data_html !!}
-<form action="{{Request::fullUrlWithQuery(['step' => 2]) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ Request::fullUrlWithQuery(['step' => 2]) }}" method="POST" enctype="multipart/form-data">
     @csrf
     <div class="row">
-    @foreach($head as $v)
+    @foreach ($head as $v)
         <div class="col">
         {{ $v }}
         <select name="key[{{ $v }}]" class="form-select custom-select form-input" >
             <option value="">---</option>
-            @foreach($fillable as $vf)
+            @foreach ($fillable as $vf)
                 <option value="{{ $vf }}">{{ $vf }}</option>
             @endforeach
         </select>
