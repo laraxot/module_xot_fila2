@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Route;
 use Illuminate\Support\Str;
+use Route;
+
+use function Safe\preg_replace;
 
 use Webmozart\Assert\Assert;
-use function Safe\preg_replace;
 
 /**
  * Class RouteDynService.
@@ -71,6 +72,7 @@ class RouteDynService
         $as = str_replace('{', '', $as);
         $as = str_replace('}', '', $as);
         Assert::string($as);
+
         return $as.'.';
     }
 
