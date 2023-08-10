@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+<<<<<<< HEAD
 use function count;
 
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Route;
+=======
+>>>>>>> b9465b74 (insights)
 use Illuminate\Support\Str;
 
 /**
@@ -18,10 +21,7 @@ use Illuminate\Support\Str;
  */
 class RouteService
 {
-    /**
-     * @return array|bool|mixed
-     */
-    public static function inAdmin(array $params = [])
+    public static function inAdmin(array $params = []): mixed
     {
         if (isset($params['in_admin'])) {
             return $params['in_admin'];
@@ -32,12 +32,12 @@ class RouteService
             return config()->get('in_admin');
         }
         */
-        if ('admin' === \Request::segment(1)) {
+        if (\Request::segment(1) === 'admin') {
             return true;
         }
         $segments = \Request::segments();
-        if (\count($segments) > 0 && 'livewire' === $segments[0]) {
-            if (true === session('in_admin')) {
+        if (\count($segments) > 0 && $segments[0] === 'livewire') {
+            if (session('in_admin') === true) {
                 return true;
             }
         }
@@ -67,13 +67,13 @@ class RouteService
         $routename = ''; // Request::route()->getName();
         $old_act_route = last(explode('.', $routename));
         if (! \is_string($old_act_route)) {
-            throw new \Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
+            throw new \Exception('['.__LINE__.']['.class_basename(self::class).']');
         }
 
         $routename_act = Str::before($routename, $old_act_route).''.$act;
         $route_current = \Route::current();
         $route_params = [];
-        if (null !== $route_current) {
+        if ($route_current !== null) {
             $route_params = $route_current->parameters();
             $routename = $route_current->getName();
         }
@@ -197,10 +197,7 @@ class RouteService
     // se n=0 => 'container0'
     // se n=1 => 'containers.container1'
 
-    /**
-     * @return string
-     */
-    public static function getRoutenameN(array $params)
+    public static function getRoutenameN(array $params): string
     {
         // default vars
         $n = 0;
@@ -215,9 +212,7 @@ class RouteService
             $tmp[] = 'container'.$i;
         }
         $tmp[] = $act;
-        $routename = implode('.', $tmp);
-
-        return $routename;
+        return implode('.', $tmp);
     }
 
     /*
@@ -299,10 +294,7 @@ class RouteService
     }
     */
 
-    /**
-     * @return string
-     */
-    public static function urlLang(array $params = [])
+    public static function urlLang(array $params = []): string
     {
         extract($params);
 
@@ -376,7 +368,7 @@ class RouteService
     public static function getAct(): string
     {
         $route_action = \Route::currentRouteAction();
-        if (null === $route_action) {
+        if ($route_action === null) {
             throw new \Exception('$route_action is null');
         }
         $act = Str::after($route_action, '@');
@@ -388,9 +380,7 @@ class RouteService
         if (Str::endsWith($act, 'Controller')) {
             $act = Str::before($act, 'Controller');
         }
-        $act = Str::snake($act);
-
-        return $act;
+        return Str::snake($act);
     }
 
     /**
@@ -401,12 +391,10 @@ class RouteService
     public static function getModuleName(): string
     {
         $route_action = \Route::currentRouteAction();
-        if (null === $route_action) {
+        if ($route_action === null) {
             throw new \Exception('$route_action is null');
         }
-        $mod_name = Str::between($route_action, 'Modules\\', '\Http');
-
-        return $mod_name;
+        return Str::between($route_action, 'Modules\\', '\Http');
     }
 
     /**
@@ -417,12 +405,10 @@ class RouteService
     public static function getControllerName(): string
     {
         $route_action = \Route::currentRouteAction();
-        if (null === $route_action) {
+        if ($route_action === null) {
             throw new \Exception('$route_action is null');
         }
-        $name = Str::between($route_action, 'Http\Controllers\\', 'Controller');
-
-        return $name;
+        return Str::between($route_action, 'Http\Controllers\\', 'Controller');
     }
 
     public static function getView(): string
@@ -434,7 +420,7 @@ class RouteService
         [$containers, $items] = params2ContainerItem($params);
 
         $params['containers'] = implode('.', $containers);
-        $path = collect($tmp_arr)
+        return collect($tmp_arr)
             ->filter(
                 function ($item) {
                     return ! \in_array($item, ['Module', 'Item'], true);
@@ -447,7 +433,5 @@ class RouteService
                     return $params[$item] ?? $item;
                 }
             )->implode('.');
-
-        return $path;
     }
 }

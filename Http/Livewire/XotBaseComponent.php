@@ -13,10 +13,7 @@ use Livewire\Component;
  */
 abstract class XotBaseComponent extends Component
 {
-    /**
-     * @return string
-     */
-    public function getView()
+    public function getView(): string
     {
         $class = static::class;
         $module_name = Str::between($class, 'Modules\\', '\Http\\');

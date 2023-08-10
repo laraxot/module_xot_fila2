@@ -17,10 +17,8 @@ class SetDefaultLocaleForUrlsMiddleware
 {
     /**
      * Handle the incoming request.
-     *
-     * @return \Illuminate\Http\Response
      */
-    public function handle(\Illuminate\Http\Request $request, \Closure $next)
+    public function handle(\Illuminate\Http\Request $request, \Closure $next): \Illuminate\Http\Response
     {
         URL::defaults(
             [

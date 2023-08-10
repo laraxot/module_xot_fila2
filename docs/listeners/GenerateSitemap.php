@@ -16,7 +16,7 @@ class GenerateSitemap
         '*/404',
     ];
 
-    public function handle(Jigsaw $jigsaw)
+    public function handle(Jigsaw $jigsaw): void
     {
         $baseUrl = $jigsaw->getConfig('baseUrl');
 
@@ -29,12 +29,15 @@ class GenerateSitemap
         $sitemap = new Sitemap($jigsaw->getDestinationPath().'/sitemap.xml');
 
         collect($jigsaw->getOutputPaths())
-            ->reject(function ($path) {
-                return $this->isExcluded($path);
-            })->each(
-                function ($path) use ($baseUrl, $sitemap) {
+            ->reject(
+                function ($path) {
+                    return $this->isExcluded($path);
+                }
+            )->each(
+                function ($path) use ($baseUrl, $sitemap): void {
                     $sitemap->addItem(rtrim($baseUrl, '/').$path, time(), Sitemap::DAILY);
-                });
+                }
+            );
         $sitemap->write();
     }
 

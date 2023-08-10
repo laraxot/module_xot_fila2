@@ -15,8 +15,6 @@ trait Cacheable
 {
     /**
      * Cache instance.
-     *
-     * @var CacheManager
      */
     protected static ?CacheManager $cache = null;
 
@@ -33,19 +31,17 @@ trait Cacheable
     /**
      * Set cache manager.
      */
-    public static function setCacheInstance(CacheManager $cache)
+    public static function setCacheInstance(CacheManager $cache): void
     {
         self::$cache = $cache;
     }
 
     /**
      * Get cache manager.
-     *
-     * @return CacheManager
      */
-    public static function getCacheInstance()
+    public static function getCacheInstance(): CacheManager
     {
-        if (null === self::$cache) {
+        if (self::$cache === null) {
             self::$cache = app('cache');
         }
 
@@ -54,26 +50,22 @@ trait Cacheable
 
     /**
      * Determine if the cache will be skipped.
-     *
-     * @return bool
      */
-    public function skippedCache()
+    public function skippedCache(): bool
     {
-        return false === config('repositories.cache_enabled', false)
-            || true === app('request')->has(config('repositories.cache_skip_param', 'skipCache'));
+        return config('repositories.cache_enabled', false) === false
+            || app('request')->has(config('repositories.cache_skip_param', 'skipCache')) === true;
     }
 
     /**
      * Get Cache key for the method.
-     *
-     * @return string
      */
-    public function getCacheKey(string $method, $args, string $tag)
+    public function getCacheKey(string $method, $args, string $tag): string
     {
         // Sort through arguments
         foreach ($args as &$a) {
             if ($a instanceof Model) {
-                $a = \get_class($a).'|'.$a->getKey();
+                $a = $a::class.'|'.$a->getKey();
             }
         }
 
@@ -91,13 +83,11 @@ trait Cacheable
 
     /**
      * Get an item from the cache, or store the default value.
-     *
-     * @param mixed|null $time
      */
-    public function cacheCallback(string $method, array $args, \Closure $callback, $time = null)
+    public function cacheCallback(string $method, array $args, \Closure $callback, mixed $time = null)
     {
         // Cache disabled, just execute query & return result
-        if (true === $this->skippedCache()) {
+        if ($this->skippedCache() === true) {
             return \call_user_func($callback);
         }
 
@@ -113,13 +103,11 @@ trait Cacheable
 
     /**
      * Flush the cache for the given repository.
-     *
-     * @return bool
      */
-    public function flushCache()
+    public function flushCache(): bool
     {
         // Cache disabled, just ignore this
-        if (false === $this->eventFlushCache || false === config('repositories.cache_enabled', false)) {
+        if ($this->eventFlushCache === false || config('repositories.cache_enabled', false) === false) {
             return false;
         }
 
@@ -131,19 +119,15 @@ trait Cacheable
 
     /**
      * Return the time until expires in minutes.
-     *
-     * @param int $time
-     *
-     * @return int
      */
-    protected function getCacheExpiresTime($time = null)
+    protected function getCacheExpiresTime(?int $time = null): int
     {
-        if (self::EXPIRES_END_OF_DAY === $time) {
+        if ($time === self::EXPIRES_END_OF_DAY) {
             return class_exists(Carbon::class)
                 ? round(Carbon::now()->secondsUntilEndOfDay() / 60)
                 : $this->cacheMinutes;
         }
 
-        return $time ?: $this->cacheMinutes;
+        return $time ? $time : $this->cacheMinutes;
     }
 }

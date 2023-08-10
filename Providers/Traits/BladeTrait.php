@@ -10,14 +10,12 @@ trait BladeTrait
 {
     /**
      * Register Blade directives.
-     *
-     * @return void
      */
-    protected function registerBladeDirectives()
+    protected function registerBladeDirectives(): void
     {
         $this->app->afterResolving(
             'blade.compiler',
-            function (BladeCompiler $bladeCompiler) {
+            function (BladeCompiler $bladeCompiler): void {
                 dddx(['bladeCompiler' => $bladeCompiler]);
             }
         );

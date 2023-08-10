@@ -6,9 +6,12 @@ namespace Modules\Xot\Services;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
+<<<<<<< HEAD
 use Request;
 use Route;
 
+=======
+>>>>>>> b9465b74 (insights)
 use function Safe\date;
 
 /**
@@ -26,11 +29,11 @@ class NavService
         // $paz = request()->route()->parameters();
         $route_current = \Route::current();
         $params = [];
-        if (null !== $route_current) {
+        if ($route_current !== null) {
             $params = $route_current->parameters();
         }
         $year = $request->input('year', date('Y'));
-        $year = $year - 1;
+        $year -= 1;
         $nav = [];
         for ($i = 0; $i < 3; ++$i) {
             $tmp = [];
@@ -47,7 +50,7 @@ class NavService
                 $tmp['active'] = 0;
             }
 
-            if (null === $routename) {
+            if ($routename === null) {
                 throw new \Exception('routename is null');
             }
             $tmp['url'] = route($routename, $params);
@@ -74,7 +77,7 @@ class NavService
 
         $route_current = \Route::current();
         $params = [];
-        if (null !== $route_current) {
+        if ($route_current !== null) {
             $params = $route_current->parameters();
         }
 
@@ -83,7 +86,7 @@ class NavService
 
         $q = 2;
         $date = Carbon::create($year, $month, 1);
-        if (false === $date) {
+        if ($date === false) {
             throw new \Exception('carbon error');
         }
         $d = $date->subMonths($q);
@@ -93,7 +96,7 @@ class NavService
             $params['month'] = (int) $d->format('m');
             $params['year'] = (int) $d->format('Y');
             $tmp['title'] = $d->isoFormat('MMMM YYYY');
-            if (date('Y') == $params['year'] && date('m') == $params['month']) {
+            if (date('Y') === $params['year'] && date('m') === $params['month']) {
                 $tmp['title'] = '['.$tmp['title'].']';
             }
             if ($year === $params['year'] && $month === $params['month']) {
@@ -101,7 +104,7 @@ class NavService
             } else {
                 $tmp['active'] = 0;
             }
-            if (null === $routename) {
+            if ($routename === null) {
                 throw new \Exception('routename is null');
             }
             $tmp['url'] = route($routename, $params);

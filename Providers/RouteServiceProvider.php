@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
-use Exception;
 use Illuminate\Routing\Router;
-use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
 
 use function is_array;
 
 use Modules\Tenant\Services\TenantService;
+=======
+>>>>>>> b9465b74 (insights)
 use Modules\Xot\Http\Middleware\SetDefaultLocaleForUrlsMiddleware;
 
 // public function boot(\Illuminate\Routing\Router $router)

@@ -60,9 +60,9 @@ class Widget extends BaseModel
     use WidgetTrait;
 
     /**
-     * @var string[]
+     * @var array<string>
      */
-    protected $fillable = [
+    protected array $fillable = [
         'id',
         'post_type', 'post_id', // nullablemorph
         'title',
@@ -77,28 +77,23 @@ class Widget extends BaseModel
     }
 
     /**
-     *---.
+     * ---.
      */
     public function getPosAttribute(?int $value): ?int
     {
-        if (null !== $value) {
+        if ($value !== null) {
             return $value;
         }
-        $value = self::max('pos') + 1;
-
-        return $value;
+        return self::max('pos') + 1;
     }
 
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function toHtml(array $params = null)
+    public function toHtml(?array $params = null): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         /**
          * @phpstan-var view-string
          */
         $view = 'pub_theme::layouts.widgets';
-        if (null !== $this->layout_position) {
+        if ($this->layout_position !== null) {
             $view .= '.'.$this->layout_position;
         }
         $view .= '.'.$this->blade;
@@ -108,7 +103,7 @@ class Widget extends BaseModel
             'row' => $this->linked,
             'widget' => $this,
         ];
-        if (null !== $params) {
+        if ($params !== null) {
             $view_params['params'] = $params;
         }
         if (! view()->exists($view)) {

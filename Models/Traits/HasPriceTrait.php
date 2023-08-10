@@ -23,26 +23,17 @@ namespace Modules\Xot\Models\Traits;
  */
 trait HasPriceTrait
 {
-    /**
-     * @return \Cknow\Money\Money
-     */
-    public function getPriceCurrencyAttribute($value)
+    public function getPriceCurrencyAttribute($value): \Cknow\Money\Money
     {
         return @money($this->price, $this->currency);
     }
 
-    /**
-     * @return \Cknow\Money\Money
-     */
-    public function getPriceCompleteCurrencyAttribute($value)
+    public function getPriceCompleteCurrencyAttribute($value): \Cknow\Money\Money
     {
         return @money($this->price_complete, $this->currency);
     }
 
-    /**
-     * @return \Cknow\Money\Money
-     */
-    public function getSubtotalCurrencyAttribute($value)
+    public function getSubtotalCurrencyAttribute($value): \Cknow\Money\Money
     {
         if ($this->qty > 0) {
             $value = $this->qty * $this->price;
@@ -53,12 +44,7 @@ trait HasPriceTrait
         return @money($value, $this->currency);
     }
 
-    /**
-     * @param float $number
-     *
-     * @return \Cknow\Money\Money
-     */
-    public function getCurrency($number)
+    public function getCurrency(float $number): \Cknow\Money\Money
     {
         return @money($number, $this->currency);
     }

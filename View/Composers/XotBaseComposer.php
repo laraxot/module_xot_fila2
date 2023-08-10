@@ -7,8 +7,6 @@ namespace Modules\Xot\View\Composers;
 use function call_user_func_array;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
-use Modules\UI\Models\Menu;
 use Nwidart\Modules\Facades\Module;
 use Nwidart\Modules\Laravel\Module as LaravelModule;
 
@@ -62,12 +60,9 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      *
-     * @param string $name
      * @param array  $arguments
-     *
-     * @return mixed|void
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         // Note: value of $name is case sensitive.
         // echo "Calling object method '$name' "
@@ -113,6 +108,42 @@ abstract class XotBaseComposer
         return \call_user_func_array($callback, $arguments);
     }
 
+<<<<<<< HEAD
+=======
+    /**
+     * Undocumented function.
+     */
+    public function setModule(string $module_name): self
+    {
+        $this->module_name = $module_name;
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function.
+     */
+    public function call(string $func, array|string|int|float|null ...$args): mixed
+    {
+        /**
+         * @var LaravelModule
+         */
+        $module = Module::find($this->module_name);
+        if (! \is_object($module)) {
+            throw new \Exception('not find ['.$this->module_name.'] on Modules ['.__LINE__.']['.__FILE__.']');
+        }
+
+        $view_composer_class = 'Modules\\'.$module->getName().'\\View\Composers\\'.$module->getName().'Composer';
+        if (! class_exists($view_composer_class)) {
+            throw new \Exception('['.$view_composer_class.']['.__LINE__.']['.__FILE__.']');
+        }
+        $view_composer = app($view_composer_class);
+
+        return $view_composer->{$func}(...$args);
+        // dddx([$view_composer, class_exists($view_composer)]);
+    }
+
+>>>>>>> b9465b74 (insights)
     /*
     togliere ogni riferimento a Theme
      * --.

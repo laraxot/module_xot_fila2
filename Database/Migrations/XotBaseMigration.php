@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Modules\Xot\Services\StubService;
 use Nwidart\Modules\Facades\Module;
 
 // ----- models -----
@@ -26,7 +25,7 @@ abstract class XotBaseMigration extends Migration
     // *
     public function __construct()
     {
-        if (null === $this->model) {
+        if ($this->model === null) {
             $model = $this->getModel();
             // 37     Dead catch - Exception is never thrown in the try block.
             // try {
@@ -43,7 +42,7 @@ abstract class XotBaseMigration extends Migration
 
     public function getModel(): string
     {
-        if (null !== $this->model_class) {
+        if ($this->model_class !== null) {
             return $this->model_class;
         }
         $name = class_basename($this);
@@ -65,84 +64,62 @@ abstract class XotBaseMigration extends Migration
 
     public function getTable(): string
     {
-        if (null === $this->model) {
+        if ($this->model === null) {
             return '';
         }
-        $table = $this->model->getTable();
-        /*
-        if (Str::endsWith($table, '_pivot')) {
-            $table = Str::before($table, '_pivot');
-        }
-        */
-        return $table;
+        return $this->model->getTable();
     }
 
-    /**
-     * @return \Illuminate\Database\Schema\Builder
-     */
-    public function getConn()
+    public function getConn(): \Illuminate\Database\Schema\Builder
     {
         // $conn_name=with(new MyModel())->getConnectionName();
         // \DB::reconnect('mysql');
         // dddx(config('database'));
         // \DB::purge('mysql');
         // \DB::reconnect('mysql');
-        if (null === $this->model) {
+        if ($this->model === null) {
             throw new \Exception('model is null');
         }
 
         $conn_name = $this->model->getConnectionName();
 
         // dddx([$this->model, $conn_name]);
-        $conn = Schema::connection($conn_name);
-
-        return $conn;
+        return Schema::connection($conn_name);
     }
 
-    /**
-     * @return \Doctrine\DBAL\Schema\AbstractSchemaManager
-     */
-    public function getSchemaManager()
+    public function getSchemaManager(): \Doctrine\DBAL\Schema\AbstractSchemaManager
     {
-        $schema_manager = $this->getConn()
+        return $this->getConn()
             ->getConnection()
             ->getDoctrineSchemaManager();
-
-        return $schema_manager;
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
-     *
-     * @return \Doctrine\DBAL\Schema\Table
      */
-    public function getTableDetails()
+    public function getTableDetails(): \Doctrine\DBAL\Schema\Table
     {
-        $table_details = $this->getSchemaManager()
+        return $this->getSchemaManager()
             ->listTableDetails($this->getTable());
-
-        return $table_details;
     }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      *
-     * @return \Doctrine\DBAL\Schema\Index[]
+     * @return array<\Doctrine\DBAL\Schema\Index>
      */
-    public function getTableIndexes()
+    public function getTableIndexes(): array
     {
-        $table_indexes = $this->getSchemaManager()
+        return $this->getSchemaManager()
             ->listTableIndexes($this->getTable());
-
-        return $table_indexes;
     }
 
     /**
      * ---.
      */
-    public function tableExists(string $table = null): bool
+    public function tableExists(?string $table = null): bool
     {
-        if (null === $table) {
+        if ($table === null) {
             $table = $this->getTable();
         }
 
@@ -194,17 +171,13 @@ abstract class XotBaseMigration extends Migration
         $doctrineTable = $this->getTableDetails();
 
         // $indexes=$this->getTableIndexes();
-        $has_index = $doctrineTable->hasIndex($tbl.'_'.$index.'_index');
-        // dddx(['indexes'=>$indexes,'has_index'=>$has_index]);
-        return $has_index;
+        return $doctrineTable->hasIndex($tbl.'_'.$index.'_index');
     }
 
     public function hasIndexName(string $name): bool
     {
         $doctrineTable = $this->getTableDetails();
-        $has_index = $doctrineTable->hasIndex($name);
-
-        return $has_index;
+        return $doctrineTable->hasIndex($name);
     }
 
     /**
@@ -227,11 +200,8 @@ abstract class XotBaseMigration extends Migration
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
-     * @return void
      */
-    public function down()
+    public function down(): void
     {
         $this->getConn()->dropIfExists($this->getTable());
     }
@@ -266,10 +236,8 @@ abstract class XotBaseMigration extends Migration
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
-    public function tableCreate(\Closure $next)
+    public function tableCreate(\Closure $next): void
     {
         if (! $this->tableExists()) {
             $this->getConn()->create(
@@ -281,10 +249,8 @@ abstract class XotBaseMigration extends Migration
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
-    public function tableUpdate(\Closure $next)
+    public function tableUpdate(\Closure $next): void
     {
         $this->getConn()->table(
             $this->getTable(),

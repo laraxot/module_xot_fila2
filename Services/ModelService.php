@@ -28,9 +28,8 @@ use function in_array;
  */
 class ModelService
 {
-    private static ?self $_instance = null;
-
     protected Model $model;
+    private static ?self $_instance = null;
 
     /**
      * getInstance.
@@ -124,11 +123,11 @@ class ModelService
          */
         $models = config('morph_map');
 
-        $post_type = collect($models)->search(\get_class($model));
+        $post_type = collect($models)->search($model::class);
 
-        if (false === $post_type) {
+        if ($post_type === false) {
             $post_type = snake_case(class_basename($model));
-            Relation::morphMap([$post_type => \get_class($model)]);
+            Relation::morphMap([$post_type => $model::class]);
         }
 
         return (string) $post_type;
@@ -151,13 +150,13 @@ class ModelService
             $res = $method->getName(); // ?? $method->__toString(); // 76     Call to an undefined method ReflectionType::getName().
             // $res = PHP_VERSION_ID < 70100 ? $method->__toString() : $method->getName();
 
-            if (0 === $method->getNumberOfRequiredParameters() && $method->class === \get_class($model)) {
+            if ($method->getNumberOfRequiredParameters() === 0 && $method->class === $model::class) {
                 // $returnType = $method->getReturnType();
                 // if (null !== $returnType && false !== strpos($returnType->getName(), '\\Relations\\')) {
                 // if (in_array(class_basename($returnType->getName()), ['HasOne', 'HasMany', 'BelongsTo', 'BelongsToMany', 'MorphToMany', 'MorphTo'])) {
                 //    $relations[] = $res;
                 // } elseif ($doc && false !== strpos($doc, '\\Relations\\')) {
-                if ($doc && false !== strpos($doc, '\\Relations\\')) {
+                if ($doc && strpos($doc, '\\Relations\\') !== false) {
                     $relations[] = $res;
                 }
             }
@@ -178,7 +177,7 @@ class ModelService
         $relationships = [];
 
         foreach ((new \ReflectionClass($model))->getMethods(\ReflectionMethod::IS_PUBLIC) as $method) {
-            if ($method->class !== \get_class($model)
+            if ($method->class !== $model::class
                 || ! empty($method->getParameters())
                 || __FUNCTION__ === $method->getName()
             ) {
@@ -206,19 +205,14 @@ class ModelService
     {
         $model = $this->model;
         $relations = self::getRelationships();
-        $names = collect($relations)->map(
+        return collect($relations)->map(
             function ($item) {
                 return $item['name'];
             }
         )->values()->all();
-
-        return $names;
     }
 
-    /**
-     * @param array|string $index
-     */
-    public function indexIfNotExists($index): void
+    public function indexIfNotExists(array|string $index): void
     {
         $model = $this->model;
         if (\is_array($index)) {
@@ -265,15 +259,11 @@ class ModelService
 
     /**
      * execute a query.
-     *
-     * @return bool
      */
-    public function query(string $sql)
+    public function query(string $sql): bool
     {
         $model = $this->model;
-        $res = $model->getConnection()->statement($sql);
-        // $res=$model->getConnection()->select($sql);
-        return $res;
+        return $model->getConnection()->statement($sql);
     }
 
     /**
@@ -281,13 +271,11 @@ class ModelService
      *
      * @return array
      */
-    public function select(string $sql)
+    public function select(string $sql): array
     {
         $model = $this->model;
         // $res=$model->getConnection()->statement($sql);
-        $res = $model->getConnection()->select($sql);
-
-        return $res;
+        return $model->getConnection()->select($sql);
     }
 
     /**
@@ -303,7 +291,7 @@ class ModelService
         $dbSchemaManager = $connection->getDoctrineSchemaManager();
         $table_names = $dbSchemaManager->listTableNames();
 
-        $data = collect($table_names)->map(
+        return collect($table_names)->map(
             function ($table_name) use ($dbSchemaManager) {
                 $doctrineTable = $dbSchemaManager->listTableDetails($table_name);
                 $columns = $doctrineTable->getColumns();
@@ -314,12 +302,12 @@ class ModelService
                             'name' => $col->getName(),
                             'type' => $col->getType()->getName(),
                         ];
-                    });
+                    }
+                );
 
                 return ['name' => $table_name, 'fields' => $fields];
-            });
-
-        return $data;
+            }
+        );
     }
 
     public function modelExistsByTableName(string $table_name): bool

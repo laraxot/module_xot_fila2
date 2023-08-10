@@ -36,7 +36,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
             return;
         }
 
-        abort_if('local' !== config('app.env'), 403);
+        abort_if(config('app.env') !== 'local', 403);
     }
 
     protected function redirectTo($request): string
@@ -46,10 +46,14 @@ abstract class XotBaseFilamentMiddleware extends Middleware
         return route("{$context}.auth.login");
     }
 
+<<<<<<< HEAD
     /**
      * @return \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
      */
     private function getModule()
+=======
+    private function getModule(): \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
+>>>>>>> b9465b74 (insights)
     {
         return app('modules')->findOrFail(static::$module);
     }

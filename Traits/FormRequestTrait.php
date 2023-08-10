@@ -14,9 +14,9 @@ trait FormRequestTrait
      *
      * @return array
      */
-    public function messages()
+    public function messages(): array
     {
-        $pieces = explode('\\', __CLASS__);
+        $pieces = explode('\\', self::class);
         $pack = mb_strtolower($pieces[1]);
         // dddx($pieces);
         $pieces = \array_slice($pieces, 3);
@@ -35,8 +35,6 @@ trait FormRequestTrait
         if (! \is_array($tradGeneric)) {
             $tradGeneric = [];
         }
-        $trad = array_merge($tradGeneric, $trad);
-
-        return $trad;
+        return array_merge($tradGeneric, $trad);
     }
 }

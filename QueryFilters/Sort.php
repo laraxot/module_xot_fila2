@@ -4,6 +4,7 @@
  * https://jeffochoa.me/understanding-laravel-pipelines.
  * https://dev.to/abrardev99/pipeline-pattern-in-laravel-278p.
  */
+
 declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
@@ -14,12 +15,8 @@ class Sort
 {
     /**
      * Undocumented function.
-     *
-     * @param Request $request
-     *
-     * @return \Closure
      */
-    public function handle($request, \Closure $next)
+    public function handle(Request $request, \Closure $next): \Closure
     {
         if (! request()->has('sort')) {
             return $next($request);

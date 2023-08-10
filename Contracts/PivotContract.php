@@ -14,12 +14,12 @@ use Illuminate\Database\Eloquent\Collection;
  * @property string|null                    $price
  * @property string|null                    $price_currency
  * @property int|null                       $status
- * @property Collection|ProductContract[]   $products
- * @property Collection|ChangeCatContract[] $changeCats
+ * @property Collection|array<ProductContract>   $products
+ * @property Collection|array<ChangeCatContract> $changeCats
  *
  * @method mixed update($params)
  *
- * @mixin  \Eloquent
+ * @mixin \Eloquent
  */
 interface PivotContract
 {

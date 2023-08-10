@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method BelongsTo user()
  * @method mixed     getAttributeValue(string $key)
  *
- * @mixin  \Eloquent
+ * @mixin \Eloquent
  */
 interface ModelContract
 {

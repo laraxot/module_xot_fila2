@@ -56,24 +56,18 @@ class XotData extends Data
 
     public function getProfileClass(): string
     {
-        $profile_class = 'Modules\\'.$this->main_module.'\Models\Profile';
-
-        return $profile_class;
+        return 'Modules\\'.$this->main_module.'\Models\Profile';
     }
 
     public function getHomeController(): string
     {
-        $class = 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
-
-        return $class;
+        return 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
     }
 
     public function getProfileModelByUserId(string $user_id): Model
     {
         $profile_class = $this->getProfileClass();
-        $profile = app($profile_class)->firstOrCreate(['user_id' => $user_id]);
-
-        return $profile;
+        return app($profile_class)->firstOrCreate(['user_id' => $user_id]);
     }
 
     public function getProfileModel(): Model

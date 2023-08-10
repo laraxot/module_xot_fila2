@@ -38,13 +38,15 @@ class MorphToManyAction
             return;
         }
 
-        dddx([
+        dddx(
+            [
             'message' => 'wip',
             'row' => $row,
             'relation' => $relation,
             'relation_rows' => $relation->rows->exists(),
             't' => $row->{$relation->name},
-        ]);
+            ]
+        );
 
         dddx('wip');
         /*

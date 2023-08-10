@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+<<<<<<< HEAD
 use function get_class;
 
 use Illuminate\Support\Facades\Auth;
+=======
+>>>>>>> b9465b74 (insights)
 use Illuminate\Support\Facades\File;
 use Modules\Xot\Datas\XotData;
 
@@ -23,7 +26,7 @@ class PolicyService
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
         /*
@@ -41,7 +44,7 @@ class PolicyService
     public static function get(object $obj): self
     {
         // self::$obj = $obj;
-        $class = \get_class($obj);
+        $class = $obj::class;
         $class_name = class_basename($obj);
         $class_ns = substr($class, 0, -(\strlen($class_name) + 1));
 
@@ -57,7 +60,7 @@ class PolicyService
         self::$in_vars['class'] = $class;
         $autoloader_reflector = new \ReflectionClass(self::$in_vars['class']);
         $filename = $autoloader_reflector->getFileName();
-        if (false === $filename) {
+        if ($filename === false) {
             throw new \Exception('autoloader_reflector error');
         }
         $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
@@ -90,7 +93,7 @@ class PolicyService
         }
         // $user_class = get_class(Auth::user());
         $user_class = $xotData->getUserClass();
-        $replaces = [
+        return [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,
             'DummyFullModel' => $class,
@@ -99,8 +102,6 @@ class PolicyService
             'NamespacedDummyUserModel' => $user_class,
             'NamespacedDummyModel' => $class,
         ];
-
-        return $replaces;
     }
 
     public function getClass(): string
@@ -141,8 +142,6 @@ class PolicyService
             dddx(debug_backtrace());
         }
 
-        $res = self::getInstance();
-
-        return $res;
+        return self::getInstance();
     }
 }

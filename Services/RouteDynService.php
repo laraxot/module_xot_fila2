@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Str;
+<<<<<<< HEAD
 
 use function is_array;
 
 use Route;
 
+=======
+>>>>>>> b9465b74 (insights)
 use function Safe\preg_replace;
 
 use Webmozart\Assert\Assert;
@@ -25,13 +28,11 @@ class RouteDynService
 
     public static function getGroupOpts(array $v, ?string $namespace): array
     {
-        $group_opts = [
+        return [
             'prefix' => self::getPrefix($v, $namespace),
             'namespace' => self::getNamespace($v, $namespace),
             'as' => self::getAs($v, $namespace),
         ];
-
-        return $group_opts;
     }
 
     // ret false|mixed|string|string[]
@@ -44,7 +45,7 @@ class RouteDynService
         $prefix = mb_strtolower($v['name']);
         // /*
         $param_name = self::getParamName($v, $namespace);
-        if ('' !== $param_name) {
+        if ($param_name !== '') {
             /*
             Call to function is_array() with string will always evaluate to false.
             if (\is_array($param_name)) {
@@ -89,7 +90,7 @@ class RouteDynService
         // }
         $namespace = str_replace('{', '', $namespace);
         $namespace = str_replace('}', '', $namespace);
-        if ('' === $namespace) {
+        if ($namespace === '') {
             return null;
         }
         if (\is_array($namespace)) {
@@ -106,7 +107,7 @@ class RouteDynService
         }
         $v['act'] = $v['name'];
         $v['act'] = preg_replace('/{.*}\//', '', $v['act']);
-        if (null === $v['act']) {
+        if ($v['act'] === null) {
             $v['act'] = '';
         }
         $v['act'] = str_replace('/', '_', $v['act']);
@@ -130,15 +131,13 @@ class RouteDynService
         $param_name = str_replace('{', '', $param_name);
         $param_name = str_replace('}', '', $param_name);
         // $param_name=null;
-        $param_name = mb_strtolower($param_name);
-
-        return $param_name;
+        return mb_strtolower($param_name);
     }
 
     /**
-     * @return array|false|string|string[]
+     * @return array|false|string|array<string>
      */
-    public static function getParamsName(array $v, ?string $namespace)
+    public static function getParamsName(array $v, ?string $namespace): array|false|string
     {
         $param_name = self::getParamName($v, $namespace);
         /*
@@ -149,9 +148,7 @@ class RouteDynService
             $params_name = $param_name;
         }
         */
-        $params_name = [$param_name];
-
-        return $params_name;
+        return [$param_name];
     }
 
     public static function getResourceOpts(array $v, ?string $namespace): array
@@ -168,7 +165,7 @@ class RouteDynService
         if (isset($v['only'])) {
             $opts['only'] = $v['only'];
         }
-        if ('' === $param_name && ! isset($opts['only'])) {
+        if ($param_name === '' && ! isset($opts['only'])) {
             $opts['only'] = ['index'];
         }
         $where = [];
@@ -203,14 +200,7 @@ class RouteDynService
 
     public static function getUri(array $v, ?string $namespace): string
     {
-        $uri = mb_strtolower($v['name']);
-        /*
-        $v['prefix']=self::getPrefix($v,$namespace);
-        if(isset($v['prefix'])){ //------------ !!!!! da verificare che non faccia danni
-        $uri=$v['prefix'].'/'.$uri;
-        }
-         */
-        return $uri;
+        return mb_strtolower($v['name']);
     }
 
     public static function getMethod(array $v, ?string $namespace): array
@@ -226,28 +216,24 @@ class RouteDynService
     {
         $controller = self::getController($v, $namespace);
         $act = self::getAct($v, $namespace);
-        $uses = $controller.'@'.$act;
-
-        return $uses;
+        return $controller.'@'.$act;
     }
 
     public static function getCallback(array $v, ?string $namespace, ?string $curr): array
     {
         $as = Str::slug($v['name']); // !!!!!! test da controllare
         $uses = self::getUses($v, $namespace);
-        if (null !== $curr) {
+        if ($curr !== null) {
             $uses = '\\'.self::$namespace_start.'\\'.$curr.'\\'.$uses;
         } else {
             $uses = '\\'.self::$namespace_start.'\\'.$uses;
         }
-        $callback = ['as' => $as, 'uses' => $uses];
-
-        return $callback;
+        return ['as' => $as, 'uses' => $uses];
     }
 
-    public static function dynamic_route(array $array, string $namespace = null, string $namespace_start = null, string $curr = null): void
+    public static function dynamic_route(array $array, ?string $namespace = null, ?string $namespace_start = null, ?string $curr = null): void
     {
-        if (null !== $namespace_start) {
+        if ($namespace_start !== null) {
             self::$namespace_start = $namespace_start;
         } /*
         if($curr!=null){
@@ -260,7 +246,7 @@ class RouteDynService
             self::createRouteResource($v, $namespace);
             \Route::group(
                 $group_opts,
-                function () use ($v, $namespace, $curr) {
+                function () use ($v, $namespace, $curr): void {
                     self::createRouteActs($v, $namespace, $curr);
                     self::createRouteSubs($v, $namespace, $curr);
                 }
@@ -274,7 +260,7 @@ class RouteDynService
 
     public static function createRouteResource(array $v, ?string $namespace): void
     {
-        if (null === $v['name']) {
+        if ($v['name'] === null) {
             return;
         }
         $opts = self::getResourceOpts($v, $namespace);
@@ -302,7 +288,7 @@ class RouteDynService
         }
         }
          */
-        if (null === $curr) {
+        if ($curr === null) {
             $curr = $sub_namespace;
         } else {
             $piece = explode('\\', $curr);
@@ -377,12 +363,12 @@ class RouteDynService
 
     public static function prefixedResourceNames(string $prefix): array
     {
-        if ('.' === mb_substr($prefix, -1)) {
+        if (mb_substr($prefix, -1) === '.') {
             $prefix = mb_substr($prefix, 0, -1);
         }
         // Strict comparison using === between null and non-empty-string will always evaluate to false.
         // if ('' === $prefix || null === $prefix) {
-        if ('' === $prefix) {
+        if ($prefix === '') {
             return ['index' => $prefix.'index', 'create' => $prefix.'create', 'store' => $prefix.'store', 'show' => $prefix.'show', 'edit' => $prefix.'edit', 'update' => $prefix.'update', 'destroy' => $prefix.'destroy'];
         }
         $prefix = mb_strtolower($prefix);
@@ -396,7 +382,7 @@ class RouteDynService
 
     public static function getContainerActs(): array
     {
-        $cont_acts = [
+        return [
             [
                 'name' => 'Edit',
                 'act' => 'indexEdit',
@@ -410,20 +396,16 @@ class RouteDynService
                 'act' => 'indexAttach',
             ], // end act_n
         ];
-
-        return $cont_acts;
     }
 
     public static function getItemActs(): array
     {
-        $acts = [
+        return [
             // ['name' => 'attach'], //end act_n
             ['name' => 'detach', 'method' => ['DELETE', 'GET']], // end act_n
             // ['name' => 'moveUp', 'method' => ['PUT', 'GET']],   // se uso "order" questi non mi servono
             // ['name' => 'moveDown', 'method' => ['PUT', 'GET']],
-        ]; // end acts
-
-        return $acts;
+        ];
     }
 
     public static function generate(int $n = 0): array

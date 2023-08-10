@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Facades\Excel;
 
 /**
  * Undocumented class.
@@ -30,7 +29,7 @@ class XLSService
      */
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
 
@@ -55,9 +54,8 @@ class XLSService
         $num2 = intval($num / 26);
         if ($num2 > 0) {
             return $this->getNameFromNumber($num2 - 1).$letter;
-        } else {
-            return $letter;
         }
+        return $letter;
     }
 
     /**
@@ -85,8 +83,8 @@ class XLSService
     public function fromInputFileName(string $name): self
     {
         $file = request()->file('file');
-        if (null === $file) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+        if ($file === null) {
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         return $this->fromRequestFile($file);
@@ -100,19 +98,19 @@ class XLSService
      * @throws \Illuminate\Validation\ValidationException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function fromRequestFile($file): self
+    public function fromRequestFile(array|\Illuminate\Http\UploadedFile $file): self
     {
         if (! \is_object($file)) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         if (! method_exists($file, 'getRealPath')) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
         $path = $file->getRealPath();
 
-        if (false === $path) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+        if ($path === false) {
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         return $this->fromFilePath($path);

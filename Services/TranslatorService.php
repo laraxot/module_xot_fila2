@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Arr;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
+=======
+use Illuminate\Support\Facades\File;
+// ---- services ---
+>>>>>>> b9465b74 (insights)
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator as BaseTranslator;
-use Modules\UI\Services\ThemeService;
 
 // dddx('leggo');
 
@@ -22,6 +26,34 @@ use Modules\UI\Services\ThemeService;
  */
 class TranslatorService extends BaseTranslator
 {
+<<<<<<< HEAD
+=======
+    /**
+     * get.
+     */
+    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): array|string
+    {
+        // backtrace(true);
+        // trans parte da xotbasepanel riga 1109 (per ora)
+        // superdump([$key, $replace , $locale , $fallback ]);
+
+        // *
+        if ($locale === null) {
+            $locale = app()->getLocale();
+        }
+        // */
+        return parent::get($key, $replace, $locale, $fallback);
+    }
+
+    /**
+     * getFromJson.
+     */
+    public function getFromJson(string $key, array $replace = [], ?string $locale = null): array|string
+    {
+        return $this->get($key, $replace, $locale);
+    }
+
+>>>>>>> b9465b74 (insights)
     public static function parse(array $params): array
     {
         dddx('a');
@@ -56,10 +88,7 @@ class TranslatorService extends BaseTranslator
         ];
     }
 
-    /**
-     * @return void
-     */
-    public static function store(array $data)
+    public static function store(array $data): void
     {
         $data = collect($data)->map(
             function ($v, $k) {
@@ -103,13 +132,7 @@ class TranslatorService extends BaseTranslator
         }
     }
 
-    /**
-     * @param string $key
-     * @param string $value
-     *
-     * @return void
-     */
-    public static function set($key, $value)
+    public static function set(string $key, string $value): void
     {
         $lang = app()->getLocale();
         if (trans($key) === $value) {
@@ -159,17 +182,13 @@ class TranslatorService extends BaseTranslator
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
         $file_path = $path.\DIRECTORY_SEPARATOR.$lang.\DIRECTORY_SEPARATOR.$group.'.php';
-        $file_path = FileService::fixPath($file_path);
-
-        return $file_path;
+        return FileService::fixPath($file_path);
     }
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
-    public static function add(string $key, array $data)
+    public static function add(string $key, array $data): void
     {
         $file_path = self::getFilePath($key);
         $original = [];
@@ -203,10 +222,8 @@ class TranslatorService extends BaseTranslator
 
     /**
      * Undocumented function.
-     *
-     * @return void
      */
-    public static function addMissing(string $key, array $data)
+    public static function addMissing(string $key, array $data): void
     {
         $missing = collect($data)
             ->filter(
@@ -228,9 +245,7 @@ class TranslatorService extends BaseTranslator
         $data = collect($data)->map(
             function ($item) use ($key) {
                 $k = $key.'.'.$item;
-                $v = trans($k);
-
-                return $v;
+                return trans($k);
             }
         )->all();
 

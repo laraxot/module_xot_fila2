@@ -66,18 +66,14 @@ class ChainService
         $this->buildChain($root_id, $maxlevel);
     }
 
-    /**
-     * @param int $rootcatid
-     * @param int $maxlevel
-     */
-    public function buildChain($rootcatid, $maxlevel): void
+    public function buildChain(int $rootcatid, int $maxlevel): void
     {
         foreach ($this->rows as $row) {
             // considerando che ChainService viene utilizzato da XotBasePanel->optionsTree()
             // che a sua volta viene utilizzato in FormX\Resources\views\collective\fields\select\field_parent.blade.php
             // che vuole parent_id (radice) uguale a 0
             // controllo che la row radice non abbia parent_id uguale a null, in caso...
-            if (null === $row[$this->parent_field]) {
+            if ($row[$this->parent_field] === null) {
                 $row[$this->parent_field] = 0;
                 $row->save();
             }
@@ -86,12 +82,7 @@ class ChainService
         $this->makeBranch($rootcatid, 0, $maxlevel);
     }
 
-    /**
-     * @param int $parent_id
-     * @param int $level
-     * @param int $maxlevel
-     */
-    public function makeBranch($parent_id, $level, $maxlevel): void
+    public function makeBranch(int $parent_id, int $level, int $maxlevel): void
     {
         if (! \is_array($this->table)) {
             $this->table = [];
@@ -108,7 +99,7 @@ class ChainService
         foreach ($rows as $item) {
             $item['indent'] = $level;
             $this->chain_table[] = $item;
-            if ((isset($this->table[$item[$this->primary_field]])) && (($maxlevel > $level + 1) || (0 === $maxlevel))) {
+            if (isset($this->table[$item[$this->primary_field]]) && (($maxlevel > $level + 1) || ($maxlevel === 0))) {
                 $this->makeBranch($item[$this->primary_field], $level + 1, $maxlevel);
             }
         }
@@ -117,16 +108,14 @@ class ChainService
     /**
      * @param array $a
      * @param array $b
-     *
-     * @return int
      */
-    public function chainCMP($a, $b)
+    public function chainCMP(array $a, array $b): int
     {
         if ($a[$a['key']] === $b[$b['key']]) {
             return 0;
         }
 
-        return ($a[$a['key']] < $b[$b['key']]) ? -1 : 1;
+        return $a[$a['key']] < $b[$b['key']] ? -1 : 1;
     }
 }
 /*

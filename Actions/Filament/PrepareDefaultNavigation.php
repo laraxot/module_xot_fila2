@@ -16,13 +16,19 @@ class PrepareDefaultNavigation
      */
     public function execute(string $module, string $context): void
     {
-        Filament::serving(function () use ($module, $context) {
-            Filament::forContext('filament', function () use ($module, $context) {
-                app(RegisterFilamentNavigationItem::class)->execute($module, $context);
-            });
-            Filament::forContext($context, function () use ($module, $context) {
-                app(RenderContextNavigation::class)->execute($module, $context);
-            });
-        });
+        Filament::serving(
+            function () use ($module, $context) {
+                Filament::forContext(
+                    'filament', function () use ($module, $context) {
+                        app(RegisterFilamentNavigationItem::class)->execute($module, $context);
+                    }
+                );
+                Filament::forContext(
+                    $context, function () use ($module, $context) {
+                        app(RenderContextNavigation::class)->execute($module, $context);
+                    }
+                );
+            }
+        );
     }
 }

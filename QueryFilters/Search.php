@@ -4,6 +4,7 @@
  * https://jeffochoa.me/understanding-laravel-pipelines.
  * https://dev.to/abrardev99/pipeline-pattern-in-laravel-278p.
  */
+
 declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
@@ -19,12 +20,9 @@ class Search
     /**
      * Undocumented function.
      *
-     * @param Builder $query
-     * @param array   ...$args
-     *
-     * @return \Closure
+     * @param array ...$args
      */
-    public function handle($query, \Closure $next, ...$args)
+    public function handle(Builder $query, \Closure $next, array ...$args): \Closure
     {
         $search_fields = [];
         $model = $query->getModel();
@@ -33,7 +31,7 @@ class Search
          */
         $q = request('q', '');
 
-        if (0 === \count($search_fields)) { // se non gli passo nulla, cerco in tutti i fillable
+        if (\count($search_fields) === 0) { // se non gli passo nulla, cerco in tutti i fillable
             $search_fields = $model->getFillable();
         }
         // $table = $model->getTable();

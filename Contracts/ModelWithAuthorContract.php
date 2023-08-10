@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method array     toArray()
  * @method BelongsTo user()
  *
- * @mixin  \Eloquent
+ * @mixin \Eloquent
  */
 interface ModelWithAuthorContract
 {

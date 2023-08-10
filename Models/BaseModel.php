@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models;
 
-use GeneaLabs\LaravelModelCaching\Traits\Cachable;
 // use Laravel\Scout\Searchable;
 // ---------- traits
 
@@ -25,11 +24,11 @@ abstract class BaseModel extends Model
     /**
      * Indicates whether attributes are snake cased on arrays.
      *
-     * @see  https://laravel-news.com/6-eloquent-secrets
-     *
-     * @var bool
+     * @see https://laravel-news.com/6-eloquent-secrets
      */
-    public static $snakeAttributes = true;
+    public static bool $snakeAttributes = true;
+    public bool $incrementing = true;
+    public bool $timestamps = true;
 
     /**
      * @var bool
@@ -43,35 +42,37 @@ abstract class BaseModel extends Model
 
     protected $perPage = 30;
 
-    /**
-     * @var string
-     */
-    protected $connection = 'mysql'; // this will use the specified database connection
+    protected string $connection = 'mysql'; // this will use the specified database connection
 
     /**
-     * @var string[]
+     * @var array<string>
      */
-    protected $fillable = ['id'];
+    protected array $fillable = ['id'];
     /**
      * @var array<string, string>
      */
-    protected $casts = [
+    protected array $casts = [
         // 'published_at' => 'datetime:Y-m-d', // da verificare
     ];
 
     /**
-     * @var string[]
+     * @var array<string>
      */
+<<<<<<< HEAD
     protected $dates = ['published_at', 'created_at', 'updated_at'];
     /**
      * @var string
      */
     protected $primaryKey = 'id';
 
+=======
+    protected array $dates = ['published_at', 'created_at', 'updated_at'];
+    protected string $primaryKey = 'id';
+>>>>>>> b9465b74 (insights)
     /**
      * @var array<int, string>
      */
-    protected $hidden = [
+    protected array $hidden = [
         // 'password'
     ];
 
@@ -83,10 +84,8 @@ abstract class BaseModel extends Model
 
     /**
      * Create a new factory instance for the model.
-     *
-     * @return \Illuminate\Database\Eloquent\Factories\Factory
      */
-    protected static function newFactory()
+    protected static function newFactory(): \Illuminate\Database\Eloquent\Factories\Factory
     {
         return FactoryService::newFactory(static::class);
     }

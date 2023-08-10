@@ -13,18 +13,16 @@ trait SushiConfigCrud
 {
     /**
      * bootUpdater function.
-     *
-     * @return void
      */
-    protected static function bootSushiConfigCrud()
+    protected static function bootSushiConfigCrud(): void
     {
         // parent::boot();
         /*
          * During a model create Eloquent will also update the updated_at field so
          * need to have the updated_by field here as well.
-         **/
+         */
         static::creating(
-            function ($model) {
+            function ($model): void {
                 $data = [];
                 $data['id'] = $model->max('id') + 1;
                 $data = array_merge($data, $model->toArray());
@@ -50,7 +48,8 @@ trait SushiConfigCrud
                         }
 
                         return $item;
-                    })->all();
+                    }
+                )->all();
 
                 file_put_contents($config_path, '<?php
                     return '.var_export($new, true).';');
@@ -62,7 +61,7 @@ trait SushiConfigCrud
          * updating.
          */
         static::updating(
-            function ($model) {
+            function ($model): void {
                 $data = $model->toArray();
 
                 $config_name = $model->config_name;
@@ -78,7 +77,8 @@ trait SushiConfigCrud
                 $up = collect($original)->groupBy('id')->map(
                     function ($item) {
                         return $item->first();
-                    })->all();
+                    }
+                )->all();
                 $id = $data['id'];
                 $up[$id] = $data;
 
@@ -90,9 +90,9 @@ trait SushiConfigCrud
         /*
          * Deleting a model is slightly different than creating or deleting.
          * For deletes we need to save the model first with the deleted_by field
-        **/
+        */
 
-        static::deleting(function ($model) {
+        static::deleting(function ($model): void {
             $data = $model->toArray();
 
             $config_name = $model->config_name;
@@ -108,7 +108,8 @@ trait SushiConfigCrud
             $up = collect($original)->groupBy('id')->map(
                 function ($item) {
                     return $item->first();
-                })->all();
+                }
+            )->all();
             $id = $data['id'];
             unset($up['id']);
 

@@ -30,10 +30,7 @@ TableException
  */
 class HtmlService
 {
-    /**
-     * @return string
-     */
-    public static function toPdf(array $params)
+    public static function toPdf(array $params): string
     {
         // dddx($params);
 

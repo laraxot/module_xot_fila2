@@ -11,17 +11,12 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  */
 class MapCollection extends ResourceCollection
 {
-    /**
-     * @var string
-     */
-    public $collects = MapResource::class;
+    public string $collects = MapResource::class;
 
     /**
-     * @param \Illuminate\Http\Request $request
-     *
      * @return array
      */
-    public function toArray($request)
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         return [
             'type' => 'FeatureCollection',

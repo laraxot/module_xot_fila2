@@ -6,7 +6,6 @@ namespace Modules\Xot\Models;
 
 // use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Modules\Tenant\Services\TenantService;
 use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Contracts\ModelWithUserContract;
 use Spatie\Permission\Traits\HasRoles;
@@ -93,15 +92,13 @@ class Profile extends BaseModel implements ModelWithUserContract, ModelProfileCo
 
     /**
      * Undocumented variable.
-     *
-     * @var string
      */
-    protected $guard_name = 'web';
+    protected string $guard_name = 'web';
 
     /**
-     * @var string[]
+     * @var array<string>
      */
-    protected $fillable = ['id', 'user_id'];
+    protected array $fillable = ['id', 'user_id'];
 
     /*
      * Undocumented function.

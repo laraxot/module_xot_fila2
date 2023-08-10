@@ -9,9 +9,8 @@ namespace Modules\Xot\Services;
 
 class Memoization
 {
-    private static ?self $_instance = null;
-
     protected array $memoized = [];
+    private static ?self $_instance = null;
 
     /**
      * Undocumented function.
@@ -44,10 +43,8 @@ class Memoization
 
     /**
      * Undocumented function.
-     *
-     * @return mixed|void
      */
-    public function memoize(string $key, \Closure $callback)
+    public function memoize(string $key, \Closure $callback): mixed
     {
         if (! isset($this->memoized[$key])) {
             return $this->memoized[$key] = $callback();

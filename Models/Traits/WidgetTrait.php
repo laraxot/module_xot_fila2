@@ -20,16 +20,13 @@ use Modules\Xot\Models\Widget;
  */
 trait WidgetTrait
 {
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function widgets()
+    public function widgets(): \Illuminate\Database\Eloquent\Relations\MorphMany
     {
         // questo sarebbe itemWidgets, ma teniamo questo nome
         return $this->morphMany(Widget::class, 'post')
             // ->whereNull('layout_position')
             ->where(
-                function ($query) {
+                function ($query): void {
                     $query->where('layout_position', '')
                         ->orWhereNull('layout_position');
                 }

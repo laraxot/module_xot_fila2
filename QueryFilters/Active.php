@@ -6,6 +6,7 @@
  * https://www.codechief.org/article/laravel-pipeline-interpretation-with-example.
  * https://medium.com/@jeffochoa/understanding-laravel-pipelines-a7191f75c351.
  */
+
 declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
@@ -16,12 +17,8 @@ class Active
 {
     /**
      * Undocumented function.
-     *
-     * @param Request $request
-     *
-     * @return \Closure
      */
-    public function handle($request, \Closure $next)
+    public function handle(Request $request, \Closure $next): \Closure
     {
         if (! request()->has('active')) {
             return $next($request);

@@ -4,6 +4,7 @@
  *
  * @category Services
  */
+
 declare(strict_types=1);
 
 namespace Modules\Xot\Services;
@@ -32,7 +33,7 @@ class ImageService
      */
     public static function getInstance(): self
     {
-        if (null === self::$_instance) {
+        if (self::$_instance === null) {
             self::$_instance = new self();
         }
 
@@ -54,7 +55,7 @@ class ImageService
     {
         foreach ($params as $k => $v) {
             $func = 'set'.Str::studly((string) $k);
-            if (null === $v) {
+            if ($v === null) {
                 $v = '';
             }
             $this->{$func}($v);
@@ -69,7 +70,7 @@ class ImageService
     public function setImg(string $val): self
     {
         $nophoto_path = public_path('img/nophoto.jpg');
-        if ('' === $val) {
+        if ($val === '') {
             $val = $nophoto_path;
         }
         if (Str::startsWith($val, '//')) {
@@ -92,7 +93,7 @@ class ImageService
      */
     public function setSrc(string $val): self
     {
-        if ('' === $val) {
+        if ($val === '') {
             $val = public_path('img/nophoto.jpg');
         }
         if (Str::startsWith($val, url(''))) { // se e' una immagine locale
@@ -172,13 +173,11 @@ class ImageService
      */
     public function src(): string
     {
-        if (null === $this->filename) {
-            throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
+        if ($this->filename === null) {
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
         $src = '/'.str_replace(public_path('/'), '', $this->filename);
-        $src = str_replace('//', '/', $src);
-
-        return $src;
+        return str_replace('//', '/', $src);
     }
 
     /**

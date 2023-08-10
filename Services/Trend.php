@@ -98,10 +98,12 @@ class Trend
     {
         $values = $this->builder
             ->toBase()
-            ->selectRaw("
+            ->selectRaw(
+                "
                 {$this->getSqlDate()} as {$this->dateAlias},
                 {$aggregate}({$column}) as aggregate
-            ")
+            "
+            )
             ->whereBetween($this->dateColumn, [$this->start, $this->end])
             ->groupBy($this->dateAlias)
             ->orderBy($this->dateAlias)
@@ -152,21 +154,25 @@ class Trend
         */
 
         // Cannot access property $aggregate on mixed.
-        $values = $values->map(fn ($value) => TrendData::from([
-            'date' => $value->{$this->dateAlias},
-            'aggregate' => $value->aggregate,
-        ]
-        ));
+        $values = $values->map(
+            fn ($value) => TrendData::from(
+                [
+                    'date' => $value->{$this->dateAlias},
+                    'aggregate' => $value->aggregate,
+                ]
+            )
+        );
 
         // Parameter #1 $callback of method Illuminate\Support\Collection<(int|string),mixed>::map()
         // expects callable(mixed, (int|string)): Modules\Xot\Datas\TrendData,
         // Closure(Illuminate\Support\Carbon): Modules\Xot\Datas\TrendData given
         $placeholders = $this->getDatePeriod()
             ->map(
-                fn (Carbon $date) => TrendData::from([
-                    'date' => $date->format($this->getCarbonDateFormat()),
-                    'aggregate' => 0,
-                ]
+                fn (Carbon $date) => TrendData::from(
+                    [
+                        'date' => $date->format($this->getCarbonDateFormat()),
+                        'aggregate' => 0,
+                    ]
                 )
             );
 

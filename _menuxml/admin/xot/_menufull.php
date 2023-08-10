@@ -6,7 +6,7 @@ if (! isset($route_params)) {
     $route_params = [];
 }
 
-$ris = [
+return [
     0 => [
         (object) [
             'id' => '1',
@@ -31,5 +31,3 @@ $ris = [
         ],
     ],
 ];
-
-return $ris;

@@ -6,7 +6,11 @@ namespace Modules\Xot\Services;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
+<<<<<<< HEAD
 use GuzzleHttp\Cookie\CookieJar;
+=======
+use GuzzleHttp\Cookie\CookieJarInterface;
+>>>>>>> b9465b74 (insights)
 // use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Cookie\CookieJarInterface;
 use GuzzleHttp\Cookie\FileCookieJar;
@@ -16,12 +20,14 @@ use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
-use Nette\Utils\Json;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
+<<<<<<< HEAD
 use Request;
 
+=======
+>>>>>>> b9465b74 (insights)
 use function Safe\fclose;
 use function Safe\file_get_contents;
 use function Safe\fopen;
@@ -29,8 +35,11 @@ use function Safe\ini_set;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\parse_url;
+<<<<<<< HEAD
 
 use Storage;
+=======
+>>>>>>> b9465b74 (insights)
 use Symfony\Component\DomCrawler\Crawler;
 
 // */
@@ -54,7 +63,7 @@ class ImportService
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
 
@@ -86,13 +95,13 @@ class ImportService
 
         $route_current = \Route::current();
         $params = [];
-        if (null !== $route_current) {
+        if ($route_current !== null) {
             $params = $route_current->parameters();
         }
 
         // $cookieJar = new CookieJar();
 
-        if (null === $this->cookieJar) {
+        if ($this->cookieJar === null) {
             $this->initCookieJar();
         }
 
@@ -136,7 +145,7 @@ class ImportService
     public function enableCookie(array $cookies): void
     {
         // $cookieJar->setCookie(SetCookie::fromString('SID="AuthKey 23ec5d03-86db-4d80-a378-6059139a7ead"; expires=Thu, 24 Nov 2016 13:52:20 GMT; path=/; domain=.sketchup.com'));
-        if (null === $this->cookieJar) {
+        if ($this->cookieJar === null) {
             $this->cookieJar = $this->initCookieJar();
         }
 
@@ -161,7 +170,7 @@ class ImportService
 
     public function enableRedirect(): void
     {
-        $onRedirect = function (RequestInterface $request, ResponseInterface $response, UriInterface $uri) {
+        $onRedirect = function (RequestInterface $request, ResponseInterface $response, UriInterface $uri): void {
             echo '<hr/>Redirecting! '.$request->getUri().' to '.$uri."\n";
         };
         $redirect_params = [
@@ -183,20 +192,15 @@ class ImportService
 
     /**
      * ---.
-     *
-     * @return mixed|void
      */
-    public function getConfig(string $x)
+    public function getConfig(string $x): mixed
     {
         // $cookieJar = $client->getConfig('cookies');
         // $cookieJar->toArray();
         return $this->client->getConfig($x);
     }
 
-    /**
-     * @return string
-     */
-    public function getEffectiveUrl(string $method, string $url, array $attrs = [])
+    public function getEffectiveUrl(string $method, string $url, array $attrs = []): string
     {
         $attrs['allow_redirects'] = [
             'max' => 10,        // allow at most 10 redirects.
@@ -211,10 +215,7 @@ class ImportService
         return $res->getHeaderLine('X-Guzzle-Redirect-History');
     }
 
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
-     */
-    public function jqueryRequest(string $method, string $url, array $attrs = [])
+    public function jqueryRequest(string $method, string $url, array $attrs = []): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         return view()->make('ui::jquery_request');
     }
@@ -223,7 +224,7 @@ class ImportService
 
     public function gRequest(string $method, string $url, array $attrs = [], string $out = 'res'): ?string
     {
-        if (null == $this->client) {
+        if ($this->client === null) {
             $this->importInit();
         }
         if (! isset($this->client_options['base_uri'])) {
@@ -239,7 +240,7 @@ class ImportService
             //    $url .= '?'.$url_info['query'];
             // }
             $query = collect($url_info)->get('query');
-            if ('' !== $query) {
+            if ($query !== '') {
                 $url .= '?'.$query;
             }
         }
@@ -289,10 +290,7 @@ class ImportService
         return $this->res->getStatusCode();
     }
 
-    /**
-     * @return string
-     */
-    public function getRedirectHistory()
+    public function getRedirectHistory(): string
     {
         return $this->res->getHeaderLine('X-Guzzle-Redirect-History'); // http://first-redirect, http://second-redirect, etc...
         // echo $res->getHeaderLine('X-Guzzle-Redirect-Status-History');// 301, 302, etc...
@@ -309,13 +307,9 @@ class ImportService
     */
 
     /**
-     * @param string $method
-     * @param string $url
-     * @param array  $attrs
-     *
-     * @return string
+     * @param array $attrs
      */
-    public function getCacheKey($method, $url, $attrs = [])
+    public function getCacheKey(string $method, string $url, array $attrs = []): string
     {
         $key = json_encode(['method' => $method, 'url' => $url, 'attrs' => $attrs]);
         $key .= '_1';
@@ -336,7 +330,7 @@ class ImportService
         );
         $this->client_options['headers']['referer'] = $url;
         if (! \is_string($value)) {
-            throw new \Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
+            throw new \Exception('['.__LINE__.']['.class_basename(self::class).']');
         }
 
         return $value;
@@ -354,18 +348,18 @@ class ImportService
              */
             $parse_url = parse_url($url);
             $url_info = collect($parse_url);
-            if (null !== $url_info->get('scheme') && null !== $url_info->get('host')) {
+            if ($url_info->get('scheme') !== null && $url_info->get('host') !== null) {
                 $this->client_options['base_uri'] = $url_info->get('scheme').'://'.$url_info->get('host');
             } else {
                 $this->client_options['base_uri'] = '';
             }
             $url = $url_info->get('path');
-            if (null !== $url_info->get('query')) {
+            if ($url_info->get('query') !== null) {
                 $url .= '?'.$url_info->get('query');
             }
         }
 
-        $file_path = (Str::slug((string) $this->client_options['base_uri'], '_').'/'.Str::slug((string) $url, '_').'.json');
+        $file_path = Str::slug((string) $this->client_options['base_uri'], '_').'/'.Str::slug((string) $url, '_').'.json';
         // $params=['method'=>$method,'url'=>$url,'attrs'=>$attrs];
         // $key=json_encode(array_values($params));
         // $key=str_slug
@@ -422,7 +416,7 @@ class ImportService
             $linked->longitude = $loc_obj->geometry->location->lng;
         } else {
             $msg = [
-                'id' => isset($id) ? $id : '',
+                'id' => $id ?? '',
                 'address' => $address,
                 'obj' => $loc_obj,
             ];
@@ -483,7 +477,7 @@ class ImportService
             return;
         }
         $resource = fopen($filename, 'w');
-        if (false === $resource) {
+        if ($resource === false) {
             throw new \Exception('can open '.$filename);
         }
         $stream = \GuzzleHttp\Psr7\Utils::streamFor($resource);
@@ -492,7 +486,7 @@ class ImportService
             $url,
             [
                 'sink' => $stream,
-                'progress' => function ($download_size, $downloaded, $upload_size, $uploaded) {
+                'progress' => function ($download_size, $downloaded, $upload_size, $uploaded): void {
                     // $this->downloadProgress($download_size, $downloaded, $upload_size, $uploaded);
                     echo '<br>['.$download_size.']['.$downloaded.']['.$upload_size.']['.$uploaded.']';
                 },
@@ -525,10 +519,7 @@ class ImportService
 
     // end function
 
-    /**
-     * @return mixed|null
-     */
-    public function pixabay(array $params)
+    public function pixabay(array $params): mixed
     {
         $lang = app()->getLocale();
         $image_type = 'photo';
@@ -551,17 +542,12 @@ class ImportService
          * @var array
          */
         $hits = $json->hits;
-        $ris = collect($hits)
+        return collect($hits)
             ->shuffle()
             ->first();
-
-        return $ris;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function pexels(array $params)
+    public function pexels(array $params): mixed
     {
         $lang = app()->getLocale();
         $q = 'necessary';
@@ -573,10 +559,7 @@ class ImportService
 
     // -------------------------------------------------------------------------
 
-    /**
-     * @return mixed|string|void
-     */
-    public function trans(array $params)
+    public function trans(array $params): mixed
     {
         $i = rand(0, 20);
         if ($i > 0 && $i < 10) {
@@ -586,10 +569,7 @@ class ImportService
         return $this->mymemoryTrans($params);
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function apertiumTrans(array $params)
+    public function apertiumTrans(array $params): mixed
     {
         // https://github.com/24aitor/Laralang/blob/master/src/Builder/ApertiumTrans.php
         // $host = 'api.apertium.org';
@@ -597,10 +577,7 @@ class ImportService
         // $data = json_decode($urldata, true);
     }
 
-    /**
-     * @return string
-     */
-    public function googleTrans(array $params)
+    public function googleTrans(array $params): string
     {
         $host = 'translate.googleapis.com';
         $q = 'necessary';
@@ -611,7 +588,7 @@ class ImportService
         $urldata = file_get_contents("https://translate.googleapis.com/translate_a/single?client=gtx&sl={$from}&tl={$to}&dt=t&q={$q}");
         $tr = (string) $urldata;
         $tr = mb_substr($tr, 3, -6);
-        $tr = $tr.'["';
+        $tr .= '["';
         $tr = explode('],[', $tr);
         $trans = [];
         foreach ($tr as $tran) {
@@ -622,10 +599,7 @@ class ImportService
         return trim(implode(' ', $trans));
     }
 
-    /**
-     * @return mixed|void
-     */
-    public function mymemoryTrans(array $params)
+    public function mymemoryTrans(array $params): mixed
     {
         $host = 'api.mymemory.translated.net';
         $q = 'necessary';
@@ -642,7 +616,7 @@ class ImportService
         // $data = Json::decode($urldata, Json::FORCE_ARRAY);
         // $data = (array) Json::decode($urldata, Json::FORCE_ARRAY);
 
-        if (200 !== $data['responseStatus']) {
+        if ($data['responseStatus'] !== 200) {
             /* if (true == $this->debug) {
                  if (403 == $data['responseStatus']) {
                      $details = ($data['responseDetails']);
@@ -664,7 +638,7 @@ class ImportService
     /**
      * @return array
      */
-    public function getForms(array $params)
+    public function getForms(array $params): array
     {
         $html = '';
         $node_tag = '';

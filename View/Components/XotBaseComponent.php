@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\View\Components;
 
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Contracts\View\View;
 use Illuminate\Support\Str;
 use Illuminate\View\Component as IlluminateComponent;
 
@@ -14,9 +13,8 @@ use Illuminate\View\Component as IlluminateComponent;
  */
 abstract class XotBaseComponent extends IlluminateComponent
 {
-    protected static array $assets = [];
-
     public array $attrs = [];
+    protected static array $assets = [];
 
     public static function assets(): array
     {

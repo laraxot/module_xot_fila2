@@ -35,7 +35,7 @@ namespace Modules\Xot\Models;
 class Feed extends BaseModel
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
-    protected $fillable = ['id', 'created_at', 'updated_at'];
+    protected array $fillable = ['id', 'created_at', 'updated_at'];
 }

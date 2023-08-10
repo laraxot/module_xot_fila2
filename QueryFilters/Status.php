@@ -5,6 +5,7 @@
  * https://dev.to/abrardev99/pipeline-pattern-in-laravel-278p.
  * https://www.codecheef.org/article/laravel-pipeline-interpretation-with-example.
  */
+
 declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
@@ -15,12 +16,8 @@ class Status
 {
     /**
      * Undocumented function.
-     *
-     * @param Builder $query
-     *
-     * @return \Closure
      */
-    public function handle($query, \Closure $next)
+    public function handle(Builder $query, \Closure $next): \Closure
     {
         if (request()->has('status')) {
             $query->where('status', request('status'));

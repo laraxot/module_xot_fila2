@@ -28,10 +28,8 @@ trait Getter
 
     /**
      * __getStatic function.
-     *
-     * @return mixed|void
      */
-    public static function __getStatic(string $index)
+    public static function __getStatic(string $index): mixed
     {
         if (isset(self::$vars[$index])) {
             return self::$vars[$index];
@@ -44,7 +42,7 @@ trait Getter
         // dd(class_basename(get_called_class()));//ThemeService
         $class = static::class;
         // *
-        if ('' === $ris && isset($class::$config_name)) {
+        if ($ris === '' && isset($class::$config_name)) {
             $config_name = $class::$config_name;
             $ris = config($config_name.'.'.$index);
         }
@@ -74,15 +72,12 @@ trait Getter
     // * //se lo togli non funziona piu' le funzioni del themeservice
 
     /**
-     * @param string $method
      * @param array  $args
-     *
-     * @return mixed|void
      */
-    public static function __callStatic($method, $args)
+    public static function __callStatic(string $method, array $args): mixed
     {
         if (preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {
-            $reflector = new \ReflectionClass(__CLASS__);
+            $reflector = new \ReflectionClass(self::class);
             $property = mb_strtolower($match[2]).$match[3];
             if ($reflector->hasProperty($property)) {
                 $property = $reflector->getProperty($property);
@@ -102,12 +97,7 @@ trait Getter
 
     // */
 
-    /**
-     * @param string $index
-     *
-     * @return bool
-     */
-    public function __isset($index)
+    public function __isset(string $index): bool
     {
         return isset($this->vars[$index]);
     }
@@ -115,7 +105,7 @@ trait Getter
     public function __concat(string $index, string $value): void
     {
         $tmp = $this->__get($index);
-        $tmp = $tmp.$value;
+        $tmp .= $value;
         $this->__set($index, $tmp);
     }
 
@@ -128,12 +118,7 @@ trait Getter
         $this->vars[$index] = $value;
     }
 
-    /**
-     * @param string $index
-     *
-     * @return mixed|null
-     */
-    public function __get($index)
+    public function __get(string $index): mixed
     {
         if (isset($this->vars[$index])) {
             return $this->vars[$index];
@@ -142,21 +127,14 @@ trait Getter
         return null;
     }
 
-    /**
-     * @param string $index
-     * @param string $value
-     */
-    public function __concatBefore($index, $value): void
+    public function __concatBefore(string $index, string $value): void
     {
         $tmp = $this->__get($index);
         $tmp = $value.$tmp;
         $this->__set($index, $tmp);
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function __getVars(array $params = [])
+    public function __getVars(array $params = []): mixed
     {
         $vars = $this->vars;
         $vars['smarty'] = '';

@@ -21,7 +21,7 @@ class FeedFactory extends Factory
      *
      * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'created_at' => $this->faker->dateTime,

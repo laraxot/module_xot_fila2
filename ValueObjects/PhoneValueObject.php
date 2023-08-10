@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 /**
  * @see https://medium.com/@sliusarchyn/value-objects-in-laravel-use-it-12ba71b00281
  */

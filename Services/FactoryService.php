@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Str;
 
 /**
  * Class FactoryService.

@@ -16,10 +16,8 @@ class XotComposer
 {
     /**
      * Bind data to the view.
-     *
-     * @return void
      */
-    public function compose(View $view)
+    public function compose(View $view): void
     {
         $lang = app()->getLocale();
         $view->with('lang', $lang);

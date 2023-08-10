@@ -35,7 +35,7 @@ return [
     'docsearchIndexName' => env('DOCSEARCH_INDEX'),
 
     // navigation menu
-    'navigation' => require_once('navigation.php'),
+    'navigation' => include_once 'navigation.php',
 
     // helpers
     'isActive' => function ($page, $path) {
@@ -46,9 +46,11 @@ return [
     },
     'isActiveParent' => function ($page, $menuItem) {
         if (is_object($menuItem) && $menuItem->children) {
-            return $menuItem->children->contains(function ($child) use ($page) {
-                return trimPath($page->getPath()) == trimPath($child);
-            });
+            return $menuItem->children->contains(
+                function ($child) use ($page) {
+                    return trimPath($page->getPath()) == trimPath($child);
+                }
+            );
         }
     }, /*
     'url' => function ($page, $path) {

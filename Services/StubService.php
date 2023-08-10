@@ -11,29 +11,20 @@ use function get_class;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
-
 use function Safe\date;
 use function Safe\shuffle;
-
 use Symfony\Component\Finder\SplFileInfo;
-use Webmozart\Assert\Assert;
 
 /**
  * Class StubService.
  */
 class StubService
 {
-    // -- model (object) or class (string)
-    // -- stub_name name of stub
-    // -- create yes or not
-    private static ?self $_instance = null;
-
     // public ?Model $model;
     public string $model_class;
 
@@ -44,6 +35,10 @@ class StubService
     public array $custom_replaces = [];
 
     public bool $debug = false;
+    // -- model (object) or class (string)
+    // -- stub_name name of stub
+    // -- create yes or not
+    private static ?self $_instance = null;
 
     /**
      * getInstance.
@@ -80,12 +75,10 @@ class StubService
 
     /**
      * Summary of setModel.
-     *
-     * @param Model|ModelContract|ModelProfileContract $model
      */
-    public function setModel($model): self
+    public function setModel(Model|ModelContract|ModelProfileContract $model): self
     {
-        $this->model_class = \get_class($model);
+        $this->model_class = $model::class;
 
         return $this;
     }
@@ -106,10 +99,8 @@ class StubService
 
     /**
      * Summary of setModelAndName.
-     *
-     * @param Model|ModelContract|ModelProfileContract $model
      */
-    public function setModelAndName($model, string $name): self
+    public function setModelAndName(Model|ModelContract|ModelProfileContract $model, string $name): self
     {
         $this->setModel($model);
         $this->setName($name);
@@ -235,9 +226,7 @@ class StubService
             'dummy_timestamps' => $dummy_timestamps,
         ];
         // dddx($replaces);
-        $replaces = array_merge($replaces, $this->custom_replaces);
-
-        return $replaces;
+        return array_merge($replaces, $this->custom_replaces);
     }
 
     public function getFactories(): string
@@ -277,19 +266,17 @@ class StubService
             return collect([]);
         }
         $fillables = $model->getFillable();
-        if (0 === \count($fillables)) {
+        if (\count($fillables) === 0) {
             $fillables = $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
         }
 
-        $fillables = collect($fillables)
+        return collect($fillables)
             ->except(
                 [
                     'created_at', 'updated_at', 'updated_by', 'created_by', 'deleted_at', 'deleted_by',
                     'deleted_ip', 'created_ip', 'updated_ip',
                 ]
             );
-
-        return $fillables;
     }
 
     /**
@@ -332,9 +319,11 @@ class StubService
                     // return null;
                 }
             }
-        )->filter(function ($item) {
-            return null !== $item;
-        });
+        )->filter(
+            function ($item) {
+                return $item !== null;
+            }
+        );
     }
 
     /**
@@ -370,11 +359,11 @@ class StubService
         } catch (\Exception $e) {
             $msg = '['.$file.'] '.$e->getMessage().'
                 ['.__LINE__.']
-                ['.class_basename(__CLASS__).']
+                ['.class_basename(self::class).']
                 ';
             throw new \Exception($msg);
         }
-        $msg = (' ['.$file.'] is under creating , refresh page');
+        $msg = ' ['.$file.'] is under creating , refresh page';
 
         \Session::flash($msg);
 
@@ -392,7 +381,7 @@ class StubService
             $autoloader_reflector = new \ReflectionClass($this->model_class);
             // dddx($autoloader_reflector);
             $class_file_name = $autoloader_reflector->getFileName();
-            if (false === $class_file_name) {
+            if ($class_file_name === false) {
                 throw new \Exception('autoloader_reflector false');
             }
 
@@ -407,9 +396,7 @@ class StubService
         // $path = base_path($class);
         $path = base_path($tmp);
         // dddx([$class,$path,$tmp]);
-        $path = FileService::fixPath($path);
-
-        return $path;
+        return FileService::fixPath($path);
     }
 
     public function getClass(): string
@@ -505,7 +492,7 @@ class StubService
             )->all();
             $autoloader_reflector = new \ReflectionClass($model);
             $class_filename = $autoloader_reflector->getFileName();
-            if (false === $class_filename) {
+            if ($class_filename === false) {
                 throw new \Exception('autoloader_reflector err');
             }
             $fillables_str = \chr(13).\chr(10).'    protected $fillable=[\''.implode("','", $fillables)."'];".\chr(13).\chr(10);
@@ -587,9 +574,7 @@ class StubService
     public function getModelPath(): string
     {
         $path = base_path($this->getModelNamespace());
-        $path = FileService::fixPath($path);
-
-        return $path;
+        return FileService::fixPath($path);
     }
 
     public function getPrimaryKeyFromTable(): string
@@ -606,10 +591,13 @@ class StubService
         /**
          * @var SplFileInfo
          */
-        $brother_file = Arr::first($models, function (SplFileInfo $file) {
-            return 'php' === $file->getExtension();
-        });
-        if (null === $brother_file) {
+        $brother_file = Arr::first(
+            $models,
+            function (SplFileInfo $file) {
+                return $file->getExtension() === 'php';
+            }
+        );
+        if ($brother_file === null) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $brother_class = $this->getModelNamespace().'\\'.$brother_file->getFilenameWithoutExtension();
@@ -646,12 +634,15 @@ class StubService
         /**
          * @var SplFileInfo
          */
-        $brother_file = Arr::first($models, function (SplFileInfo $file) {
-            return 'php' === $file->getExtension();
-        });
+        $brother_file = Arr::first(
+            $models,
+            function (SplFileInfo $file) {
+                return $file->getExtension() === 'php';
+            }
+        );
         // dddx(get_class_methods($brother_file));
         // dddx($brother_file->getFilenameWithoutExtension());
-        if (null === $brother_file) {
+        if ($brother_file === null) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $brother_class = $this->getModelNamespace().'\\'.$brother_file->getFilenameWithoutExtension();
@@ -669,11 +660,90 @@ class StubService
             'created_at', 'updated_at', 'updated_by', 'created_by', 'deleted_at', 'deleted_by',
             'deleted_ip', 'created_ip', 'updated_ip',
         ];
-        $fillables = collect($fillables)
+        return collect($fillables)
             ->except($except)
             ->all();
+    }
 
-        return $fillables;
+    /**
+     * Maps properties.
+     */
+    protected function mapTableProperties(Column $column): array
+    {
+        $key = $column->getName();
+        /*
+        if (! $this->shouldBeIncluded($column)) {
+            return $this->mapToFactory($key);
+        }
+        */
+        /*
+        if ($column->isForeignKey()) {
+            return $this->mapToFactory(
+                $key,
+                $this->buildRelationFunction($key)
+            );
+        }
+        */
+
+        if ($key === 'password') {
+            return $this->mapToFactory($key, "Hash::make('password')");
+        }
+
+        /*
+        $value = $column->isUnique()
+            ? '$this->faker->unique()->'
+            : '$this->faker->';
+        */
+        $value = '$this->faker->';
+
+        return $this->mapToFactory($key, $value.$this->mapToFaker($column));
+    }
+
+    /**
+     * Checks if a given column should be included in the factory.
+     */
+    protected function shouldBeIncluded(Column $column): bool
+    {
+        $shouldBeIncluded = $column->getNotNull() /* || $this->includeNullableColumns */
+            && ! $column->getAutoincrement();
+
+        if (! $this->getModel()->usesTimestamps()) {
+            return $shouldBeIncluded;
+        }
+
+        $timestamps = [
+            $this->getModel()->getCreatedAtColumn(),
+            $this->getModel()->getUpdatedAtColumn(),
+        ];
+
+        if (method_exists($this->getModel(), 'getDeletedAtColumn')) {
+            $timestamps[] = $this->getModel()->getDeletedAtColumn();
+        }
+
+        return $shouldBeIncluded
+            && ! \in_array($column->getName(), $timestamps, true);
+    }
+
+    /**
+     * Undocumented function.
+     */
+    protected function mapToFactory(string $key, ?string $value = null): array
+    {
+        return [
+            $key => $value === null ? $value : "'{$key}' => {$value}",
+        ];
+    }
+
+    /**
+     * Map name to faker method.
+     */
+    protected function mapToFaker(Column $column): string
+    {
+        return app(TypeGuesser::class)->guess(
+            $column->getName(),
+            $column->getType(),
+            $column->getLength()
+        );
     }
 
     /**

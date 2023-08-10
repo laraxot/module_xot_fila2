@@ -16,7 +16,7 @@ namespace Modules\Xot\Traits;
  */
 trait MyLogTrait
 {
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
         /*
@@ -28,10 +28,15 @@ trait MyLogTrait
             /**
              * @param Model $model
              */
-            function ($model) {
+            function ($model): void {
                 // dddx(static::$logModel);
+<<<<<<< HEAD
                 $user = auth()->user();
                 if (null !== $user) {
+=======
+                $user = Auth::user();
+                if ($user !== null) {
+>>>>>>> b9465b74 (insights)
                     $model->created_by = $user->handle;
                     $model->updated_by = $user->handle.'';
                 }
@@ -43,7 +48,7 @@ trait MyLogTrait
             /**
              * @param Model $model
              */
-            function ($model) {
+            function ($model): void {
                 // $tmp = ;
                 // dddx(debug_backtrace());
                 $parz = [];
@@ -54,7 +59,7 @@ trait MyLogTrait
                         function ($value, $key) {
                             $key = preg_replace('/[\x00-\x1F\x7F-\xFF]/', '', $key);
 
-                            return '*attributes' === $key;
+                            return $key === '*attributes';
                         }
                     )->values()[0];
                     $parz['data'] = json_encode($data);
@@ -63,9 +68,15 @@ trait MyLogTrait
                 $log = static::$logModel;
                 $res = $log::create($parz);
 
+<<<<<<< HEAD
                 if (auth()->check()) {
                     $user = auth()->user();
                     if (null !== $user) {
+=======
+                if (Auth::check()) {
+                    $user = Auth::user();
+                    if ($user !== null) {
+>>>>>>> b9465b74 (insights)
                         $model->updated_by = $user->handle.'';
                     }
                 }

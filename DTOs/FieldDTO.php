@@ -14,10 +14,8 @@ class FieldDTO extends Data
     public string $param_name;
     /**
      * Undocumented variable.
-     *
-     * @var string|array|null
      */
-    public $rules;
+    public string|array|null $rules = null;
     /*
      * Undocumented function.
      */

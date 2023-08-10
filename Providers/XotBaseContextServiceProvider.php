@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
-use Filament\Facades\Filament;
-use Filament\Navigation\NavigationItem;
 use Modules\Xot\Actions\Filament\PrepareDefaultNavigation;
 use Savannabits\FilamentModules\ContextServiceProvider;
-use Savannabits\FilamentModules\FilamentModules;
 
 class XotBaseContextServiceProvider extends ContextServiceProvider
 {
@@ -17,9 +14,11 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
 
     public function packageRegistered(): void
     {
-        $this->app->booting(function () {
-            $this->registerConfigs();
-        });
+        $this->app->booting(
+            function (): void {
+                $this->registerConfigs();
+            }
+        );
         parent::packageRegistered();
     }
 

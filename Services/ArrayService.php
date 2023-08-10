@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fputcsv;
@@ -20,11 +19,19 @@ use function Safe\fputcsv;
  */
 class ArrayService
 {
+<<<<<<< HEAD
     private static ?self $instance = null;
 
     public array $array;
     public ?string $filename = null;
     protected int $export_processor = 1;
+=======
+    public array $array;
+    public ?string $filename = null;
+    protected int $export_processor = 1;
+
+    private static ?self $instance = null;
+>>>>>>> b9465b74 (insights)
 
     public function __construct()
     {
@@ -34,7 +41,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
 
@@ -202,7 +209,7 @@ class ArrayService
     public function getFilename(): string
     {
         $filename = $this->filename;
-        if (null !== $filename) {
+        if ($filename !== null) {
             return $filename;
         }
         // dddx(debug_backtrace());
@@ -215,12 +222,10 @@ class ArrayService
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
      */
-    public function toXLS()
+    public function toXLS(): \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
     {
-        if (1 === request('debug', 0) * 1) {
+        if (request('debug', 0) * 1 === 1) {
             return self::toHtml();
         }
         // include_once __DIR__.'/vendor/autoload.php';
@@ -346,7 +351,7 @@ class ArrayService
 
         $columns = ['Title', 'Assign', 'Description', 'Start Date', 'Due Date'];
 
-        $callback = function () {
+        $callback = function (): void {
             /**
              * @var resource
              */
@@ -364,10 +369,8 @@ class ArrayService
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
-     *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
      */
-    public function toXLS_phpoffice(?string $out = 'download')
+    public function toXLS_phpoffice(?string $out = 'download'): \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
     {
         $spreadsheet = new Spreadsheet();
         // ----
@@ -434,4 +437,133 @@ class ArrayService
         // 231    Unreachable statement - code above always terminates.
         throw new \Exception('['.__LINE__.']['.__FILE__.']');
     }
+<<<<<<< HEAD
+=======
+
+    public static function save(array $params): void
+    {
+        extract($params);
+        if (! isset($data)) {
+            dddx(['err' => 'data is missing']);
+
+            return;
+        }
+        if (! isset($filename)) {
+            dddx(['filename' => 'filename is missing']);
+
+            return;
+        }
+        $content = var_export($data, true);
+
+        // HHVM fails at __set_state, so just use object cast for now
+        $content = str_replace('stdClass::__set_state', '(object)', $content);
+
+        $content = '<?php '.\chr(13).'return '.$content.';'.\chr(13);
+        // $content = str_replace('stdClass::__set_state', '(object)', $content);
+        File::makeDirectory(\dirname($filename), 0775, true, true);
+        File::put($filename, $content);
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param array $arrSkipIndices
+     *
+     * @return array
+     */
+    public static function fromObjects(array|object $arrObjData, array $arrSkipIndices = []): array
+    {
+        $arrData = [];
+
+        // if input is object, convert into array
+        if (\is_object($arrObjData)) {
+            $arrObjData = get_object_vars($arrObjData);
+        }
+
+        if (\is_array($arrObjData)) {
+            foreach ($arrObjData as $index => $value) {
+                if (\is_object($value) || \is_array($value)) {
+                    $value = self::fromObjects($value, $arrSkipIndices); // recursive call
+                }
+                if (\in_array($index, $arrSkipIndices, true)) {
+                    continue;
+                }
+                $arrData[$index] = $value;
+            }
+        }
+
+        return $arrData;
+    }
+
+    /**
+     * Undocumented function.
+     */
+    public static function rangeIntersect(int $a0, int $b0, int $a1, int $b1): array|bool
+    {
+        if ($a1 >= $a0 && $a1 <= $b0 && $b0 <= $b1) {
+            return [$a1, $b0];
+        }
+        if ($a0 >= $a1 && $a0 <= $b0 && $b0 <= $b1) {
+            return [$a0, $b0];
+        }
+        if ($a1 >= $a0 && $a1 <= $b1 && $b1 <= $b0) {
+            return [$a1, $b1];
+        }
+        if ($a0 >= $a1 && $a0 <= $b1 && $b1 <= $b0) {
+            return [$a0, $b1];
+        }
+
+        return false;
+    }
+
+    /**
+     * Undocumented function.
+     */
+    public static function fixType(array $data): array
+    {
+        $res = collect($data)
+            ->map(
+                function ($item) {
+                    if (! is_array($item)) {
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
+                    }
+                    $item = collect($item)
+                        ->map(
+                            function ($item0) {
+                                if (is_numeric($item0)) {
+                                    $item0 *= 1;
+                                }
+
+                                return $item0;
+                            }
+                        )->all();
+
+                    return $item;
+                }
+            );
+
+        return $res->all();
+    }
+
+    /**
+     * Undocumented function.
+     */
+    public static function diff_assoc_recursive(array $arr_1, array $arr_2): array
+    {
+        $coll_1 = collect(self::fixType($arr_1));
+        $arr_2 = self::fixType($arr_2);
+
+        $ris = $coll_1->filter(
+            function ($value, $key) use ($arr_2) {
+                try {
+                    return ! \in_array($value, $arr_2, true);
+                } catch (\Exception $e) {
+                    dddx(['err' => $e->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
+                }
+            }
+        );
+
+        return $ris->all();
+    }
+>>>>>>> b9465b74 (insights)
 }

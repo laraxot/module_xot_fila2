@@ -23,7 +23,7 @@ use Spatie\ModelStatus\Status;
  * @property string                                                                $tennant_name
  * @property \Modules\User\Models\User|null                                        $user
  * @property string                                                                $status
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\ModelStatus\Status[] $statuses
+ * @property \Illuminate\Database\Eloquent\Collection|array<\Spatie\ModelStatus\Status> $statuses
  * @property int|null                                                              $statuses_count
  *
  * @method mixed     getKey()
@@ -46,7 +46,7 @@ use Spatie\ModelStatus\Status;
  * @method array     toArray()
  * @method BelongsTo user()
  *
- * @mixin  \Eloquent
+ * @mixin \Eloquent
  */
 interface ModelWithStatusContract
 {
@@ -54,5 +54,5 @@ interface ModelWithStatusContract
 
     public function status(): ?Status;
 
-    public function setStatus(string $name, string $reason = null): self;
+    public function setStatus(string $name, ?string $reason = null): self;
 }

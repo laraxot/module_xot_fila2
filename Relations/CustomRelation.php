@@ -9,9 +9,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Relations;
 
+<<<<<<< HEAD
 use function call_user_func;
 
 use Closure;
+=======
+>>>>>>> b9465b74 (insights)
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +29,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
  */
 class CustomRelation extends Relation
-{ /* implements BuilderContract */
+{
+    /* implements BuilderContract */
     /**
      * The baseConstraints callback.
      */
@@ -34,15 +38,11 @@ class CustomRelation extends Relation
 
     /**
      * The eagerConstraints callback.
-     *
-     * @var \Closure
      */
     protected ?\Closure $eagerConstraints;
 
     /**
      * The eager constraints model matcher.
-     *
-     * @var \Closure
      */
     protected ?\Closure $eagerMatcher;
 
@@ -60,20 +60,16 @@ class CustomRelation extends Relation
 
     /**
      * Set the base constraints on the relation query.
-     *
-     * @return void
      */
-    public function addConstraints()
+    public function addConstraints(): void
     {
         \call_user_func($this->baseConstraints, $this);
     }
 
     /**
      * Set the constraints for an eager load of the relation.
-     *
-     * @return void
      */
-    public function addEagerConstraints(array $models)
+    public function addEagerConstraints(array $models): void
     {
         // Parameter #1 $function of function call_user_func expects callable(): mixed, Closure|null given.
         if (! \is_callable($this->eagerConstraints)) {
@@ -85,11 +81,9 @@ class CustomRelation extends Relation
     /**
      * Initialize the relation on a set of models.
      *
-     * @param string $relation
-     *
      * @return array
      */
-    public function initRelation(array $models, $relation)
+    public function initRelation(array $models, string $relation): array
     {
         foreach ($models as $model) {
             $model->setRelation($relation, $this->related->newCollection());
@@ -101,11 +95,9 @@ class CustomRelation extends Relation
     /**
      * Match the eagerly loaded results to their parents.
      *
-     * @param string $relation
-     *
      * @return array
      */
-    public function match(array $models, Collection $results, $relation)
+    public function match(array $models, Collection $results, string $relation): array
     {
         // Trying to invoke Closure|null but it might not be a callable.
         if (! \is_callable($this->eagerMatcher)) {
@@ -127,10 +119,8 @@ class CustomRelation extends Relation
      * Execute the query as a "select" statement.
      *
      * @param array $columns
-     *
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function get($columns = ['*'])
+    public function get(array $columns = ['*']): \Illuminate\Database\Eloquent\Collection
     {
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot

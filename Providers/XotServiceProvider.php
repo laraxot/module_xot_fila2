@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
-use App\Application;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Artisan;
@@ -71,9 +70,36 @@ class XotServiceProvider extends XotBaseServiceProvider
         // });
         // $this->app->bind('profile', \Modules\Xot\Services\ProfileTest::class);
 
-        $this->app->bind('profile', function () {
-            return new \Modules\Xot\Services\ProfileTest();
-        });
+        $this->app->bind(
+            'profile',
+            function () {
+                return new \Modules\Xot\Services\ProfileTest();
+            }
+        );
+    }
+
+    /*
+    public function mergeConfigs(): void {
+        $configs = ['database', 'filesystems', 'auth', 'metatag', 'services', 'xra', 'social'];
+        foreach ($configs as $v) {
+            $tmp = Tenant::config($v);
+            //dddx($tmp);
+        }
+        //DB::purge('mysql');//Call to a member function prepare() on null
+        //DB::purge('liveuser_general');
+        //DB::reconnect();
+    }
+
+    //end mergeConfigs
+    //*/
+    public function loadHelpersFrom(string $path): void
+    {
+        $files = File::files($path);
+        foreach ($files as $file) {
+            if ($file->getExtension() === 'php' && $file->getRealPath() !== false) {
+                include_once $file->getRealPath();
+            }
+        }
     }
 
     /*
@@ -104,13 +130,13 @@ class XotServiceProvider extends XotBaseServiceProvider
     {
         if (config('xra.forcessl')) {
             // --- meglio ficcare un controllo anche sull'env
-            if (isset($_SERVER['SERVER_NAME']) && 'localhost' !== $_SERVER['SERVER_NAME']
-                && isset($_SERVER['REQUEST_SCHEME']) && 'http' === $_SERVER['REQUEST_SCHEME']
+            if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] !== 'localhost'
+                && isset($_SERVER['REQUEST_SCHEME']) && $_SERVER['REQUEST_SCHEME'] === 'http'
             ) {
                 URL::forceScheme('https');
                 /*
                  * da fare in htaccess
-                 **/
+                 */
                 if (! request()->secure() /* && in_array(env('APP_ENV'), ['stage', 'production']) */) {
                     exit(redirect()->secure(request()->getRequestUri()));
                 }
@@ -122,14 +148,12 @@ class XotServiceProvider extends XotBaseServiceProvider
      * Undocumented function.
      *
      * @see https://medium.com/@dobron/running-laravel-ide-helper-generator-automatically-b909e75849d0
-     *
-     * @return void
      */
-    private function registerEvents()
+    private function registerEvents(): void
     {
         Event::listen(
             MigrationsEnded::class,
-            function () {
+            function (): void {
                 Artisan::call('ide-helper:models -r -W');
             }
         );

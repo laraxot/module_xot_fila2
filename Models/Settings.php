@@ -30,9 +30,9 @@ use Illuminate\Database\Eloquent\Model;
 class Settings extends Model
 {
     /**
-     * @var string[]
+     * @var array<string>
      */
-    public $fillable = [
+    public array $fillable = [
         'id', 'appname', 'description', 'keywords', 'author',
     ];
 }

@@ -4,15 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
-use Modules\Tenant\Services\TenantService;
-use Modules\UI\Services\ThemeService;
-
 use function Safe\define;
 use function Safe\fopen;
 use function Safe\preg_match_all;
@@ -42,14 +37,13 @@ class ArtisanService
             case 'migrate':
                 \DB::purge('mysql');
                 \DB::reconnect('mysql');
-                if ('' !== $module_name) {
+                if ($module_name !== '') {
                     echo '<h3>Module '.$module_name.'</h3>';
 
                     return self::exe('module:migrate '.$module_name.' --force');
-                } else {
-                    return self::exe('migrate --force');
                 }
-                // no break
+                return self::exe('migrate --force');
+
             case 'routelist':
                 return self::exe('route:list');
             case 'queue:flush':
@@ -132,7 +126,7 @@ class ArtisanService
         $files = File::files(storage_path('logs'));
         $log = request('log', '');
         $content = '';
-        if ('' !== $log) {
+        if ($log !== '') {
             if (File::exists(storage_path('logs/'.$log))) {
                 $content = File::get(storage_path('logs/'.$log));
             }
@@ -193,15 +187,12 @@ class ArtisanService
         return $out->render();
     }
 
-    /**
-     * @return string
-     */
-    public static function errorClear()
+    public static function errorClear(): string
     {
         $files = File::files(storage_path('logs'));
 
         foreach ($files as $file) {
-            if ('log' === $file->getExtension() && false !== $file->getRealPath()) {
+            if ($file->getExtension() === 'log' && $file->getRealPath() !== false) {
                 // Parameter #1 $paths of static method Illuminate\Filesystem\Filesystem::delete() expects array|string, Symfony\Component\Finder\SplFileInfo given.
                 echo '<br/>'.$file->getRealPath();
 
@@ -212,15 +203,12 @@ class ArtisanService
         return '<pre>laravel.log cleared !</pre> ('.\count($files).' Files )';
     }
 
-    /**
-     * @return string
-     */
-    public static function sessionClear()
+    public static function sessionClear(): string
     {
         $files = File::files(storage_path('framework/sessions'));
 
         foreach ($files as $file) {
-            if ('' === $file->getExtension() && false !== $file->getRealPath()) {
+            if ($file->getExtension() === '' && $file->getRealPath() !== false) {
                 // echo '<br/>'.$file->getRealPath();
 
                 File::delete($file->getRealPath());
@@ -232,14 +220,11 @@ class ArtisanService
         return 'Session cleared! ('.\count($files).' Files )';
     }
 
-    /**
-     * @return string
-     */
-    public static function debugbarClear()
+    public static function debugbarClear(): string
     {
         $files = File::files(storage_path('debugbar'));
         foreach ($files as $file) {
-            if ('json' === $file->getExtension() && false !== $file->getRealPath()) {
+            if ($file->getExtension() === 'json' && $file->getRealPath() !== false) {
                 // echo '<br/>'.$file->getRealPath();
 
                 File::delete($file->getRealPath());
@@ -251,18 +236,13 @@ class ArtisanService
         return 'Debugbar Storage cleared! ('.\count($files).' Files )';
     }
 
-    /**
-     * @param string $command
-     */
-    public static function exe($command, array $arguments = []): string
+    public static function exe(string $command, array $arguments = []): string
     {
         try {
             $output = '';
 
             Artisan::call($command, $arguments);
-            $output .= '[<pre>'.Artisan::output().'</pre>]';
-
-            return $output;  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
+            return $output . '[<pre>'.Artisan::output().'</pre>]';  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
         } catch (\Exception $e) {
             // throw new Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
             return '[<pre>'.$e->getMessage().'</pre>]';

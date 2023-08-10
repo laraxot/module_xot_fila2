@@ -21,10 +21,10 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null                                                          $full_name
  * @property string|null                                                          $phone
  * @property string|null                                                          $email
- * @property \Illuminate\Database\Eloquent\Collection|\Modules\User\Models\Area[] $areas
+ * @property \Illuminate\Database\Eloquent\Collection|array<\Modules\User\Models\Area> $areas
  * @property \Modules\User\Models\PermUser|null                                   $perm
  *
- * @mixin    \Eloquent
+ * @mixin \Eloquent
  */
 interface UserContract extends MustVerifyEmail
 {
@@ -38,31 +38,21 @@ interface UserContract extends MustVerifyEmail
 
     /**
      * Undocumented function.
-     *
-     * @return bool
      */
-    public function update(array $attributes = [], array $options = []);
+    public function update(array $attributes = [], array $options = []): bool;
 
     /**
      * Get a relationship.
-     *
-     * @param string $key
-     *
-     * @return mixed|void
      */
-    public function getRelationValue($key);
+    public function getRelationValue(string $key): mixed;
 
     /**
      * Undocumented function.
-     *
-     * @return Model
      */
-    public function newInstance();
+    public function newInstance(): Model;
 
     /**
      * Summary of getKey.
-     *
-     * @return string|int
      */
-    public function getKey();
+    public function getKey(): string|int;
 }

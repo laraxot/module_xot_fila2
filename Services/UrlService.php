@@ -18,12 +18,12 @@ class UrlService
     public function __construct()
     {
         // ---
-        require_once __DIR__.'/vendor/autoload.php';
+        include_once __DIR__.'/vendor/autoload.php';
     }
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (self::$instance === null) {
             self::$instance = new self();
         }
 
@@ -40,7 +40,7 @@ class UrlService
 
     public function checkValidUrl(string $url): bool
     {
-        if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
+        if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
             return true;
         }
 
