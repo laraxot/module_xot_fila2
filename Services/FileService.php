@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-<<<<<<< HEAD
 use const DIRECTORY_SEPARATOR;
 
 use Exception;
-=======
->>>>>>> b9465b74 (insights)
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Vite;
@@ -18,11 +15,8 @@ use Nwidart\Modules\Facades\Module;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\realpath;
-<<<<<<< HEAD
 use function strlen;
 
-=======
->>>>>>> b9465b74 (insights)
 use Webmozart\Assert\Assert;
 
 /**

@@ -7,6 +7,7 @@ namespace Modules\Xot\Services;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use PhpOffice\PhpWord\TemplateProcessor;
+
 use function Safe\json_decode;
 
 /**
@@ -25,7 +26,7 @@ class DocxService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -82,9 +83,6 @@ class DocxService
         return response()->download($filename_out_path);
     }
 
-    /**
-     * @return array
-     */
     public function rows2Data_test(\Illuminate\Contracts\Support\Arrayable $row, string $prefix): array
     {
         if (! \is_object($row)) {
@@ -128,9 +126,6 @@ class DocxService
             ->all();
     }
 
-    /**
-     * @return array
-     */
     public function rows2Data(Model $row, string $prefix): array
     {
         if (! \is_object($row)) {
@@ -153,7 +148,7 @@ class DocxService
         return collect($arr)->map(
             function ($item, $key) use ($row, $prefix, $arr) {
                 // *
-                if ($arr[$key] !== '' && \is_object($row->$key)) {
+                if ('' !== $arr[$key] && \is_object($row->$key)) {
                     if ($row->$key instanceof Carbon) {
                         try {
                             $item = $row->$key->format('d/m/Y');
@@ -193,7 +188,6 @@ class DocxService
             }
         )->collapse()
             ->all();
-<<<<<<< HEAD
         // 212    Offset non-empty-string on array<int, mixed> in isset() does not exist.
         // if (isset($data[$prefix.'.postal_code'])) {
         // $data[$prefix.'.zip_code'] = $data[$prefix.'.postal_code'] ?? '';
@@ -210,8 +204,6 @@ class DocxService
         */
 
         return $data;
-=======
->>>>>>> b9465b74 (insights)
     }
 }// end class
 

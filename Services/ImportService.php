@@ -6,11 +6,7 @@ namespace Modules\Xot\Services;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
-<<<<<<< HEAD
 use GuzzleHttp\Cookie\CookieJar;
-=======
-use GuzzleHttp\Cookie\CookieJarInterface;
->>>>>>> b9465b74 (insights)
 // use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Cookie\CookieJarInterface;
 use GuzzleHttp\Cookie\FileCookieJar;
@@ -23,11 +19,8 @@ use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
-<<<<<<< HEAD
 use Request;
 
-=======
->>>>>>> b9465b74 (insights)
 use function Safe\fclose;
 use function Safe\file_get_contents;
 use function Safe\fopen;
@@ -35,11 +28,8 @@ use function Safe\ini_set;
 use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\parse_url;
-<<<<<<< HEAD
 
 use Storage;
-=======
->>>>>>> b9465b74 (insights)
 use Symfony\Component\DomCrawler\Crawler;
 
 // */

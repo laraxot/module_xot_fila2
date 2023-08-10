@@ -58,17 +58,12 @@ abstract class BaseModel extends Model
     /**
      * @var array<string>
      */
-<<<<<<< HEAD
     protected $dates = ['published_at', 'created_at', 'updated_at'];
     /**
      * @var string
      */
     protected $primaryKey = 'id';
 
-=======
-    protected array $dates = ['published_at', 'created_at', 'updated_at'];
-    protected string $primaryKey = 'id';
->>>>>>> b9465b74 (insights)
     /**
      * @var array<int, string>
      */

@@ -11,7 +11,6 @@ use Illuminate\Support\Str;
 
 class TypeGuesser
 {
-<<<<<<< HEAD
     /**
      * @var string
      */
@@ -20,11 +19,6 @@ class TypeGuesser
      * @var \Faker\Generator
      */
     protected $generator;
-=======
-    protected \Faker\Generator $generator;
-
-    protected static string $default = 'word';
->>>>>>> b9465b74 (insights)
 
     /**
      * Create a new TypeGuesser instance.
@@ -60,17 +54,12 @@ class TypeGuesser
 
     /**
      * Check if faker instance has a native resolver for the given property.
-<<<<<<< HEAD
      *
      * @param string $property
      *
      * @return bool
      */
     protected function hasNativeResolverFor($property)
-=======
-     */
-    protected function hasNativeResolverFor(string $property): bool
->>>>>>> b9465b74 (insights)
     {
         try {
             $this->generator->getFormatter($property);
@@ -83,17 +72,12 @@ class TypeGuesser
 
     /**
      * Try to guess the right faker method for the given type.
-<<<<<<< HEAD
      *
      * @param int|null $size
      *
      * @return string
      */
     protected function guessBasedOnType(Type $type, $size)
-=======
-     */
-    protected function guessBasedOnType(Type $type, ?int $size): string
->>>>>>> b9465b74 (insights)
     {
         $typeName = $type->getName();
 
@@ -128,11 +112,7 @@ class TypeGuesser
      */
     protected function predictCountyType(): string
     {
-<<<<<<< HEAD
         if ('en_US' === $this->generator->locale) {
-=======
-        if ($this->generator->locale === 'en_US') {
->>>>>>> b9465b74 (insights)
             return "sprintf('%s County', \$faker->city)";
         }
 
@@ -162,11 +142,7 @@ class TypeGuesser
      */
     protected function predictTitleType(?int $size): string
     {
-<<<<<<< HEAD
         if (null === $size || $size <= 10) {
-=======
-        if ($size === null || $size <= 10) {
->>>>>>> b9465b74 (insights)
             return 'title';
         }
 
@@ -175,7 +151,6 @@ class TypeGuesser
 
     /**
      * Get type guess.
-<<<<<<< HEAD
      *
      * @param string   $name
      * @param int|null $size
@@ -183,10 +158,6 @@ class TypeGuesser
      * @return string
      */
     private function guessBasedOnName($name, $size = null)
-=======
-     */
-    private function guessBasedOnName(string $name, ?int $size = null): string
->>>>>>> b9465b74 (insights)
     {
         switch ($name) {
             case 'login':

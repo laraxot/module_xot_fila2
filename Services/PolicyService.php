@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-<<<<<<< HEAD
 use function get_class;
 
 use Illuminate\Support\Facades\Auth;
-=======
->>>>>>> b9465b74 (insights)
 use Illuminate\Support\Facades\File;
 use Modules\Xot\Datas\XotData;
 
@@ -26,7 +23,7 @@ class PolicyService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
         /*
@@ -60,7 +57,7 @@ class PolicyService
         self::$in_vars['class'] = $class;
         $autoloader_reflector = new \ReflectionClass(self::$in_vars['class']);
         $filename = $autoloader_reflector->getFileName();
-        if ($filename === false) {
+        if (false === $filename) {
             throw new \Exception('autoloader_reflector error');
         }
         $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
@@ -93,6 +90,7 @@ class PolicyService
         }
         // $user_class = get_class(Auth::user());
         $user_class = $xotData->getUserClass();
+
         return [
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,

@@ -5,16 +5,11 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Arr;
-<<<<<<< HEAD
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Log;
-=======
-use Illuminate\Support\Facades\File;
-// ---- services ---
->>>>>>> b9465b74 (insights)
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use Illuminate\Translation\Translator as BaseTranslator;
@@ -26,34 +21,6 @@ use Illuminate\Translation\Translator as BaseTranslator;
  */
 class TranslatorService extends BaseTranslator
 {
-<<<<<<< HEAD
-=======
-    /**
-     * get.
-     */
-    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): array|string
-    {
-        // backtrace(true);
-        // trans parte da xotbasepanel riga 1109 (per ora)
-        // superdump([$key, $replace , $locale , $fallback ]);
-
-        // *
-        if ($locale === null) {
-            $locale = app()->getLocale();
-        }
-        // */
-        return parent::get($key, $replace, $locale, $fallback);
-    }
-
-    /**
-     * getFromJson.
-     */
-    public function getFromJson(string $key, array $replace = [], ?string $locale = null): array|string
-    {
-        return $this->get($key, $replace, $locale);
-    }
-
->>>>>>> b9465b74 (insights)
     public static function parse(array $params): array
     {
         dddx('a');

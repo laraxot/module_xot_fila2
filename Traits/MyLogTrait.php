@@ -30,13 +30,8 @@ trait MyLogTrait
              */
             function ($model): void {
                 // dddx(static::$logModel);
-<<<<<<< HEAD
                 $user = auth()->user();
                 if (null !== $user) {
-=======
-                $user = Auth::user();
-                if ($user !== null) {
->>>>>>> b9465b74 (insights)
                     $model->created_by = $user->handle;
                     $model->updated_by = $user->handle.'';
                 }
@@ -68,15 +63,9 @@ trait MyLogTrait
                 $log = static::$logModel;
                 $res = $log::create($parz);
 
-<<<<<<< HEAD
                 if (auth()->check()) {
                     $user = auth()->user();
                     if (null !== $user) {
-=======
-                if (Auth::check()) {
-                    $user = Auth::user();
-                    if ($user !== null) {
->>>>>>> b9465b74 (insights)
                         $model->updated_by = $user->handle.'';
                     }
                 }

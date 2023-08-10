@@ -40,17 +40,9 @@ class RegisterFilamentNavigationItem
             ->icon($icon)
             ->group('Modules');
         // if ($can) {
-<<<<<<< HEAD
         Filament::registerNavigationItems([
             1 === $moduleContexts->count() ? $navItem->label("{$module}") : $navItem->label("{$panel} Panel")->group("{$module} Module"),
         ]);
-=======
-        Filament::registerNavigationItems(
-            [
-            1 === $moduleContexts->count() ? $navItem->label("$module") : $navItem->label("$panel Panel")->group("$module Module"),
-            ]
-        );
->>>>>>> b9465b74 (insights)
         // }
     }
 }

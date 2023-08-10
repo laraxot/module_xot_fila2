@@ -38,19 +38,12 @@ abstract class BaseMorphPivot extends MorphPivot
 
     protected $connection = 'mysql'; // this will use the specified database connection
 
-    /**
-     * @var array
-     */
     protected array $appends = [];
 
-<<<<<<< HEAD
     /**
      * @var string
      */
     protected $primaryKey = 'id';
-=======
-    protected string $primaryKey = 'id';
->>>>>>> b9465b74 (insights)
 
     // protected $attributes = ['related_type' => 'cuisine_cat'];
     /**

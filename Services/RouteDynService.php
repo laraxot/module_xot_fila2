@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Str;
-<<<<<<< HEAD
 
 use function is_array;
 
 use Route;
 
-=======
->>>>>>> b9465b74 (insights)
 use function Safe\preg_replace;
 
 use Webmozart\Assert\Assert;

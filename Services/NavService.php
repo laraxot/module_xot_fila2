@@ -6,12 +6,9 @@ namespace Modules\Xot\Services;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Renderable;
-<<<<<<< HEAD
 use Request;
 use Route;
 
-=======
->>>>>>> b9465b74 (insights)
 use function Safe\date;
 
 /**
@@ -29,11 +26,11 @@ class NavService
         // $paz = request()->route()->parameters();
         $route_current = \Route::current();
         $params = [];
-        if ($route_current !== null) {
+        if (null !== $route_current) {
             $params = $route_current->parameters();
         }
         $year = $request->input('year', date('Y'));
-        $year -= 1;
+        --$year;
         $nav = [];
         for ($i = 0; $i < 3; ++$i) {
             $tmp = [];
@@ -50,7 +47,7 @@ class NavService
                 $tmp['active'] = 0;
             }
 
-            if ($routename === null) {
+            if (null === $routename) {
                 throw new \Exception('routename is null');
             }
             $tmp['url'] = route($routename, $params);
@@ -77,7 +74,7 @@ class NavService
 
         $route_current = \Route::current();
         $params = [];
-        if ($route_current !== null) {
+        if (null !== $route_current) {
             $params = $route_current->parameters();
         }
 
@@ -86,7 +83,7 @@ class NavService
 
         $q = 2;
         $date = Carbon::create($year, $month, 1);
-        if ($date === false) {
+        if (false === $date) {
             throw new \Exception('carbon error');
         }
         $d = $date->subMonths($q);
@@ -104,7 +101,7 @@ class NavService
             } else {
                 $tmp['active'] = 0;
             }
-            if ($routename === null) {
+            if (null === $routename) {
                 throw new \Exception('routename is null');
             }
             $tmp['url'] = route($routename, $params);

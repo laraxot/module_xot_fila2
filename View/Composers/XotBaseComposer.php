@@ -59,8 +59,6 @@ abstract class XotBaseComposer
 
     /**
      * Undocumented function.
-     *
-     * @param array  $arguments
      */
     public function __call(string $name, array $arguments): mixed
     {
@@ -108,8 +106,6 @@ abstract class XotBaseComposer
         return \call_user_func_array($callback, $arguments);
     }
 
-<<<<<<< HEAD
-=======
     /**
      * Undocumented function.
      */
@@ -143,7 +139,6 @@ abstract class XotBaseComposer
         // dddx([$view_composer, class_exists($view_composer)]);
     }
 
->>>>>>> b9465b74 (insights)
     /*
     togliere ogni riferimento a Theme
      * --.

@@ -37,7 +37,6 @@ trait HasParent
      */
     protected bool $moved = false;
 
-<<<<<<< HEAD
     /**
      * @return self
      */
@@ -83,8 +82,6 @@ trait HasParent
         return $instance->setRelation('children', $relation);
     }
 
-=======
->>>>>>> b9465b74 (insights)
     /**
      * Refresh node's crucial attributes.
      */
@@ -411,60 +408,12 @@ trait HasParent
         return $query;
     }
 
-<<<<<<< HEAD
-=======
-    public static function scoped(array $attributes): self
-    {
-        $instance = new static();
-
-        $instance->setRawAttributes($attributes);
-
-        return $instance->newScopedQuery();
-    }
-
->>>>>>> b9465b74 (insights)
     public function newCollection(array $models = [])
     {
         return new Collection($models);
     }
 
     /**
-<<<<<<< HEAD
-=======
-     * {@inheritdoc}
-     *
-     * Use `children` key on `$attributes` to create child nodes.
-     *
-     * @param self $parent
-     */
-    public static function create(array $attributes = [], ?self $parent = null)
-    {
-        $children = Arr::pull($attributes, 'children');
-
-        $instance = new static($attributes);
-
-        if ($parent) {
-            $instance->appendToNode($parent);
-        }
-
-        $instance->save();
-
-        // Now create children
-        $relation = new EloquentCollection();
-
-        foreach ((array) $children as $child) {
-            $relation->add($child = static::create($child, $instance));
-
-            $child->setRelation('parent', $instance);
-        }
-
-        $instance->refreshNode();
-
-        return $instance->setRelation('children', $relation);
-    }
-
-    /**
->>>>>>> b9465b74 (insights)
      * Get node height (rgt - lft + 1).
      */
     public function getNodeHeight(): int
@@ -693,11 +642,7 @@ trait HasParent
     /**
      * @return array
      */
-<<<<<<< HEAD
     public function getBounds()
-=======
-    public function getBounds(): array
->>>>>>> b9465b74 (insights)
     {
         return [$this->getLft(), $this->getRgt()];
     }

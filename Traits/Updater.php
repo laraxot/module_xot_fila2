@@ -40,17 +40,10 @@ trait Updater
          * need to have the updated_by field here as well.
          */
         static::creating(
-<<<<<<< HEAD
             function ($model) {
                 if (null !== auth()->user()) {
                     $model->created_by = auth()->user()->handle ?? '';
                     $model->updated_by = auth()->user()->handle ?? '';
-=======
-            function ($model): void {
-                if (Auth::user() !== null) {
-                    $model->created_by = Auth::user()->handle ?? '';
-                    $model->updated_by = Auth::user()->handle ?? '';
->>>>>>> b9465b74 (insights)
                 }
             }
         );
@@ -59,13 +52,8 @@ trait Updater
          * updating.
          */
         static::updating(
-<<<<<<< HEAD
             function ($model) {
                 $model->updated_by = auth()->user()->handle ?? '';
-=======
-            function ($model): void {
-                $model->updated_by = Auth::user()->handle ?? '';
->>>>>>> b9465b74 (insights)
             }
         );
         // -------------------------------------------------------------------------------------
