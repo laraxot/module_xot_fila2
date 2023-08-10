@@ -1,12 +1,13 @@
 {
-    "name": "laraxot/module_xot",
+    "name": "laraxot/module_xot_fila",
     "description": ":package_description",
     "keywords": [
         "laraxot",
         "laravel",
         "module_xot"
+        "filament",
     ],
-    "homepage": "https://github.com/laraxot/module_xot",
+    "homepage": "https://github.com/laraxot/module_xot_fila",
     "license": "MIT",
     "authors": [{
         "name": "marco sottana",
