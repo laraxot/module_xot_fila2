@@ -13,18 +13,18 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 /**
  * Modules\User\Contracts\UserContract.
  *
- * @property ModelProfileContract|null                                                 $profile
- * @property int                                                                       $id
- * @property string                                                                    $handle
- * @property string|null                                                               $first_name
- * @property string|null                                                               $last_name
- * @property string|null                                                               $full_name
- * @property string|null                                                               $phone
- * @property string|null                                                               $email
- * @property \Illuminate\Database\Eloquent\Collection|array<\Modules\User\Models\Area> $areas
- * @property \Modules\User\Models\PermUser|null                                        $perm
+ * @property ModelProfileContract|null                                            $profile
+ * @property int                                                                  $id
+ * @property string                                                               $handle
+ * @property string|null                                                          $first_name
+ * @property string|null                                                          $last_name
+ * @property string|null                                                          $full_name
+ * @property string|null                                                          $phone
+ * @property string|null                                                          $email
+ * @property \Illuminate\Database\Eloquent\Collection|\Modules\User\Models\Area[] $areas
+ * @property \Modules\User\Models\PermUser|null                                   $perm
  *
- * @mixin \Eloquent
+ * @mixin    \Eloquent
  */
 interface UserContract extends MustVerifyEmail
 {
@@ -38,21 +38,31 @@ interface UserContract extends MustVerifyEmail
 
     /**
      * Undocumented function.
+     *
+     * @return bool
      */
-    public function update(array $attributes = [], array $options = []): bool;
+    public function update(array $attributes = [], array $options = []);
 
     /**
      * Get a relationship.
+     *
+     * @param string $key
+     *
+     * @return mixed|void
      */
-    public function getRelationValue(string $key): mixed;
+    public function getRelationValue($key);
 
     /**
      * Undocumented function.
+     *
+     * @return Model
      */
-    public function newInstance(): Model;
+    public function newInstance();
 
     /**
      * Summary of getKey.
+     *
+     * @return string|int
      */
-    public function getKey(): string|int;
+    public function getKey();
 }
