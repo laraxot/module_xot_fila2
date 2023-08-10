@@ -116,15 +116,6 @@ class XotServiceProvider extends XotBaseServiceProvider
 
     //end mergeConfigs
     //*/
-    public function loadHelpersFrom(string $path): void
-    {
-        $files = File::files($path);
-        foreach ($files as $file) {
-            if ('php' === $file->getExtension() && false !== $file->getRealPath()) {
-                include_once $file->getRealPath();
-            }
-        }
-    }
 
     private function redirectSSL(): void
     {

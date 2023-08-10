@@ -5,8 +5,22 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use PhpOffice\PhpWord\TemplateProcessor;
+
+/*
+use PhpOffice\PhpWord\PhpWord;
+use Illuminate\Support\Facades\Storage;
+
+\PhpOffice\PhpWord\TemplateProcessor($file);
+https://stackoverflow.com/questions/41296206/read-and-replace-contents-in-docx-word-file
+composer require phpoffice/phpword
+https://github.com/wrklst/docxmustache
+
+https://code-boxx.com/convert-html-to-docx-using-php/
+
+*/
 
 use function Safe\json_decode;
 
@@ -59,8 +73,10 @@ class DocxService
     /**
      * @throws \PhpOffice\PhpWord\Exception\CopyFileException
      * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
+     *
+     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function out(array $params = []): \Symfony\Component\HttpFoundation\BinaryFileResponse
+    public function out(array $params = [])
     {
         extract($params);
         include __DIR__.'/vendor/autoload.php'; // carico la mia libreria che uso solo qui..
@@ -83,13 +99,19 @@ class DocxService
         return response()->download($filename_out_path);
     }
 
-    public function rows2Data_test(\Illuminate\Contracts\Support\Arrayable $row, string $prefix): array
+    /**
+     * @param \Illuminate\Contracts\Support\Arrayable $row
+     * @param string                                  $prefix
+     *
+     * @return array
+     */
+    public function rows2Data_test($row, $prefix)
     {
         if (! \is_object($row)) {
             return [];
         }
 
-        return collect($row)->map(
+        $data = collect($row)->map(
             function ($item, $key) use ($prefix, $row) {
                 if ($row->$key instanceof Carbon) {
                     $item = $row->$key->format('d/m/Y');
@@ -124,9 +146,17 @@ class DocxService
         )
             ->collapse()
             ->all();
+
+        return $data;
     }
 
-    public function rows2Data(Model $row, string $prefix): array
+    /**
+     * @param Model  $row
+     * @param string $prefix
+     *
+     * @return array
+     */
+    public function rows2Data($row, $prefix)
     {
         if (! \is_object($row)) {
             return [];
@@ -145,7 +175,7 @@ class DocxService
 
         // $arr = $row->toArray();
         // dddx($arr);
-        return collect($arr)->map(
+        $data = collect($arr)->map(
             function ($item, $key) use ($row, $prefix, $arr) {
                 // *
                 if ('' !== $arr[$key] && \is_object($row->$key)) {

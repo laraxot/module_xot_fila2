@@ -11,7 +11,10 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
  */
 class MapCollection extends ResourceCollection
 {
-    public string $collects = MapResource::class;
+    /**
+     * @var string
+     */
+    public $collects = MapResource::class;
 
     public function toArray(\Illuminate\Http\Request $request): array
     {

@@ -77,8 +77,12 @@ class CustomRelation extends Relation
 
     /**
      * Initialize the relation on a set of models.
+     *
+     * @param string $relation
+     *
+     * @return array
      */
-    public function initRelation(array $models, string $relation): array
+    public function initRelation(array $models, $relation)
     {
         foreach ($models as $model) {
             $model->setRelation($relation, $this->related->newCollection());
@@ -89,8 +93,12 @@ class CustomRelation extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
+     *
+     * @param string $relation
+     *
+     * @return array
      */
-    public function match(array $models, Collection $results, string $relation): array
+    public function match(array $models, Collection $results, $relation)
     {
         // Trying to invoke Closure|null but it might not be a callable.
         if (! \is_callable($this->eagerMatcher)) {
@@ -110,8 +118,12 @@ class CustomRelation extends Relation
 
     /**
      * Execute the query as a "select" statement.
+     *
+     * @param array $columns
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function get(array $columns = ['*']): Collection
+    public function get($columns = ['*'])
     {
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot

@@ -16,7 +16,13 @@ class DateTimeRule implements Rule
     {
     }
 
-    public function passes(string $attribute, string $value): bool
+    /**
+     * @param string $attribute
+     * @param string $value
+     *
+     * @return bool
+     */
+    public function passes($attribute, $value)
     {
         // dddx($attribute); //published_at
         // dddx($value);//10/10/2019 13:43

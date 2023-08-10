@@ -60,9 +60,9 @@ class Widget extends BaseModel
     use WidgetTrait;
 
     /**
-     * @var array<string>
+     * @var string[]
      */
-    protected array $fillable = [
+    protected $fillable = [
         'id',
         'post_type', 'post_id', // nullablemorph
         'title',

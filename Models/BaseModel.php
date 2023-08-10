@@ -24,11 +24,11 @@ abstract class BaseModel extends Model
     /**
      * Indicates whether attributes are snake cased on arrays.
      *
-     * @see https://laravel-news.com/6-eloquent-secrets
+     * @see  https://laravel-news.com/6-eloquent-secrets
+     *
+     * @var bool
      */
-    public static bool $snakeAttributes = true;
-    public bool $incrementing = true;
-    public bool $timestamps = true;
+    public static $snakeAttributes = true;
 
     /**
      * @var bool
@@ -42,16 +42,19 @@ abstract class BaseModel extends Model
 
     protected $perPage = 30;
 
-    protected string $connection = 'mysql'; // this will use the specified database connection
+    /**
+     * @var string
+     */
+    protected $connection = 'mysql'; // this will use the specified database connection
 
     /**
      * @var array<string>
      */
-    protected array $fillable = ['id'];
+    protected $fillable = ['id'];
     /**
      * @var array<string, string>
      */
-    protected array $casts = [
+    protected $casts = [
         // 'published_at' => 'datetime:Y-m-d', // da verificare
     ];
 
@@ -67,7 +70,7 @@ abstract class BaseModel extends Model
     /**
      * @var array<int, string>
      */
-    protected array $hidden = [
+    protected $hidden = [
         // 'password'
     ];
 

@@ -214,7 +214,7 @@ class ImportService
 
     public function gRequest(string $method, string $url, array $attrs = [], string $out = 'res'): ?string
     {
-        if (null === $this->client) {
+        if (null == $this->client) {
             $this->importInit();
         }
         if (! isset($this->client_options['base_uri'])) {
@@ -535,7 +535,10 @@ class ImportService
             ->first();
     }
 
-    public function pexels(array $params): mixed
+    /**
+     * @return mixed|null
+     */
+    public function pexels(array $params)
     {
         $lang = app()->getLocale();
         $q = 'necessary';
@@ -557,7 +560,10 @@ class ImportService
         return $this->mymemoryTrans($params);
     }
 
-    public function apertiumTrans(array $params): mixed
+    /**
+     * @return mixed|null
+     */
+    public function apertiumTrans(array $params)
     {
         // https://github.com/24aitor/Laralang/blob/master/src/Builder/ApertiumTrans.php
         // $host = 'api.apertium.org';

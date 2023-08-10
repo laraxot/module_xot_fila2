@@ -16,13 +16,11 @@ abstract class BaseMorphPivot extends MorphPivot
     /**
      * Indicates whether attributes are snake cased on arrays.
      *
-     * @see https://laravel-news.com/6-eloquent-secrets
+     * @see  https://laravel-news.com/6-eloquent-secrets
+     *
+     * @var bool
      */
-    public static bool $snakeAttributes = true;
-
-    public bool $incrementing = true;
-
-    public bool $timestamps = true;
+    public static $snakeAttributes = true;
 
     /**
      * @var bool
@@ -38,7 +36,10 @@ abstract class BaseMorphPivot extends MorphPivot
 
     protected $connection = 'mysql'; // this will use the specified database connection
 
-    protected array $appends = [];
+    /**
+     * @var array
+     */
+    protected $appends = [];
 
     /**
      * @var string
@@ -47,9 +48,9 @@ abstract class BaseMorphPivot extends MorphPivot
 
     // protected $attributes = ['related_type' => 'cuisine_cat'];
     /**
-     * @var array<string>
+     * @var string[]
      */
-    protected array $dates = [
+    protected $dates = [
         'created_at',
         'updated_at',
         'deleted_at',
@@ -57,9 +58,9 @@ abstract class BaseMorphPivot extends MorphPivot
     ];
 
     /**
-     * @var array<string>
+     * @var string[]
      */
-    protected array $fillable = [
+    protected $fillable = [
         'id',
         'post_id', 'post_type',
         'related_type',
