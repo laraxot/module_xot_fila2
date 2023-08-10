@@ -31,7 +31,7 @@ class TypeGuesser
     /**
      * @param int|null $size Length of field, if known
      */
-    public function guess(string $name, Type $type, ?int $size = null): string
+    public function guess(string $name, Type $type, int $size = null): string
     {
         $name = Str::of($name)->lower();
 

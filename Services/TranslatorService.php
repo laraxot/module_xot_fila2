@@ -149,6 +149,7 @@ class TranslatorService extends BaseTranslator
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
         $file_path = $path.\DIRECTORY_SEPARATOR.$lang.\DIRECTORY_SEPARATOR.$group.'.php';
+
         return FileService::fixPath($file_path);
     }
 
@@ -212,6 +213,7 @@ class TranslatorService extends BaseTranslator
         $data = collect($data)->map(
             function ($item) use ($key) {
                 $k = $key.'.'.$item;
+
                 return trans($k);
             }
         )->all();

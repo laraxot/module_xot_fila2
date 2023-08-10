@@ -42,7 +42,7 @@ class RouteDynService
         $prefix = mb_strtolower($v['name']);
         // /*
         $param_name = self::getParamName($v, $namespace);
-        if ($param_name !== '') {
+        if ('' !== $param_name) {
             /*
             Call to function is_array() with string will always evaluate to false.
             if (\is_array($param_name)) {
@@ -87,7 +87,7 @@ class RouteDynService
         // }
         $namespace = str_replace('{', '', $namespace);
         $namespace = str_replace('}', '', $namespace);
-        if ($namespace === '') {
+        if ('' === $namespace) {
             return null;
         }
         if (\is_array($namespace)) {
@@ -104,7 +104,7 @@ class RouteDynService
         }
         $v['act'] = $v['name'];
         $v['act'] = preg_replace('/{.*}\//', '', $v['act']);
-        if ($v['act'] === null) {
+        if (null === $v['act']) {
             $v['act'] = '';
         }
         $v['act'] = str_replace('/', '_', $v['act']);
@@ -162,7 +162,7 @@ class RouteDynService
         if (isset($v['only'])) {
             $opts['only'] = $v['only'];
         }
-        if ($param_name === '' && ! isset($opts['only'])) {
+        if ('' === $param_name && ! isset($opts['only'])) {
             $opts['only'] = ['index'];
         }
         $where = [];
@@ -213,6 +213,7 @@ class RouteDynService
     {
         $controller = self::getController($v, $namespace);
         $act = self::getAct($v, $namespace);
+
         return $controller.'@'.$act;
     }
 
@@ -220,17 +221,18 @@ class RouteDynService
     {
         $as = Str::slug($v['name']); // !!!!!! test da controllare
         $uses = self::getUses($v, $namespace);
-        if ($curr !== null) {
+        if (null !== $curr) {
             $uses = '\\'.self::$namespace_start.'\\'.$curr.'\\'.$uses;
         } else {
             $uses = '\\'.self::$namespace_start.'\\'.$uses;
         }
+
         return ['as' => $as, 'uses' => $uses];
     }
 
-    public static function dynamic_route(array $array, ?string $namespace = null, ?string $namespace_start = null, ?string $curr = null): void
+    public static function dynamic_route(array $array, string $namespace = null, string $namespace_start = null, string $curr = null): void
     {
-        if ($namespace_start !== null) {
+        if (null !== $namespace_start) {
             self::$namespace_start = $namespace_start;
         } /*
         if($curr!=null){
@@ -257,7 +259,7 @@ class RouteDynService
 
     public static function createRouteResource(array $v, ?string $namespace): void
     {
-        if ($v['name'] === null) {
+        if (null === $v['name']) {
             return;
         }
         $opts = self::getResourceOpts($v, $namespace);
@@ -285,7 +287,7 @@ class RouteDynService
         }
         }
          */
-        if ($curr === null) {
+        if (null === $curr) {
             $curr = $sub_namespace;
         } else {
             $piece = explode('\\', $curr);
@@ -360,12 +362,12 @@ class RouteDynService
 
     public static function prefixedResourceNames(string $prefix): array
     {
-        if (mb_substr($prefix, -1) === '.') {
+        if ('.' === mb_substr($prefix, -1)) {
             $prefix = mb_substr($prefix, 0, -1);
         }
         // Strict comparison using === between null and non-empty-string will always evaluate to false.
         // if ('' === $prefix || null === $prefix) {
-        if ($prefix === '') {
+        if ('' === $prefix) {
             return ['index' => $prefix.'index', 'create' => $prefix.'create', 'store' => $prefix.'store', 'show' => $prefix.'show', 'edit' => $prefix.'edit', 'update' => $prefix.'update', 'destroy' => $prefix.'destroy'];
         }
         $prefix = mb_strtolower($prefix);

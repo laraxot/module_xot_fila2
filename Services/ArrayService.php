@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fputcsv;
@@ -33,7 +34,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -201,7 +202,7 @@ class ArrayService
     public function getFilename(): string
     {
         $filename = $this->filename;
-        if ($filename !== null) {
+        if (null !== $filename) {
             return $filename;
         }
         // dddx(debug_backtrace());
@@ -217,7 +218,7 @@ class ArrayService
      */
     public function toXLS(): \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
     {
-        if (request('debug', 0) * 1 === 1) {
+        if (1 === request('debug', 0) * 1) {
             return self::toHtml();
         }
         // include_once __DIR__.'/vendor/autoload.php';

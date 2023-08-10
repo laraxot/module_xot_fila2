@@ -87,7 +87,7 @@ trait HasParent
      */
     public function refreshNode(): void
     {
-        if (! $this->exists || static::$actionsPerformed === 0) {
+        if (! $this->exists || 0 === static::$actionsPerformed) {
             return;
         }
 
@@ -135,7 +135,7 @@ trait HasParent
     /**
      * Get the node siblings and the node itself.
      */
-    public function siblingsAndSelf(): \Kalnoy\Nestedset\QueryBuilder
+    public function siblingsAndSelf(): QueryBuilder
     {
         return $this->newScopedQuery()
             ->where($this->getParentIdName(), '=', $this->getParentId());
@@ -382,12 +382,12 @@ trait HasParent
         return $this->applyNestedSetScope($builder, $table);
     }
 
-    public function newScopedQuery(?string $table = null): QueryBuilder
+    public function newScopedQuery(string $table = null): QueryBuilder
     {
         return $this->applyNestedSetScope($this->newQuery(), $table);
     }
 
-    public function applyNestedSetScope($query, ?string $table = null)
+    public function applyNestedSetScope($query, string $table = null)
     {
         if (! $scoped = $this->getScopeAttributes()) {
             return $query;
@@ -677,7 +677,7 @@ trait HasParent
         return $this;
     }
 
-    public function replicate(?array $except = null): \Illuminate\Database\Eloquent\Model
+    public function replicate(array $except = null): Model
     {
         $defaults = [
             $this->getParentIdName(),
@@ -880,17 +880,11 @@ trait HasParent
             ->restore();
     }
 
-    /**
-     * @return array
-     */
     protected function getScopeAttributes(): array
     {
         return null;
     }
 
-    /**
-     * @return array
-     */
     protected function getArrayableRelations(): array
     {
         $result = parent::getArrayableRelations();

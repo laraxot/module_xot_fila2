@@ -53,7 +53,7 @@ class ImportService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -85,13 +85,13 @@ class ImportService
 
         $route_current = \Route::current();
         $params = [];
-        if ($route_current !== null) {
+        if (null !== $route_current) {
             $params = $route_current->parameters();
         }
 
         // $cookieJar = new CookieJar();
 
-        if ($this->cookieJar === null) {
+        if (null === $this->cookieJar) {
             $this->initCookieJar();
         }
 
@@ -135,7 +135,7 @@ class ImportService
     public function enableCookie(array $cookies): void
     {
         // $cookieJar->setCookie(SetCookie::fromString('SID="AuthKey 23ec5d03-86db-4d80-a378-6059139a7ead"; expires=Thu, 24 Nov 2016 13:52:20 GMT; path=/; domain=.sketchup.com'));
-        if ($this->cookieJar === null) {
+        if (null === $this->cookieJar) {
             $this->cookieJar = $this->initCookieJar();
         }
 
@@ -214,7 +214,7 @@ class ImportService
 
     public function gRequest(string $method, string $url, array $attrs = [], string $out = 'res'): ?string
     {
-        if ($this->client === null) {
+        if (null === $this->client) {
             $this->importInit();
         }
         if (! isset($this->client_options['base_uri'])) {
@@ -230,7 +230,7 @@ class ImportService
             //    $url .= '?'.$url_info['query'];
             // }
             $query = collect($url_info)->get('query');
-            if ($query !== '') {
+            if ('' !== $query) {
                 $url .= '?'.$query;
             }
         }
@@ -296,9 +296,6 @@ class ImportService
     }
     */
 
-    /**
-     * @param array $attrs
-     */
     public function getCacheKey(string $method, string $url, array $attrs = []): string
     {
         $key = json_encode(['method' => $method, 'url' => $url, 'attrs' => $attrs]);
@@ -338,13 +335,13 @@ class ImportService
              */
             $parse_url = parse_url($url);
             $url_info = collect($parse_url);
-            if ($url_info->get('scheme') !== null && $url_info->get('host') !== null) {
+            if (null !== $url_info->get('scheme') && null !== $url_info->get('host')) {
                 $this->client_options['base_uri'] = $url_info->get('scheme').'://'.$url_info->get('host');
             } else {
                 $this->client_options['base_uri'] = '';
             }
             $url = $url_info->get('path');
-            if ($url_info->get('query') !== null) {
+            if (null !== $url_info->get('query')) {
                 $url .= '?'.$url_info->get('query');
             }
         }
@@ -467,7 +464,7 @@ class ImportService
             return;
         }
         $resource = fopen($filename, 'w');
-        if ($resource === false) {
+        if (false === $resource) {
             throw new \Exception('can open '.$filename);
         }
         $stream = \GuzzleHttp\Psr7\Utils::streamFor($resource);
@@ -532,6 +529,7 @@ class ImportService
          * @var array
          */
         $hits = $json->hits;
+
         return collect($hits)
             ->shuffle()
             ->first();
@@ -606,7 +604,7 @@ class ImportService
         // $data = Json::decode($urldata, Json::FORCE_ARRAY);
         // $data = (array) Json::decode($urldata, Json::FORCE_ARRAY);
 
-        if ($data['responseStatus'] !== 200) {
+        if (200 !== $data['responseStatus']) {
             /* if (true == $this->debug) {
                  if (403 == $data['responseStatus']) {
                      $details = ($data['responseDetails']);
@@ -625,9 +623,6 @@ class ImportService
 
     // end mymemoryTrans;
 
-    /**
-     * @return array
-     */
     public function getForms(array $params): array
     {
         $html = '';

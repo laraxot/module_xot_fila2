@@ -77,8 +77,6 @@ class CustomRelation extends Relation
 
     /**
      * Initialize the relation on a set of models.
-     *
-     * @return array
      */
     public function initRelation(array $models, string $relation): array
     {
@@ -91,8 +89,6 @@ class CustomRelation extends Relation
 
     /**
      * Match the eagerly loaded results to their parents.
-     *
-     * @return array
      */
     public function match(array $models, Collection $results, string $relation): array
     {
@@ -114,10 +110,8 @@ class CustomRelation extends Relation
 
     /**
      * Execute the query as a "select" statement.
-     *
-     * @param array $columns
      */
-    public function get(array $columns = ['*']): \Illuminate\Database\Eloquent\Collection
+    public function get(array $columns = ['*']): Collection
     {
         // First we'll add the proper select columns onto the query so it is run with
         // the proper columns. Then, we will get the results and hydrate out pivot
