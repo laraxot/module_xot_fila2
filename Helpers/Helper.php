@@ -13,12 +13,14 @@ use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;
 use Modules\Xot\Services\ModuleService;
 use Nwidart\Modules\Facades\Module;
+
 use function Safe\define;
 use function Safe\glob;
 use function Safe\json_decode;
 use function Safe\parse_url;
 use function Safe\preg_match;
 use function Safe\preg_replace;
+
 use Webmozart\Assert\Assert;
 
 // ------------------------------------------------
@@ -156,6 +158,7 @@ if (! function_exists('getFilename')) {
 
         $func = (string) $tmp[1]['function'];
         $params_list = collect($params)->except(['_token', '_method'])->implode('_');
+
         return Str::slug(
             (string) str_replace('Controller', '', $class).
                 '_'.str_replace('do_', '', $func).
@@ -194,12 +197,12 @@ if (! function_exists('inAdmin')) {
             return config()->get('in_admin');
         }
         */
-        if (\Request::segment(1) === 'admin') {
+        if ('admin' === \Request::segment(1)) {
             return true;
         }
         $segments = \Request::segments();
-        if (\count($segments) > 0 && $segments[0] === 'livewire') {
-            if (session('in_admin') === true) {
+        if (\count($segments) > 0 && 'livewire' === $segments[0]) {
+            if (true === session('in_admin')) {
                 return true;
             }
         }
@@ -301,16 +304,16 @@ if (! function_exists('params2ContainerItem')) {
      *
      * @return array<array>
      */
-    function params2ContainerItem(?array $params = null): array
+    function params2ContainerItem(array $params = null): array
     {
-        if ($params === null) {
+        if (null === $params) {
             // Call to static method current() on an unknown class Route.
             // $params = optional(\Route::current())->parameters();
             // Cannot call method parameters() on mixed.
             // $params = optional(Route::current())->parameters();
             $params = [];
             $route_current = Route::current();
-            if ($route_current !== null) {
+            if (null !== $route_current) {
                 $params = $route_current->parameters();
             }
         }
@@ -350,7 +353,7 @@ if (! function_exists('getModelByName')) {
         // getFirst..
         $files_path = base_path('Modules').'/*/Models/*.php';
         $files = glob($files_path);
-        if ($files === false) {
+        if (false === $files) {
             throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
         $path = collect($files)->first(
@@ -365,7 +368,7 @@ if (! function_exists('getModelByName')) {
 
         // dddx($registered);
 
-        if ($path === null) {
+        if (null === $path) {
             throw new Exception('['.$name.'] not in morph_map ['.__LINE__.']['.__FILE__.']');
         }
         $path = FileService::fixPath($path);
@@ -390,7 +393,7 @@ if (! function_exists('getUserClass')) {
 }
 
 if (! function_exists('getModuleFromModel')) {
-    function getModuleFromModel(object $model): ?\Nwidart\Modules\Module
+    function getModuleFromModel(object $model): ?Nwidart\Modules\Module
     {
         $class = $model::class;
         $module_name = Str::before(Str::after($class, 'Modules\\'), '\\Models\\');
@@ -414,6 +417,7 @@ if (! function_exists('getModuleNameFromModel')) {
             throw new \Exception('model is not an object');
         }
         $class = $model::class;
+
         return Str::before(Str::after($class, 'Modules\\'), '\\Models\\');
     }
 }
@@ -449,8 +453,6 @@ if (! function_exists('getTransformerFromModel')) {
 if (! function_exists('getAllModulesModels')) {
     /**
      * @throws ReflectionException
-     *
-     * @return array
      */
     function getAllModulesModels(): array
     {
@@ -468,8 +470,6 @@ if (! function_exists('getAllModulesModels')) {
 if (! function_exists('getModuleModels')) {
     /**
      * @throws ReflectionException
-     *
-     * @return array
      */
     function getModuleModels(string $module): array
     {
@@ -597,8 +597,6 @@ if (! function_exists('debug_getter_obj')) {
 
     /**
      * @throws ReflectionException
-     *
-     * @return array|null
      */
     function debug_getter_obj(array $params): ?array
     {
@@ -630,7 +628,7 @@ if (! function_exists('debug_getter_obj')) {
         foreach ($methods as $method) {
             $reflection = new \ReflectionMethod($obj, $method);
             $args = $reflection->getParameters();
-            if (count($args) === 0 && $reflection->class === $obj::class) {
+            if (0 === count($args) && $reflection->class === $obj::class) {
                 try {
                     /**
                      * @var object|string
@@ -673,7 +671,7 @@ if (! function_exists('dottedToBrackets')) {
     {
         $str = collect(explode('.', $str))->map(
             function ($v, $k) {
-                return $k === 0 ? $v : '['.$v.']';
+                return 0 === $k ? $v : '['.$v.']';
             }
         )->implode('');
 
@@ -682,9 +680,6 @@ if (! function_exists('dottedToBrackets')) {
 }
 
 if (! function_exists('array_merge_recursive_distinct')) {
-    /**
-     * @return array
-     */
     function array_merge_recursive_distinct(array &$array1, array &$array2): array
     {
         $merged = $array1;
@@ -724,7 +719,7 @@ if (! function_exists('url_queries')) {
      *
      * @return string The updated query string
      */
-    function url_queries(array $queries, ?string $url = null): string
+    function url_queries(array $queries, string $url = null): string
     {
         // If a URL isn't supplied, use the current one
         if (! $url) {
@@ -734,7 +729,7 @@ if (! function_exists('url_queries')) {
         // Split the URL down into an array with all the parts separated out
         $url_parsed = parse_url($url);
 
-        if ($url_parsed === false) {
+        if (false === $url_parsed) {
             throw new \Exception('error parsing url ['.$url.']');
         }
         // Turn the query string into an array
@@ -783,8 +778,6 @@ if (! function_exists('build_url')) {
 if (! function_exists('getRelationships')) {
     /**
      * @throws ReflectionException
-     *
-     * @return array
      */
     function getRelationships(Model $model): array
     {
@@ -797,7 +790,7 @@ if (! function_exists('getRelationships')) {
         foreach ($methods as $method) {
             $reflection = new \ReflectionMethod($model, $method);
             $args = $reflection->getParameters();
-            if (count($args) === 0 && $reflection->class === $model::class) {
+            if (0 === count($args) && $reflection->class === $model::class) {
                 try {
                     $return = $reflection->invoke($model);
                     $check = $return instanceof \Illuminate\Database\Eloquent\Relations\Relation;
@@ -942,9 +935,10 @@ if (! function_exists('getRouteParameters')) {
          * @var \Illuminate\Routing\Route|null
          */
         $route = request()->route();
-        if ($route === null) {
+        if (null === $route) {
             return [];
         }
+
         return $route->parameters();
     }
 }
@@ -957,9 +951,10 @@ if (! function_exists('getRouteName')) {
          * @var \Illuminate\Routing\Route|null
          */
         $route = request()->route();
-        if ($route === null) {
+        if (null === $route) {
             return null;
         }
+
         return $route->getName();
     }
 }
@@ -979,6 +974,7 @@ if (! function_exists('getModTradFilepath')) {
         $ns = Str::of($file_path)->after('/Modules/')->before('/')->lower();
         $info = pathinfo($file_path);
         $group = Str::snake($info['filename']);
+
         return $ns.'::'.$group;
     }
 }
@@ -1073,7 +1069,7 @@ if (! function_exists('rowsToSql')) {
     /**
      * Undocumented function.
      */
-    function rowsToSql(\Illuminate\Database\Eloquent\Relations\HasOne|\Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder $rows): string
+    function rowsToSql(Illuminate\Database\Eloquent\Relations\HasOne|Illuminate\Database\Query\Builder|Illuminate\Database\Eloquent\Builder $rows): string
     {
         // $sql = str_replace('?', $rows->getBindings(), $rows->toSql());
         /**
@@ -1081,6 +1077,7 @@ if (! function_exists('rowsToSql')) {
          */
         $bindings = $rows->getBindings();
         $sql = $rows->toSql();
+
         return Str::replaceArray('?', $bindings, $sql);
     }
 }
@@ -1096,7 +1093,7 @@ if (! function_exists('getServerName')) {
         $default = Str::after($default, '//');
 
         $server_name = $default;
-        if (isset($_SERVER['SERVER_NAME']) && $_SERVER['SERVER_NAME'] !== '127.0.0.1') {
+        if (isset($_SERVER['SERVER_NAME']) && '127.0.0.1' !== $_SERVER['SERVER_NAME']) {
             $server_name = $_SERVER['HTTP_HOST'] ?? $_SERVER['SERVER_NAME'];
         }
 
@@ -1169,6 +1166,7 @@ if (! function_exists('profile')) {
     function profile(): Model
     {
         $xot = XotData::make();
+
         return $xot->getProfileModel();
     }
 }

@@ -21,6 +21,7 @@ trait DropboxTrait
 
                 $client = new DropboxClient($config['authorizationToken']);
                 $adapter = new DropboxAdapter($client);
+
                 return new Filesystem($adapter, ['case_sensitive' => false]);
             }
         );

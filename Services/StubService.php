@@ -16,8 +16,10 @@ use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Modules\Xot\Contracts\ModelProfileContract;
 use Modules\Xot\Datas\XotData;
+
 use function Safe\date;
 use function Safe\shuffle;
+
 use Symfony\Component\Finder\SplFileInfo;
 
 /**
@@ -266,7 +268,7 @@ class StubService
             return collect([]);
         }
         $fillables = $model->getFillable();
-        if (\count($fillables) === 0) {
+        if (0 === \count($fillables)) {
             $fillables = $model->getConnection()->getSchemaBuilder()->getColumnListing($model->getTable());
         }
 
@@ -321,7 +323,7 @@ class StubService
             }
         )->filter(
             function ($item) {
-                return $item !== null;
+                return null !== $item;
             }
         );
     }
@@ -381,7 +383,7 @@ class StubService
             $autoloader_reflector = new \ReflectionClass($this->model_class);
             // dddx($autoloader_reflector);
             $class_file_name = $autoloader_reflector->getFileName();
-            if ($class_file_name === false) {
+            if (false === $class_file_name) {
                 throw new \Exception('autoloader_reflector false');
             }
 
@@ -492,7 +494,7 @@ class StubService
             )->all();
             $autoloader_reflector = new \ReflectionClass($model);
             $class_filename = $autoloader_reflector->getFileName();
-            if ($class_filename === false) {
+            if (false === $class_filename) {
                 throw new \Exception('autoloader_reflector err');
             }
             $fillables_str = \chr(13).\chr(10).'    protected $fillable=[\''.implode("','", $fillables)."'];".\chr(13).\chr(10);
@@ -574,6 +576,7 @@ class StubService
     public function getModelPath(): string
     {
         $path = base_path($this->getModelNamespace());
+
         return FileService::fixPath($path);
     }
 
@@ -594,10 +597,10 @@ class StubService
         $brother_file = Arr::first(
             $models,
             function (SplFileInfo $file) {
-                return $file->getExtension() === 'php';
+                return 'php' === $file->getExtension();
             }
         );
-        if ($brother_file === null) {
+        if (null === $brother_file) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $brother_class = $this->getModelNamespace().'\\'.$brother_file->getFilenameWithoutExtension();
@@ -637,12 +640,12 @@ class StubService
         $brother_file = Arr::first(
             $models,
             function (SplFileInfo $file) {
-                return $file->getExtension() === 'php';
+                return 'php' === $file->getExtension();
             }
         );
         // dddx(get_class_methods($brother_file));
         // dddx($brother_file->getFilenameWithoutExtension());
-        if ($brother_file === null) {
+        if (null === $brother_file) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $brother_class = $this->getModelNamespace().'\\'.$brother_file->getFilenameWithoutExtension();
@@ -660,6 +663,7 @@ class StubService
             'created_at', 'updated_at', 'updated_by', 'created_by', 'deleted_at', 'deleted_by',
             'deleted_ip', 'created_ip', 'updated_ip',
         ];
+
         return collect($fillables)
             ->except($except)
             ->all();
@@ -685,7 +689,7 @@ class StubService
         }
         */
 
-        if ($key === 'password') {
+        if ('password' === $key) {
             return $this->mapToFactory($key, "Hash::make('password')");
         }
 
@@ -727,10 +731,10 @@ class StubService
     /**
      * Undocumented function.
      */
-    protected function mapToFactory(string $key, ?string $value = null): array
+    protected function mapToFactory(string $key, string $value = null): array
     {
         return [
-            $key => $value === null ? $value : "'{$key}' => {$value}",
+            $key => null === $value ? $value : "'{$key}' => {$value}",
         ];
     }
 

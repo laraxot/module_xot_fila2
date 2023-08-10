@@ -11,6 +11,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Modules\Xot\Services\BladeService;
 use Modules\Xot\Services\LivewireService;
+
 use function Safe\glob;
 use function Safe\json_decode;
 use function Safe\json_encode;
@@ -150,8 +151,6 @@ abstract class XotBaseServiceProvider extends ServiceProvider
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
     public function provides(): array
     {

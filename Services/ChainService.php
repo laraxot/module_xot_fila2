@@ -73,7 +73,7 @@ class ChainService
             // che a sua volta viene utilizzato in FormX\Resources\views\collective\fields\select\field_parent.blade.php
             // che vuole parent_id (radice) uguale a 0
             // controllo che la row radice non abbia parent_id uguale a null, in caso...
-            if ($row[$this->parent_field] === null) {
+            if (null === $row[$this->parent_field]) {
                 $row[$this->parent_field] = 0;
                 $row->save();
             }
@@ -99,16 +99,12 @@ class ChainService
         foreach ($rows as $item) {
             $item['indent'] = $level;
             $this->chain_table[] = $item;
-            if (isset($this->table[$item[$this->primary_field]]) && (($maxlevel > $level + 1) || ($maxlevel === 0))) {
+            if (isset($this->table[$item[$this->primary_field]]) && (($maxlevel > $level + 1) || (0 === $maxlevel))) {
                 $this->makeBranch($item[$this->primary_field], $level + 1, $maxlevel);
             }
         }
     }
 
-    /**
-     * @param array $a
-     * @param array $b
-     */
     public function chainCMP(array $a, array $b): int
     {
         if ($a[$a['key']] === $b[$b['key']]) {

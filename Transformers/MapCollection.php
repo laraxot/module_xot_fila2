@@ -13,9 +13,6 @@ class MapCollection extends ResourceCollection
 {
     public string $collects = MapResource::class;
 
-    /**
-     * @return array
-     */
     public function toArray(\Illuminate\Http\Request $request): array
     {
         return [

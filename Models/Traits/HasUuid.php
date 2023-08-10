@@ -27,6 +27,7 @@ trait HasUuid
     {
         return 'string';
     }
+
     /**
      * Boot function from Laravel.
      */

@@ -11,8 +11,6 @@ trait FormRequestTrait
 {
     /**
      * Get the error messages for the defined validation rules.
-     *
-     * @return array
      */
     public function messages(): array
     {
@@ -35,6 +33,7 @@ trait FormRequestTrait
         if (! \is_array($tradGeneric)) {
             $tradGeneric = [];
         }
+
         return array_merge($tradGeneric, $trad);
     }
 }

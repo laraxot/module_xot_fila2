@@ -42,7 +42,7 @@ trait Getter
         // dd(class_basename(get_called_class()));//ThemeService
         $class = static::class;
         // *
-        if ($ris === '' && isset($class::$config_name)) {
+        if ('' === $ris && isset($class::$config_name)) {
             $config_name = $class::$config_name;
             $ris = config($config_name.'.'.$index);
         }
@@ -71,9 +71,6 @@ trait Getter
 
     // * //se lo togli non funziona piu' le funzioni del themeservice
 
-    /**
-     * @param array  $args
-     */
     public static function __callStatic(string $method, array $args): mixed
     {
         if (preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {

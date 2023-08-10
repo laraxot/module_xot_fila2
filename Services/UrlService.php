@@ -23,7 +23,7 @@ class UrlService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -40,7 +40,7 @@ class UrlService
 
     public function checkValidUrl(string $url): bool
     {
-        if (filter_var($url, FILTER_VALIDATE_URL) !== false) {
+        if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
             return true;
         }
 

@@ -29,7 +29,7 @@ class XLSService
      */
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -55,6 +55,7 @@ class XLSService
         if ($num2 > 0) {
             return $this->getNameFromNumber($num2 - 1).$letter;
         }
+
         return $letter;
     }
 
@@ -83,7 +84,7 @@ class XLSService
     public function fromInputFileName(string $name): self
     {
         $file = request()->file('file');
-        if ($file === null) {
+        if (null === $file) {
             throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
@@ -109,7 +110,7 @@ class XLSService
         }
         $path = $file->getRealPath();
 
-        if ($path === false) {
+        if (false === $path) {
             throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 

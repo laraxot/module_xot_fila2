@@ -23,7 +23,7 @@ class PdfService
 
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -49,7 +49,7 @@ class PdfService
             function ($file, $key) {
                 // dddx(get_class_methods($file));
                 // dddx($file->getBasename());
-                return $file->getExtension() === 'pdf' && ! Str::startsWith($file->getBasename(), '_');
+                return 'pdf' === $file->getExtension() && ! Str::startsWith($file->getBasename(), '_');
             }
         );
         foreach ($this->filenames as $filename) {

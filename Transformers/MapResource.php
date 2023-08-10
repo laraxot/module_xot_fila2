@@ -15,9 +15,6 @@ class MapResource extends JsonResource
     protected float $longitude;
     protected float $latitude;
 
-    /**
-     * @return array
-     */
     public function toArray(\Illuminate\Http\Request $request): array
     {
         return [

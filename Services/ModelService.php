@@ -125,7 +125,7 @@ class ModelService
 
         $post_type = collect($models)->search($model::class);
 
-        if ($post_type === false) {
+        if (false === $post_type) {
             $post_type = snake_case(class_basename($model));
             Relation::morphMap([$post_type => $model::class]);
         }
@@ -150,13 +150,13 @@ class ModelService
             $res = $method->getName(); // ?? $method->__toString(); // 76     Call to an undefined method ReflectionType::getName().
             // $res = PHP_VERSION_ID < 70100 ? $method->__toString() : $method->getName();
 
-            if ($method->getNumberOfRequiredParameters() === 0 && $method->class === $model::class) {
+            if (0 === $method->getNumberOfRequiredParameters() && $method->class === $model::class) {
                 // $returnType = $method->getReturnType();
                 // if (null !== $returnType && false !== strpos($returnType->getName(), '\\Relations\\')) {
                 // if (in_array(class_basename($returnType->getName()), ['HasOne', 'HasMany', 'BelongsTo', 'BelongsToMany', 'MorphToMany', 'MorphTo'])) {
                 //    $relations[] = $res;
                 // } elseif ($doc && false !== strpos($doc, '\\Relations\\')) {
-                if ($doc && strpos($doc, '\\Relations\\') !== false) {
+                if ($doc && false !== strpos($doc, '\\Relations\\')) {
                     $relations[] = $res;
                 }
             }
@@ -205,6 +205,7 @@ class ModelService
     {
         $model = $this->model;
         $relations = self::getRelationships();
+
         return collect($relations)->map(
             function ($item) {
                 return $item['name'];
@@ -263,13 +264,12 @@ class ModelService
     public function query(string $sql): bool
     {
         $model = $this->model;
+
         return $model->getConnection()->statement($sql);
     }
 
     /**
      * execute a query.
-     *
-     * @return array
      */
     public function select(string $sql): array
     {

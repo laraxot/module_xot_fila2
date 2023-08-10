@@ -40,11 +40,11 @@ class MorphToManyAction
 
         dddx(
             [
-            'message' => 'wip',
-            'row' => $row,
-            'relation' => $relation,
-            'relation_rows' => $relation->rows->exists(),
-            't' => $row->{$relation->name},
+                'message' => 'wip',
+                'row' => $row,
+                'relation' => $relation,
+                'relation_rows' => $relation->rows->exists(),
+                't' => $row->{$relation->name},
             ]
         );
 

@@ -18,9 +18,6 @@ class GeoJsonCollection extends ResourceCollection
 {
     public string $collects = GeoJsonResource::class;
 
-    /**
-     * @return array
-     */
     // ErrorException (Declaration of Modules\Xot\Transformers\GeoJsonResource::toArray(Illuminate\Http\Request
     // $request) should be compatible with Illuminate\Http\Resources\Json\JsonResource::toArray($request)) thrown
     // while looking for class Modules\Xot\Transformers\GeoJsonResource.

@@ -81,19 +81,20 @@ class Widget extends BaseModel
      */
     public function getPosAttribute(?int $value): ?int
     {
-        if ($value !== null) {
+        if (null !== $value) {
             return $value;
         }
+
         return self::max('pos') + 1;
     }
 
-    public function toHtml(?array $params = null): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function toHtml(array $params = null): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
     {
         /**
          * @phpstan-var view-string
          */
         $view = 'pub_theme::layouts.widgets';
-        if ($this->layout_position !== null) {
+        if (null !== $this->layout_position) {
             $view .= '.'.$this->layout_position;
         }
         $view .= '.'.$this->blade;
@@ -103,7 +104,7 @@ class Widget extends BaseModel
             'row' => $this->linked,
             'widget' => $this,
         ];
-        if ($params !== null) {
+        if (null !== $params) {
             $view_params['params'] = $params;
         }
         if (! view()->exists($view)) {

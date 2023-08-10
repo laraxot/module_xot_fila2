@@ -61,7 +61,7 @@ class ModuleService
         }
         */
         $mod = Module::find($this->name);
-        if ($mod === null) {
+        if (null === $mod) {
             return [];
         }
         $mod_path = $mod->getPath().'/Models';

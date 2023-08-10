@@ -8,6 +8,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 use Illuminate\Support\Collection;
+
 use function Safe\file;
 
 /**
@@ -29,7 +30,7 @@ class CSVService
      */
     public static function getInstance(): self
     {
-        if (self::$instance === null) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 

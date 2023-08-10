@@ -33,7 +33,7 @@ class ImageService
      */
     public static function getInstance(): self
     {
-        if (self::$_instance === null) {
+        if (null === self::$_instance) {
             self::$_instance = new self();
         }
 
@@ -55,7 +55,7 @@ class ImageService
     {
         foreach ($params as $k => $v) {
             $func = 'set'.Str::studly((string) $k);
-            if ($v === null) {
+            if (null === $v) {
                 $v = '';
             }
             $this->{$func}($v);
@@ -70,7 +70,7 @@ class ImageService
     public function setImg(string $val): self
     {
         $nophoto_path = public_path('img/nophoto.jpg');
-        if ($val === '') {
+        if ('' === $val) {
             $val = $nophoto_path;
         }
         if (Str::startsWith($val, '//')) {
@@ -93,7 +93,7 @@ class ImageService
      */
     public function setSrc(string $val): self
     {
-        if ($val === '') {
+        if ('' === $val) {
             $val = public_path('img/nophoto.jpg');
         }
         if (Str::startsWith($val, url(''))) { // se e' una immagine locale
@@ -173,10 +173,11 @@ class ImageService
      */
     public function src(): string
     {
-        if ($this->filename === null) {
+        if (null === $this->filename) {
             throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
         $src = '/'.str_replace(public_path('/'), '', $this->filename);
+
         return str_replace('//', '/', $src);
     }
 

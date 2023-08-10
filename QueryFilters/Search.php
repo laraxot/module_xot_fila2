@@ -19,8 +19,6 @@ class Search
 {
     /**
      * Undocumented function.
-     *
-     * @param array ...$args
      */
     public function handle(Builder $query, \Closure $next, array ...$args): \Closure
     {
@@ -31,7 +29,7 @@ class Search
          */
         $q = request('q', '');
 
-        if (\count($search_fields) === 0) { // se non gli passo nulla, cerco in tutti i fillable
+        if (0 === \count($search_fields)) { // se non gli passo nulla, cerco in tutti i fillable
             $search_fields = $model->getFillable();
         }
         // $table = $model->getTable();

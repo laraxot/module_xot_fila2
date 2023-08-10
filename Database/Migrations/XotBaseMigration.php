@@ -25,7 +25,7 @@ abstract class XotBaseMigration extends Migration
     // *
     public function __construct()
     {
-        if ($this->model === null) {
+        if (null === $this->model) {
             $model = $this->getModel();
             // 37     Dead catch - Exception is never thrown in the try block.
             // try {
@@ -42,7 +42,7 @@ abstract class XotBaseMigration extends Migration
 
     public function getModel(): string
     {
-        if ($this->model_class !== null) {
+        if (null !== $this->model_class) {
             return $this->model_class;
         }
         $name = class_basename($this);
@@ -64,9 +64,10 @@ abstract class XotBaseMigration extends Migration
 
     public function getTable(): string
     {
-        if ($this->model === null) {
+        if (null === $this->model) {
             return '';
         }
+
         return $this->model->getTable();
     }
 
@@ -77,7 +78,7 @@ abstract class XotBaseMigration extends Migration
         // dddx(config('database'));
         // \DB::purge('mysql');
         // \DB::reconnect('mysql');
-        if ($this->model === null) {
+        if (null === $this->model) {
             throw new \Exception('model is null');
         }
 
@@ -117,9 +118,9 @@ abstract class XotBaseMigration extends Migration
     /**
      * ---.
      */
-    public function tableExists(?string $table = null): bool
+    public function tableExists(string $table = null): bool
     {
-        if ($table === null) {
+        if (null === $table) {
             $table = $this->getTable();
         }
 
@@ -177,6 +178,7 @@ abstract class XotBaseMigration extends Migration
     public function hasIndexName(string $name): bool
     {
         $doctrineTable = $this->getTableDetails();
+
         return $doctrineTable->hasIndex($name);
     }
 

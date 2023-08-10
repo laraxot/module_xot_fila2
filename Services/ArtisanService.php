@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
+
 use function Safe\define;
 use function Safe\fopen;
 use function Safe\preg_match_all;
@@ -37,11 +38,12 @@ class ArtisanService
             case 'migrate':
                 \DB::purge('mysql');
                 \DB::reconnect('mysql');
-                if ($module_name !== '') {
+                if ('' !== $module_name) {
                     echo '<h3>Module '.$module_name.'</h3>';
 
                     return self::exe('module:migrate '.$module_name.' --force');
                 }
+
                 return self::exe('migrate --force');
 
             case 'routelist':
@@ -126,7 +128,7 @@ class ArtisanService
         $files = File::files(storage_path('logs'));
         $log = request('log', '');
         $content = '';
-        if ($log !== '') {
+        if ('' !== $log) {
             if (File::exists(storage_path('logs/'.$log))) {
                 $content = File::get(storage_path('logs/'.$log));
             }
@@ -192,7 +194,7 @@ class ArtisanService
         $files = File::files(storage_path('logs'));
 
         foreach ($files as $file) {
-            if ($file->getExtension() === 'log' && $file->getRealPath() !== false) {
+            if ('log' === $file->getExtension() && false !== $file->getRealPath()) {
                 // Parameter #1 $paths of static method Illuminate\Filesystem\Filesystem::delete() expects array|string, Symfony\Component\Finder\SplFileInfo given.
                 echo '<br/>'.$file->getRealPath();
 
@@ -208,7 +210,7 @@ class ArtisanService
         $files = File::files(storage_path('framework/sessions'));
 
         foreach ($files as $file) {
-            if ($file->getExtension() === '' && $file->getRealPath() !== false) {
+            if ('' === $file->getExtension() && false !== $file->getRealPath()) {
                 // echo '<br/>'.$file->getRealPath();
 
                 File::delete($file->getRealPath());
@@ -224,7 +226,7 @@ class ArtisanService
     {
         $files = File::files(storage_path('debugbar'));
         foreach ($files as $file) {
-            if ($file->getExtension() === 'json' && $file->getRealPath() !== false) {
+            if ('json' === $file->getExtension() && false !== $file->getRealPath()) {
                 // echo '<br/>'.$file->getRealPath();
 
                 File::delete($file->getRealPath());
@@ -242,7 +244,8 @@ class ArtisanService
             $output = '';
 
             Artisan::call($command, $arguments);
-            return $output . '[<pre>'.Artisan::output().'</pre>]';  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
+
+            return $output.'[<pre>'.Artisan::output().'</pre>]';  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
         } catch (\Exception $e) {
             // throw new Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
             return '[<pre>'.$e->getMessage().'</pre>]';
