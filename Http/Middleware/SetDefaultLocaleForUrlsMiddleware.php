@@ -20,7 +20,7 @@ class SetDefaultLocaleForUrlsMiddleware
     /**
      * Handle the incoming request.
      */
-    public function handle(\Illuminate\Http\Request $request, \Closure $next): Response|JsonResponse
+    public function handle(\Illuminate\Http\Request $request, \Closure $next): Response|JsonResponse|\Symfony\Component\HttpFoundation\Response
     {
         URL::defaults(
             [
