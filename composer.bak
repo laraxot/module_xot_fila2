@@ -14,7 +14,6 @@
         "guzzlehttp/guzzle": "*",
         "illuminate/contracts": "*",
         "intervention/image": "^2.7",
-        "laravelcollective/html": "^6.3",
         "livewire/livewire": "*",
         "mcamara/laravel-localization": "*",
         "nwidart/laravel-modules": "^9.0",
