@@ -14,7 +14,7 @@ use Illuminate\View\Component as IlluminateComponent;
 abstract class XotBaseComponent extends IlluminateComponent
 {
     /**
-     * Undocumented variable
+     * Undocumented variable.
      *
      * @var array<mixed>
      */

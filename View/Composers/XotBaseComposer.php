@@ -36,7 +36,6 @@ abstract class XotBaseComposer
      * @param array<mixed>|string|int|float|null ...$args
      *
      * @return mixed|void
-     * {@inheritdoc}
      */
     public function call(string $func, ...$args)
     {
@@ -55,17 +54,16 @@ abstract class XotBaseComposer
         $view_composer = app($view_composer_class);
 
         return $view_composer->{$func}(...$args);
-        //return call_user_func_array([$view_composer, $func], $args);
-
+        // return call_user_func_array([$view_composer, $func], $args);
     }
 
     /**
      * Undocumented function.
+     *
      * @param array<mixed|void> $arguments
      */
     public function __call(string $name, array $arguments): mixed
     {
-
         $modules = Module::getOrdered();
 
         /**
