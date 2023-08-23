@@ -33,9 +33,10 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      *
-     * @param array|string|int|float|null ...$args
+     * @param array<mixed>|string|int|float|null ...$args
      *
      * @return mixed|void
+     * {@inheritdoc}
      */
     public function call(string $func, ...$args)
     {
@@ -54,31 +55,17 @@ abstract class XotBaseComposer
         $view_composer = app($view_composer_class);
 
         return $view_composer->{$func}(...$args);
-        // dddx([$view_composer, class_exists($view_composer)]);
+        //return call_user_func_array([$view_composer, $func], $args);
+
     }
 
     /**
      * Undocumented function.
+     * @param array<mixed|void> $arguments
      */
     public function __call(string $name, array $arguments): mixed
     {
-        // Note: value of $name is case sensitive.
-        // echo "Calling object method '$name' "
-        //     . implode(', ', $arguments). "\n";
-        /*
-        $modules = Module::getByStatus(1);
-        $allEnabled = Module::allEnabled();
-        dddx(
-            [
-                'name'=>$name,
-                'arguments'=>$arguments,
-                'modules'=>$modules,
-                'allEnabled'=>$allEnabled,
-                'cool'=>Module::collections(),
-                'order'=>Module::getOrdered(),
-            ]
-        );
-        */
+
         $modules = Module::getOrdered();
 
         /**
