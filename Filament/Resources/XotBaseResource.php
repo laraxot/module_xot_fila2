@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Filament\Resources;
 
-use Illuminate\Support\Str;
-use Webmozart\Assert\Assert;
 use Filament\Resources\Resource;
+use Illuminate\Support\Str;
 use Savannabits\FilamentModules\Concerns\ContextualResource;
+use Webmozart\Assert\Assert;
 
 abstract class XotBaseResource extends Resource
 {
