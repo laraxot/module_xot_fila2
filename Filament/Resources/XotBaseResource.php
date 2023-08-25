@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Filament\Resources;
 
-use Filament\Resources\Resource;
 use Illuminate\Support\Str;
+use Webmozart\Assert\Assert;
+use Filament\Resources\Resource;
 use Savannabits\FilamentModules\Concerns\ContextualResource;
 
 abstract class XotBaseResource extends Resource
@@ -24,6 +25,7 @@ abstract class XotBaseResource extends Resource
     public static function trans(string $key): string
     {
         $moduleNameLow = Str::lower(static::getModuleName());
+        Assert::notNull(static::$model);
         $modelNameSlug = Str::kebab(class_basename(static::$model));
         $res = $moduleNameLow.'::'.$modelNameSlug.'.'.$key;
         $trans = __($res);
