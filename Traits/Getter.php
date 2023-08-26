@@ -82,9 +82,7 @@ trait Getter
                     case 'get':
                         return $property->getValue();
                     case 'set':
-                        $property->setValue($args[0]);
-
-                        return;
+                        return $property->setValue($args[0]);
                 }
             } else {
                 throw new \InvalidArgumentException("Property {$property} doesn't exist");
