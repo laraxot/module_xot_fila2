@@ -36,6 +36,8 @@ class XotData extends Data
     public bool $register_pub_theme = false;
     public bool $register_collective = false;
 
+    public ?string $super_admin = null;
+
     public static function make(): self
     {
         $xot = config('xra');
