@@ -36,6 +36,7 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
     public function boot(): void
     {
         parent::boot();
+        // --- savanna is for filament 3.
         // app(FilamentModules::class)->prepareDefaultNavigation(static::$module, static::$name);
 
         app(PrepareDefaultNavigation::class)->execute(static::$module, static::$name);
