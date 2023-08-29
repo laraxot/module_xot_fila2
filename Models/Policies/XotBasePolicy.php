@@ -26,7 +26,8 @@ abstract class XotBasePolicy
             try {
                 $user->assignRole('super-admin');
             } catch (RoleDoesNotExist $e) {
-                Role::firstOrCreate(['name' => 'super-admin']);
+                $role = Role::firstOrCreate(['name' => 'super-admin', 'team_id' => null]);
+                $user->assignRole($role);
             }
 
             return true;

@@ -160,7 +160,7 @@ abstract class XotBaseMigration extends Migration
         $this->getConn()->getConnection()->statement($sql);
     }
 
-    public function hasIndex(string $index): bool
+    public function hasIndex(string $index, string $type = 'index'): bool
     {
         /*
         $tbl = $this->getTable();
@@ -172,7 +172,17 @@ abstract class XotBaseMigration extends Migration
         $doctrineTable = $this->getTableDetails();
 
         // $indexes=$this->getTableIndexes();
-        return $doctrineTable->hasIndex($tbl.'_'.$index.'_index');
+        return $doctrineTable->hasIndex($tbl.'_'.$index.'_'.$type);
+    }
+
+    public function dropIndex(string $index)
+    {
+        $tbl = $this->getTable();
+        $doctrineTable = $this->getTableDetails();
+        $exists = $doctrineTable->hasIndex($tbl.'_'.$index);
+        if ($exists) {
+            $doctrineTable->dropIndex($tbl.'_'.$index);
+        }
     }
 
     public function hasIndexName(string $name): bool
