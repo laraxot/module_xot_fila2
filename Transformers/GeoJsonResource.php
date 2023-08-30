@@ -31,6 +31,7 @@ class GeoJsonResource extends ResCollection
     /**
      * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
      * @throws \ReflectionException
+     *
      * @return array<string, mixed>
      */
     public function toArray(\Illuminate\Http\Request $request): array

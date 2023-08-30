@@ -26,9 +26,8 @@ class GeoJsonCollection extends ResourceCollection
     // while looking for class Modules\Xot\Transformers\GeoJsonResource.
 
     /**
-     * Undocumented function
+     * Undocumented function.
      *
-     * @param \Illuminate\Http\Request $request
      * @return array<string, mixed>
      */
     public function toArray(\Illuminate\Http\Request $request): array
