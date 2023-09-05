@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Modules\Xot\Filament\Resources\XotBaseResource\Pages;
 
-
-use Filament\Pages\Actions;
 use Filament\Resources\Pages\CreateRecord;
 use Savannabits\FilamentModules\Concerns\ContextualPage;
 
