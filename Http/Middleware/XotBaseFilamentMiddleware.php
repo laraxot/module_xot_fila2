@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Http\Middleware;
 
-use Nwidart\Modules\Laravel\Module;
-use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Str;
+use Nwidart\Modules\Laravel\Module;
 use Webmozart\Assert\Assert;
 
 abstract class XotBaseFilamentMiddleware extends Middleware
@@ -57,13 +56,13 @@ abstract class XotBaseFilamentMiddleware extends Middleware
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function getContextName(): string
     {
         $this->getModule();
-        if (static::$context === '' || static::$context === '0') {
-            throw new Exception('Context has to be defined in your class');
+        if ('' === static::$context || '0' === static::$context) {
+            throw new \Exception('Context has to be defined in your class');
         }
 
         return Str::slug(static::$context);

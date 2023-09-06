@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
 
-use Closure;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 
@@ -21,7 +20,7 @@ class Search
     /**
      * Undocumented function.
      */
-    public function handle(Builder $builder, Closure $next, array ...$args): Closure
+    public function handle(Builder $builder, \Closure $next, array ...$args): \Closure
     {
         $search_fields = [];
         $model = $builder->getModel();

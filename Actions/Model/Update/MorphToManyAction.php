@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Update;
 
-use Exception;
-use Arr;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 use Modules\Xot\DTOs\RelationDTO;
@@ -28,7 +26,7 @@ class MorphToManyAction
         $name = $relationDTO->name;
         $model = $row;
         if (! is_array($data)) {
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         if (\in_array('to', array_keys($data), true) || \in_array('from', array_keys($data), true)) {
             if (! isset($data['to'])) {
@@ -38,7 +36,7 @@ class MorphToManyAction
             $data = $data['to'];
         }
 
-        if (! Arr::isAssoc($data)) {
+        if (! \Arr::isAssoc($data)) {
             // dddx(['model' => $model, 'name' => $name, 'data' => $data]);
             $model->{$name}()->sync($data);
         }

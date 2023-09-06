@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
@@ -68,7 +67,7 @@ class TranslatorService extends BaseTranslator
         )
         // ->dd()
             ->filter(
-                fn($v, $k): bool => $v['dir_exists'] && \strlen((string) $v['lang_dir']) > 3
+                fn ($v, $k): bool => $v['dir_exists'] && \strlen((string) $v['lang_dir']) > 3
             )
             ->groupBy(['ns_group'])  // risparmio salvataggi
             ->all();
@@ -122,7 +121,7 @@ class TranslatorService extends BaseTranslator
         $str = '$rows'.$item_keys.'="'.$value.'";';
         try {
             eval($str); // fa schifo ma funziona
-        } catch (Exception) {
+        } catch (\Exception) {
         }
         ArrayService::save(['data' => $rows, 'filename' => $filename]);
 
@@ -175,7 +174,7 @@ class TranslatorService extends BaseTranslator
                     'data' => $data,
                 ]
             );
-            throw new Exception('['.__LINE__.']['.__FILE__.']');
+            throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
         $merged = collect($original)
             ->merge($data)

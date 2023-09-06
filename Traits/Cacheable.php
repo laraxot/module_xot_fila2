@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
-use Closure;
 use Carbon\Carbon;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Eloquent\Model;
@@ -42,7 +41,7 @@ trait Cacheable
      */
     public static function getCacheInstance(): CacheManager
     {
-        if (!self::$cache instanceof CacheManager) {
+        if (! self::$cache instanceof CacheManager) {
             self::$cache = app('cache');
         }
 
@@ -85,7 +84,7 @@ trait Cacheable
     /**
      * Get an item from the cache, or store the default value.
      */
-    public function cacheCallback(string $method, array $args, Closure $callback, mixed $time = null)
+    public function cacheCallback(string $method, array $args, \Closure $callback, mixed $time = null)
     {
         // Cache disabled, just execute query & return result
         if (true === $this->skippedCache()) {

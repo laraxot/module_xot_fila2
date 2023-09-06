@@ -39,14 +39,14 @@ class ChainService
     /**
      * ChainService constructor.
      *
+     * @param (Collection&\iterable<Model>) $rows
+     *
      * @return void
-     * @param (Collection & \iterable<Model>) $rows
      */
     public function __construct(public string $primary_field, public string $parent_field, public string $sort_field, /**
      * Undocumented variable.
-     *
      */
-    public Collection $rows, int $root_id = 0, int $maxlevel = 25)
+        public Collection $rows, int $root_id = 0, int $maxlevel = 25)
     {
         $this->buildChain($root_id, $maxlevel);
     }

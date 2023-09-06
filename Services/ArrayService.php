@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -17,6 +14,9 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fputcsv;
+
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 /**
  * Class ArrayService.
@@ -37,7 +37,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\ArrayService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\ArrayService) {
             self::$instance = new self();
         }
 
@@ -138,7 +138,7 @@ class ArrayService
             ->map(
                 function ($item) {
                     if (! is_array($item)) {
-                        throw new Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
 
                     return collect($item)
@@ -169,7 +169,7 @@ class ArrayService
             function ($value, $key) use ($arr_2) {
                 try {
                     return ! \in_array($value, $arr_2, true);
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
                     dddx(['err' => $e->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
                 }
             }
@@ -239,7 +239,7 @@ class ArrayService
                 // case 3:return self::toXLS_phpexcel($params); //break;
             default:
                 $msg = 'unknown export_processor ['.$this->export_processor.']';
-                throw new Exception($msg.'['.__LINE__.']['.__FILE__.']');
+                throw new \Exception($msg.'['.__LINE__.']['.__FILE__.']');
         }
     }
 
@@ -321,7 +321,7 @@ class ArrayService
                 if (filter_var($cell->getValue(), FILTER_VALIDATE_URL)) {
                     $cell_value = $cell->getValue();
                     if (! is_string($cell_value)) {
-                        throw new Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
                     $worksheet->getCell($cell->getCoordinate())->getHyperlink()->setUrl($cell_value);
                 }
@@ -396,11 +396,12 @@ class ArrayService
             'text' => '.',
             // 'text'=>$text,
         ];
+
         return match ($out) {
             'link' => view()->make('ui::download_icon', $view_params),
             'download' => response()->download($pathToFile),
             'link_file' => view()->make('ui::download_icon', $view_params),
-            default => throw new Exception('['.__LINE__.']['.__FILE__.']'),
+            default => throw new \Exception('['.__LINE__.']['.__FILE__.']'),
         };
     }
 }

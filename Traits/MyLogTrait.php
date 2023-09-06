@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+
 // /laravel/app/Updater.php
 // Str::camel() 'foo_bar' fooBar
 // kebab_case() 'fooBar'  foo-bar

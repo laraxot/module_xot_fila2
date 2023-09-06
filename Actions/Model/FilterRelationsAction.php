@@ -16,14 +16,14 @@ class FilterRelationsAction
     use QueueableAction;
 
     /**
-     * @return DataCollection<(int | string), RelationDTO>
+     * @return DataCollection<(int|string), ReRelationDTO
      */
     public function execute(Model $model, array $data): DataCollection
     {
         $methods = get_class_methods($model);
         $res = collect($data)
             ->filter(
-                fn($value, $item): bool => \in_array($item, $methods, true)
+                fn ($value, $item): bool => \in_array($item, $methods, true)
             )
             ->filter(
                 function ($value, $item) use ($model): bool {

@@ -10,9 +10,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Services;
 
 // ----------- Requests ----------
-use ReflectionClass;
-use ReflectionMethod;
-use ErrorException;
 use function get_class;
 
 use Illuminate\Database\Eloquent\Model;
@@ -41,7 +38,7 @@ class ModelService
      */
     public static function getInstance(): self
     {
-        if (!self::$_instance instanceof \Modules\Xot\Services\ModelService) {
+        if (! self::$_instance instanceof \Modules\Xot\Services\ModelService) {
             self::$_instance = new self();
         }
 
@@ -81,7 +78,7 @@ class ModelService
         // $post_type = $this->getPostType();
         // Relation::morphMap([$post_type => get_class($model)]);
         $data = collect($data)->filter(
-            fn($item, $key): bool => \in_array($key, $methods, true)
+            fn ($item, $key): bool => \in_array($key, $methods, true)
         )->map(
             function ($v, $k) use ($model, $data) {
                 if (! \is_string($k)) {
@@ -104,7 +101,7 @@ class ModelService
             }
         )
             ->filter(
-                fn($item) => $item->is_relation
+                fn ($item) => $item->is_relation
             )
             ->all();
 
@@ -139,7 +136,7 @@ class ModelService
     public function getRelations(): array
     {
         $model = $this->model;
-        $reflectionClass = new ReflectionClass($model);
+        $reflectionClass = new \ReflectionClass($model);
         $relations = [];
         $methods = $reflectionClass->getMethods();
 
@@ -172,7 +169,7 @@ class ModelService
         $model = $this->model;
         $relationships = [];
 
-        foreach ((new ReflectionClass($model))->getMethods(ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
+        foreach ((new \ReflectionClass($model))->getMethods(\ReflectionMethod::IS_PUBLIC) as $reflectionMethod) {
             if ($reflectionMethod->class !== $model::class
                 || ! empty($reflectionMethod->getParameters())
                 || __FUNCTION__ === $reflectionMethod->getName()
@@ -186,11 +183,11 @@ class ModelService
                 if ($return instanceof Relation) {
                     $relationships[$reflectionMethod->getName()] = [
                         'name' => $reflectionMethod->getName(),
-                        'type' => (new ReflectionClass($return))->getShortName(),
-                        'model' => (new ReflectionClass($return->getRelated()))->getName(),
+                        'type' => (new \ReflectionClass($return))->getShortName(),
+                        'model' => (new \ReflectionClass($return->getRelated()))->getName(),
                     ];
                 }
-            } catch (ErrorException) {
+            } catch (\ErrorException) {
             }
         }
 
@@ -202,7 +199,7 @@ class ModelService
         $relations = self::getRelationships();
 
         return collect($relations)->map(
-            fn($item) => $item['name']
+            fn ($item) => $item['name']
         )->values()->all();
     }
 
@@ -291,7 +288,7 @@ class ModelService
                 $columns = $doctrineTable->getColumns();
 
                 $fields = collect($columns)->map(
-                    fn($col): array => [
+                    fn ($col): array => [
                         'name' => $col->getName(),
                         'type' => $col->getType()->getName(),
                     ]

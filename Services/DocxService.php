@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use PhpOffice\PhpWord\Exception\CopyFileException;
-use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Illuminate\Contracts\Support\Arrayable;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+use PhpOffice\PhpWord\Exception\CopyFileException;
+use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\TemplateProcessor;
+
+use function Safe\json_decode;
 
 /*
 use PhpOffice\PhpWord\PhpWord;
@@ -26,7 +27,7 @@ https://code-boxx.com/convert-html-to-docx-using-php/
 
 */
 
-use function Safe\json_decode;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Class DocxService.
@@ -40,7 +41,7 @@ class DocxService
 
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\DocxService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\DocxService) {
             self::$instance = new self();
         }
 
@@ -91,7 +92,7 @@ class DocxService
         $filename_out_path = storage_path($filename_out);
         try {
             $tpl->saveAs($filename_out_path);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             // handle exception
             dddx([$e]);
         }
@@ -101,7 +102,7 @@ class DocxService
 
     /**
      * @param Arrayable $row
-     * @param string                                  $prefix
+     * @param string    $prefix
      *
      * @return array
      */
@@ -180,11 +181,12 @@ class DocxService
                 if ('' !== $arr[$key] && \is_object($row->$key) && $row->$key instanceof Carbon) {
                     try {
                         $item = $row->$key->format('d/m/Y');
-                    } catch (Exception) {
+                    } catch (\Exception) {
                         return [
                             $prefix.'.'.$key => $item,
                         ];
                     }
+
                     // Carbon::setLocale('it');
                     return [
                         $prefix.'.'.$key => $item,

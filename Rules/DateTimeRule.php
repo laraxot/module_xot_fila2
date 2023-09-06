@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Rules;
 
-use Exception;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -26,7 +25,7 @@ class DateTimeRule implements Rule
         $format = 'd/m/Y H:i';
         try {
             $value_new = Carbon::createFromFormat($format, $value);
-        } catch (Exception) {
+        } catch (\Exception) {
             return false;
         }
         /* -- non fa il suo dovere --

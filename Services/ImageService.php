@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Facades\Image;
@@ -34,7 +33,7 @@ class ImageService
      */
     public static function getInstance(): self
     {
-        if (!self::$_instance instanceof \Modules\Xot\Services\ImageService) {
+        if (! self::$_instance instanceof \Modules\Xot\Services\ImageService) {
             self::$_instance = new self();
         }
 
@@ -82,7 +81,7 @@ class ImageService
         }
         try {
             $this->img = Image::make($val);
-        } catch (Exception) {
+        } catch (\Exception) {
             $this->img = Image::make($nophoto_path);
         }
 
@@ -144,7 +143,7 @@ class ImageService
         try {
             // Storage::disk('photos')->put($this->filename, $this->out());
             $this->img->save($filename);
-        } catch (Exception) {// ftp_mkdir(): Can't create directory: File exists
+        } catch (\Exception) {// ftp_mkdir(): Can't create directory: File exists
             // $r = $this->img->save(self::$filename, 75);
         }
 
@@ -175,7 +174,7 @@ class ImageService
     public function src(): string
     {
         if (null === $this->filename) {
-            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
         $src = '/'.str_replace(public_path('/'), '', $this->filename);
 

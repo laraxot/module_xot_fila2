@@ -8,11 +8,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Tests\Feature;
 
-use PHPUnit\Framework\Attributes\Test;
-use Exception;
-use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
+use PHPUnit\Framework\Attributes\Test;
+use Symfony\Component\DomCrawler\Crawler;
 use Tests\TestCase;
 
 class RouteDomTest extends TestCase
@@ -48,15 +47,15 @@ class RouteDomTest extends TestCase
             */
             $url = str_replace('index.php', '', (string) $url);
             if (null === $url) {
-                throw new Exception('url is null');
+                throw new \Exception('url is null');
             }
             if (! \is_string($url)) {
-                throw new Exception('url is not a string');
+                throw new \Exception('url is not a string');
             }
             $response = $this->get($url);
             $html = $response->getContent();
             if (false === $html) {
-                throw new Exception('cannot get content');
+                throw new \Exception('cannot get content');
             }
             // dd(get_class_methods($response));
             // dd($response->streamedContent());The response is not a streamed response
@@ -74,10 +73,10 @@ class RouteDomTest extends TestCase
             $dom = $this->dom($html);
             // $links = $dom->filter('a')->links();
             $links = $dom->filter('a')->each(
-                fn($node) => $node->attr('href')
+                fn ($node) => $node->attr('href')
             );
             $links = collect($links)->filter(
-                fn($item): bool => ! Str::startsWith($item, 'mailto:')
+                fn ($item): bool => ! Str::startsWith($item, 'mailto:')
                     && ! Str::startsWith($item, 'https://mail.')
                     && Str::startsWith($item, '/')
             )->all();

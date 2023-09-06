@@ -6,9 +6,9 @@ namespace Modules\Xot\Models\Traits;
 
 // use Laravel\Scout\Searchable;
 // ----- models------
-use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Modules\Xot\Models\Widget;
 
 // ---- services -----

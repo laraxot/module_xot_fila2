@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models;
 
-use Modules\Xot\Database\Factories\SessionFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Modules\Xot\Database\Factories\SessionFactory;
+
 /**
  * Modules\Xot\Models\Session.
  *
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string      $payload
  * @property int         $last_activity
  *
- * @method static SessionFactory factory($count = null, $state = [])
+ * @method static SessionFactory  factory($count = null, $state = [])
  * @method static Builder|Session newModelQuery()
  * @method static Builder|Session newQuery()
  * @method static Builder|Session query()

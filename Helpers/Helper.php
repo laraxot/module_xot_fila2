@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 // use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -125,7 +124,7 @@ if (! function_exists('debug_methods')) {
         $methods = get_class_methods($rows);
         // *
         $methods_get = collect($methods)->filter(
-            fn($item) => Str::startsWith($item, 'get')
+            fn ($item) => Str::startsWith($item, 'get')
         )->map(
             function ($item) use ($rows) {
                 $value = 'Undefined';
@@ -200,6 +199,7 @@ if (! function_exists('inAdmin')) {
             return true;
         }
         $segments = Request::segments();
+
         return (is_countable($segments) ? \count($segments) : 0) > 0 && 'livewire' === $segments[0] && true === session('in_admin');
     }
 }
@@ -609,6 +609,7 @@ if (! function_exists('debug_getter_obj')) {
                     'forceDelete',
                     'forceCreate',
                 ];
+
                 return ! Str::startsWith($item, '__') && ! in_array($item, $exclude, true);
             }
         )->all();
@@ -655,7 +656,7 @@ if (! function_exists('dottedToBrackets')) {
     function dottedToBrackets(string $str, string $quotation_marks = ''): string
     {
         return collect(explode('.', $str))->map(
-            fn($v, $k) => 0 === $k ? $v : '['.$v.']'
+            fn ($v, $k) => 0 === $k ? $v : '['.$v.']'
         )->implode('');
     }
 }
@@ -915,7 +916,7 @@ if (! function_exists('getRouteParameters')) {
     function getRouteParameters(): array
     {
         $route = request()->route();
-        if (!$route instanceof \Illuminate\Routing\Route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return [];
         }
 
@@ -931,7 +932,7 @@ if (! function_exists('getRouteName')) {
          * @var \Illuminate\Routing\Route|null
          */
         $route = request()->route();
-        if (!$route instanceof \Illuminate\Routing\Route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return null;
         }
 
@@ -1040,7 +1041,7 @@ if (! function_exists('secondsToHms')) {
             $str .= ($hours < 9 ? '0'.$hours : $hours).':';
         }
 
-        return $str . (($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal));
+        return $str.(($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal));
     }
 }
 

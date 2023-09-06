@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Traits;
 
 use Illuminate\Contracts\Auth\Authenticatable;
+
 /**
  * Trait Updater.
  * https://dev.to/hasanmn/automatically-update-createdby-and-updatedby-in-laravel-using-bootable-traits-28g9.

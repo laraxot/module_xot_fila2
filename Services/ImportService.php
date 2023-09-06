@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Route;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Contracts\View\Factory;
-use Illuminate\Contracts\View\View;
-use Exception;
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use stdClass;
-use GuzzleHttp\Psr7\Utils;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
-// use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Cookie\CookieJarInterface;
 use GuzzleHttp\Cookie\FileCookieJar;
-// https://www.sitepoint.com/guzzle-php-http-client/
-// /*
 use GuzzleHttp\Cookie\SetCookie;
 use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\Utils;
+// use GuzzleHttp\Psr7\Request;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
+use Illuminate\Contracts\Foundation\Application;
+// https://www.sitepoint.com/guzzle-php-http-client/
+// /*
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use Psr\Http\Message\RequestInterface;
@@ -61,7 +58,7 @@ class ImportService
 
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\ImportService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\ImportService) {
             self::$instance = new self();
         }
 
@@ -91,7 +88,7 @@ class ImportService
     {
         ini_set('max_execution_time', '3000');
 
-        $route_current = Route::current();
+        $route_current = \Route::current();
         $params = [];
         if (null !== $route_current) {
             $params = $route_current->parameters();
@@ -99,14 +96,14 @@ class ImportService
 
         // $cookieJar = new CookieJar();
 
-        if (!$this->cookieJar instanceof CookieJarInterface) {
+        if (! $this->cookieJar instanceof CookieJarInterface) {
             $this->initCookieJar();
         }
 
         $headers = [];
         $fields = ['User-Agent', 'Accept', 'Accept-Language', 'Accept-Encoding', 'Connection', 'Cookie', 'Upgrade-Insecure-Requests', 'Cache-Control'];
         foreach ($fields as $field) {
-            $headers[$field] = Request::header($field);
+            $headers[$field] = \Request::header($field);
         }
         $this->enableRedirect();
         $this->client_options['headers'] = $headers;
@@ -143,7 +140,7 @@ class ImportService
     public function enableCookie(array $cookies): void
     {
         // $cookieJar->setCookie(SetCookie::fromString('SID="AuthKey 23ec5d03-86db-4d80-a378-6059139a7ead"; expires=Thu, 24 Nov 2016 13:52:20 GMT; path=/; domain=.sketchup.com'));
-        if (!$this->cookieJar instanceof CookieJarInterface) {
+        if (! $this->cookieJar instanceof CookieJarInterface) {
             $this->cookieJar = $this->initCookieJar();
         }
 
@@ -302,7 +299,7 @@ class ImportService
     {
         $key = json_encode(['method' => $method, 'url' => $url, 'attrs' => $attrs], JSON_THROW_ON_ERROR);
 
-        return $key . '_1';
+        return $key.'_1';
     }
 
     public function cacheRequest(string $method, string $url, array $attrs = []): string
@@ -318,7 +315,7 @@ class ImportService
         );
         $this->client_options['headers']['referer'] = $url;
         if (! \is_string($value)) {
-            throw new Exception('['.__LINE__.']['.class_basename(self::class).']');
+            throw new \Exception('['.__LINE__.']['.class_basename(self::class).']');
         }
 
         return $value;
@@ -348,14 +345,14 @@ class ImportService
         // $params=['method'=>$method,'url'=>$url,'attrs'=>$attrs];
         // $key=json_encode(array_values($params));
         // $key=str_slug
-        if (Storage::disk('cache')->exists($file_path)) {
-            $content = Storage::disk('cache')->get($file_path);
+        if (\Storage::disk('cache')->exists($file_path)) {
+            $content = \Storage::disk('cache')->get($file_path);
             $this->client_options['headers']['referer'] = $url;
 
             return (string) $content;
         }
         $body = $this->gRequest($method, (string) $url, $attrs);
-        Storage::disk('cache')->put($file_path, (string) $body);
+        \Storage::disk('cache')->put($file_path, (string) $body);
         $this->client_options['headers']['referer'] = $url;
 
         // echo '<br/>da sito ['.$url.']';
@@ -363,7 +360,7 @@ class ImportService
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     public function getAddressFields(array $params): array
     {
@@ -373,7 +370,7 @@ class ImportService
 
             return [];
         }
-        $linked = new stdClass();
+        $linked = new \stdClass();
         $location_url = config('services.google.url_location_api').'?address='.urlencode((string) $address).'&key='.config('services.google.maps_key');
         $loc_json = $this->cacheRequest('GET', $location_url);
 
@@ -397,7 +394,7 @@ class ImportService
                 'address' => $address,
                 'obj' => $loc_obj,
             ];
-            throw new Exception('address not valide');
+            throw new \Exception('address not valide');
             // dddx($msg);
         }
 
@@ -455,7 +452,7 @@ class ImportService
         }
         $resource = fopen($filename, 'w');
         if (false === $resource) {
-            throw new Exception('can open '.$filename);
+            throw new \Exception('can open '.$filename);
         }
         $stream = Utils::streamFor($resource);
         $this->gRequest(
@@ -621,11 +618,11 @@ class ImportService
         extract($params);
         $crawler = new Crawler($html);
         $forms = $crawler->filter($node_tag)->each(
-            fn(Crawler $node): array => [
+            fn (Crawler $node): array => [
                 'action' => $node->attr('action'),
                 'method' => $node->attr('method'),
                 'fields' => $node->filter('input')->each(
-                    fn(Crawler $crawler): array => [$crawler->attr('name') => $crawler->attr('value')]
+                    fn (Crawler $crawler): array => [$crawler->attr('name') => $crawler->attr('value')]
                 ),
             ]
         );
