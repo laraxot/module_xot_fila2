@@ -12,12 +12,10 @@ use Spatie\Permission\Exceptions\RoleDoesNotExist;
 
 // use Modules\Xot\Datas\XotData;
 
-abstract class XotBasePolicy
-{
+abstract class XotBasePolicy {
     use HandlesAuthorization;
 
-    public function before(User $user, string $ability): bool|null
-    {
+    public function before(User $user, string $ability): bool|null {
         $xot = XotData::make();
         if ($user->hasRole('super-admin')) {
             return true;

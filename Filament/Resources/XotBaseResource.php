@@ -23,6 +23,13 @@ abstract class XotBaseResource extends Resource
     // protected static ?string $navigationGroup = 'Parametri di Sistema';
     protected static ?int $navigationSort = 3;
 
+    public static function getModuleNameFromFile():string {
+        
+        $moduleName=Str::between(static::$resourceFile, 'Modules/', '/Filament');
+
+        return $moduleName;
+    }
+
     public static function trans(string $key): string
     {
         $moduleNameLow = Str::lower(static::getModuleName());
@@ -39,7 +46,21 @@ abstract class XotBaseResource extends Resource
         // if (null != static::$model) {
         //    return static::$model;
         // }
-        $moduleName = static::getModuleName()->toString();
+        //$moduleName = static::getModuleName()->toString();
+        $moduleName = static::getModuleNameFromFile();
+        /*
+if (! in_array($moduleName, ['User'])) {
+    
+    $pathInfo=pathinfo(static::$resourceFile);
+    $modelName=Str::replaceLast('Resource','',$pathInfo['filename']);
+    dddx([
+        'modulename'=>$moduleName,
+        'resource_file'=>static::$resourceFile,
+        'Module name'=>$moduleName,
+        'Model name'=>$modelName,
+    ]);
+}
+*/
         $modelName = Str::before(class_basename(get_called_class()), 'Resource');
         $res = 'Modules\\'.$moduleName.'\Models\\'.$modelName;
         static::$model = $res;
