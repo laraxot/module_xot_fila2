@@ -155,7 +155,7 @@ class Trend
 
         // Cannot access property $aggregate on mixed.
         $values = $values->map(
-            fn ($value) => TrendData::from(
+            fn ($value): TrendData => TrendData::from(
                 [
                     'date' => $value->{$this->dateAlias},
                     'aggregate' => $value->aggregate,
@@ -168,9 +168,9 @@ class Trend
         // Closure(Illuminate\Support\Carbon): Modules\Xot\Datas\TrendData given
         $placeholders = $this->getDatePeriod()
             ->map(
-                fn (Carbon $date) => TrendData::from(
+                fn (Carbon $carbon): TrendData => TrendData::from(
                     [
-                        'date' => $date->format($this->getCarbonDateFormat()),
+                        'date' => $carbon->format($this->getCarbonDateFormat()),
                         'aggregate' => 0,
                     ]
                 )
@@ -208,7 +208,7 @@ class Trend
             'mysql' => new MySqlAdapter(),
             'sqlite' => new SqliteAdapter(),
             'pgsql' => new PgsqlAdapter(),
-            default => throw new \Error('Unsupported database driver.'),
+            default => throw new Error('Unsupported database driver.'),
         };
 
         return $adapter->format($this->dateColumn, $this->interval);
@@ -222,7 +222,7 @@ class Trend
             'day' => 'Y-m-d',
             'month' => 'Y-m',
             'year' => 'Y',
-            default => throw new \Error('Invalid interval.'),
+            default => throw new Error('Invalid interval.'),
         };
     }
 }

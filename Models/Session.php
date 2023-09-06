@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models;
 
+use Modules\Xot\Database\Factories\SessionFactory;
+use Illuminate\Database\Eloquent\Builder;
 /**
  * Modules\Xot\Models\Session.
  *
@@ -14,16 +16,16 @@ namespace Modules\Xot\Models;
  * @property string      $payload
  * @property int         $last_activity
  *
- * @method static \Modules\Xot\Database\Factories\SessionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Session  newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Session  newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Session  query()
- * @method static \Illuminate\Database\Eloquent\Builder|Session  whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Session  whereIpAddress($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Session  whereLastActivity($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Session  wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserAgent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Session  whereUserId($value)
+ * @method static SessionFactory factory($count = null, $state = [])
+ * @method static Builder|Session newModelQuery()
+ * @method static Builder|Session newQuery()
+ * @method static Builder|Session query()
+ * @method static Builder|Session whereId($value)
+ * @method static Builder|Session whereIpAddress($value)
+ * @method static Builder|Session whereLastActivity($value)
+ * @method static Builder|Session wherePayload($value)
+ * @method static Builder|Session whereUserAgent($value)
+ * @method static Builder|Session whereUserId($value)
  *
  * @mixin IdeHelperSession
  * @mixin \Eloquent

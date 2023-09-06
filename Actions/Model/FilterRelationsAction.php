@@ -15,30 +15,24 @@ class FilterRelationsAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
     /**
-     * @return \Spatie\LaravelData\DataCollection<(int|string), \Modules\Xot\DTOs\RelationDTO>
+     * @return DataCollection<(int | string), RelationDTO>
      */
     public function execute(Model $model, array $data): DataCollection
     {
         $methods = get_class_methods($model);
         $res = collect($data)
             ->filter(
-                function ($value, $item) use ($methods) {
-                    return \in_array($item, $methods, true);
-                }
+                fn($value, $item): bool => \in_array($item, $methods, true)
             )
             ->filter(
-                function ($value, $item) use ($model) {
+                function ($value, $item) use ($model): bool {
                     $rows = $model->$item();
 
                     return $rows instanceof Relation;
                 }
             )->map(
-                function ($value, $item) use ($model) {
+                function ($value, $item) use ($model): array {
                     $rows = $model->$item();
                     // $related = null;
                     // if (method_exists($rows, 'getRelated')) {

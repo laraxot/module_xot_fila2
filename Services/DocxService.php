@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use PhpOffice\PhpWord\Exception\CopyFileException;
+use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Illuminate\Contracts\Support\Arrayable;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
@@ -34,13 +38,9 @@ class DocxService
 
     public array $values;
 
-    public function __construct()
-    {
-    }
-
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\DocxService) {
             self::$instance = new self();
         }
 
@@ -71,10 +71,10 @@ class DocxService
     }
 
     /**
-     * @throws \PhpOffice\PhpWord\Exception\CopyFileException
-     * @throws \PhpOffice\PhpWord\Exception\CreateTemporaryFileException
+     * @throws CopyFileException
+     * @throws CreateTemporaryFileException
      *
-     * @return \Symfony\Component\HttpFoundation\BinaryFileResponse
+     * @return BinaryFileResponse
      */
     public function out(array $params = [])
     {
@@ -91,7 +91,7 @@ class DocxService
         $filename_out_path = storage_path($filename_out);
         try {
             $tpl->saveAs($filename_out_path);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // handle exception
             dddx([$e]);
         }
@@ -100,7 +100,7 @@ class DocxService
     }
 
     /**
-     * @param \Illuminate\Contracts\Support\Arrayable $row
+     * @param Arrayable $row
      * @param string                                  $prefix
      *
      * @return array
@@ -111,8 +111,8 @@ class DocxService
             return [];
         }
 
-        $data = collect($row)->map(
-            function ($item, $key) use ($prefix, $row) {
+        return collect($row)->map(
+            function ($item, string $key) use ($prefix, $row): array {
                 if ($row->$key instanceof Carbon) {
                     $item = $row->$key->format('d/m/Y');
                     $item_year = $row->$key->format('Y');
@@ -125,7 +125,7 @@ class DocxService
 
                 if (isJson($row->$key)) {
                     // dddx($row->$key);
-                    $tmp = (array) json_decode($row->$key);
+                    $tmp = (array) json_decode((string) $row->$key, null, 512, JSON_THROW_ON_ERROR);
                     $data = [];
                     foreach ($tmp as $k => $v) {
                         if (! \is_array($v) && ! \is_object($v)) {
@@ -147,8 +147,6 @@ class DocxService
         )
             ->collapse()
             ->all();
-
-        return $data;
     }
 
     /**
@@ -177,32 +175,29 @@ class DocxService
         // $arr = $row->toArray();
         // dddx($arr);
         $data = collect($arr)->map(
-            function ($item, $key) use ($row, $prefix, $arr) {
+            function ($item, string $key) use ($row, $prefix, $arr): array {
                 // *
-                if ('' !== $arr[$key] && \is_object($row->$key)) {
-                    if ($row->$key instanceof Carbon) {
-                        try {
-                            $item = $row->$key->format('d/m/Y');
-                        } catch (\Exception $e) {
-                            return [
-                                $prefix.'.'.$key => $item,
-                            ];
-                        }
-
-                        // Carbon::setLocale('it');
+                if ('' !== $arr[$key] && \is_object($row->$key) && $row->$key instanceof Carbon) {
+                    try {
+                        $item = $row->$key->format('d/m/Y');
+                    } catch (Exception) {
                         return [
                             $prefix.'.'.$key => $item,
-                            $prefix.'.'.$key.'_locale' => ucfirst($row->$key->translatedFormat('d F Y')),
-                            $prefix.'.'.$key.'_dm' => ucfirst($row->$key->translatedFormat('d F')),
-                            $prefix.'.'.$key.'_year' => $row->$key->format('Y'),
                         ];
                     }
+                    // Carbon::setLocale('it');
+                    return [
+                        $prefix.'.'.$key => $item,
+                        $prefix.'.'.$key.'_locale' => ucfirst((string) $row->$key->translatedFormat('d F Y')),
+                        $prefix.'.'.$key.'_dm' => ucfirst((string) $row->$key->translatedFormat('d F')),
+                        $prefix.'.'.$key.'_year' => $row->$key->format('Y'),
+                    ];
                 }
                 // */
 
                 if (isJson($row->$key)) {
                     // dddx($row->$key);
-                    $tmp = (array) json_decode($row->$key);
+                    $tmp = (array) json_decode((string) $row->$key, null, 512, JSON_THROW_ON_ERROR);
                     $data = [];
                     foreach ($tmp as $k => $v) {
                         if (! \is_array($v) && ! \is_object($v)) {

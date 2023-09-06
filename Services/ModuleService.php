@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use stdClass;
+use ReflectionClass;
+use Exception;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
@@ -25,7 +28,7 @@ class ModuleService
      */
     public static function getInstance(): self
     {
-        if (! self::$_instance) {
+        if (!self::$_instance instanceof \Modules\Xot\Services\ModuleService) {
             self::$_instance = new self();
         }
 
@@ -74,7 +77,7 @@ class ModuleService
             $ext = '.php';
             // dddx(['ext' => $file->getExtension(), get_class_methods($file)]);
             if (Str::endsWith($filename, $ext)) {
-                $tmp = new \stdClass();
+                $tmp = new stdClass();
 
                 $name = substr($filename, 0, -\strlen($ext));
 
@@ -89,11 +92,11 @@ class ModuleService
                 $tmp->name = $name;
                 // 434    Parameter #1 $argument of class ReflectionClass constructor expects class-string<T of object>|T of object, string given.
                 try {
-                    $reflection_class = new \ReflectionClass($tmp->class);
+                    $reflection_class = new ReflectionClass($tmp->class);
                     if (! $reflection_class->isAbstract()) {
                         $data[$tmp->name] = $tmp->class;
                     }
-                } catch (\Exception $e) {
+                } catch (Exception) {
                 }
             }
         }

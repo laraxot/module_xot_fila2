@@ -29,9 +29,8 @@ abstract class XotBaseResource extends Resource
         Assert::notNull(static::$model);
         $modelNameSlug = Str::kebab(class_basename(static::$model));
         $res = $moduleNameLow.'::'.$modelNameSlug.'.'.$key;
-        $trans = __($res);
 
-        return $trans;
+        return __($res);
     }
 
     public static function getModel(): string
@@ -40,7 +39,7 @@ abstract class XotBaseResource extends Resource
         //    return static::$model;
         // }
         $moduleName = static::getModuleName()->toString();
-        $modelName = Str::before(class_basename(get_called_class()), 'Resource');
+        $modelName = Str::before(class_basename(static::class), 'Resource');
         $res = 'Modules\\'.$moduleName.'\Models\\'.$modelName;
         static::$model = $res;
 

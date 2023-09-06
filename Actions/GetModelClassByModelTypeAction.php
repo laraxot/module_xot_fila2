@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions;
 
+use Exception;
 use Spatie\QueueableAction\QueueableAction;
 
 class GetModelClassByModelTypeAction
@@ -19,10 +20,9 @@ class GetModelClassByModelTypeAction
     {
         $morph_map = config('morph_map');
         if (! is_array($morph_map)) {
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
-        $model_class = collect($morph_map)->get($model_type);
 
-        return $model_class;
+        return collect($morph_map)->get($model_type);
     }
 }

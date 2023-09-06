@@ -32,37 +32,22 @@ function chain(string $primary_field, string $parent_field, string $sort_field, 
  */
 class ChainService
 {
-    public array $table;
+    public array $table = [];
 
-    /**
-     * Undocumented variable.
-     *
-     * @var Collection<Model>
-     */
-    public Collection $rows;
-
-    public array $chain_table;
-
-    public string $primary_field;
-
-    public string $parent_field;
-
-    public string $sort_field;
+    public array $chain_table = [];
 
     /**
      * ChainService constructor.
      *
      * @return void
+     * @param (Collection & \iterable<Model>) $rows
      */
-    public function __construct(string $primary_field, string $parent_field, string $sort_field, Collection $rows, int $root_id = 0, int $maxlevel = 25)
+    public function __construct(public string $primary_field, public string $parent_field, public string $sort_field, /**
+     * Undocumented variable.
+     *
+     */
+    public Collection $rows, int $root_id = 0, int $maxlevel = 25)
     {
-        $this->rows = $rows;
-        $this->primary_field = $primary_field;
-        $this->parent_field = $parent_field;
-        $this->sort_field = $sort_field;
-        $this->chain_table = [];
-        $this->table = [];
-
         $this->buildChain($root_id, $maxlevel);
     }
 
@@ -95,23 +80,19 @@ class ChainService
         foreach ($rows as $key => $value) {
             $rows[$key]['key'] = $this->sort_field;
         }
-        usort($rows, [$this, 'chainCMP']);
-        foreach ($rows as $item) {
-            $item['indent'] = $level;
-            $this->chain_table[] = $item;
-            if (isset($this->table[$item[$this->primary_field]]) && (($maxlevel > $level + 1) || (0 === $maxlevel))) {
-                $this->makeBranch($item[$this->primary_field], $level + 1, $maxlevel);
+        usort($rows, $this->chainCMP(...));
+        foreach ($rows as $row) {
+            $row['indent'] = $level;
+            $this->chain_table[] = $row;
+            if (isset($this->table[$row[$this->primary_field]]) && (($maxlevel > $level + 1) || (0 === $maxlevel))) {
+                $this->makeBranch($row[$this->primary_field], $level + 1, $maxlevel);
             }
         }
     }
 
     public function chainCMP(array $a, array $b): int
     {
-        if ($a[$a['key']] === $b[$b['key']]) {
-            return 0;
-        }
-
-        return $a[$a['key']] < $b[$b['key']] ? -1 : 1;
+        return $a[$a['key']] <=> $b[$b['key']];
     }
 }
 /*

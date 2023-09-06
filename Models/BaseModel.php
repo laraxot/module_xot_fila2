@@ -6,7 +6,7 @@ namespace Modules\Xot\Models;
 
 // use Laravel\Scout\Searchable;
 // ---------- traits
-
+use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Xot\Services\FactoryService;
@@ -83,7 +83,7 @@ abstract class BaseModel extends Model
     /**
      * Create a new factory instance for the model.
      */
-    protected static function newFactory(): \Illuminate\Database\Eloquent\Factories\Factory
+    protected static function newFactory(): Factory
     {
         return FactoryService::newFactory(static::class);
     }

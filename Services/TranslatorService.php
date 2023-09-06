@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
@@ -43,7 +44,7 @@ class TranslatorService extends BaseTranslator
         $lang_dir = \dirname($filename, 2);
 
         return [
-            'key' => str_replace(['[', ']'], ['.', ''], $key),
+            'key' => str_replace(['[', ']'], ['.', ''], (string) $key),
             'namespace' => $namespace,
             'group' => $group,
             'ns_group' => $namespace.'::'.$group,
@@ -67,9 +68,7 @@ class TranslatorService extends BaseTranslator
         )
         // ->dd()
             ->filter(
-                function ($v, $k) {
-                    return $v['dir_exists'] && \strlen($v['lang_dir']) > 3;
-                }
+                fn($v, $k): bool => $v['dir_exists'] && \strlen((string) $v['lang_dir']) > 3
             )
             ->groupBy(['ns_group'])  // risparmio salvataggi
             ->all();
@@ -82,7 +81,7 @@ class TranslatorService extends BaseTranslator
                 $rows = [];
             }
 
-            foreach ($data0 as $k => $v) {
+            foreach ($data0 as $v) {
                 $key = Str::after($v['key'], $ns_group.'.');
                 Arr::set($rows, $key, $v['value']);
             }
@@ -117,13 +116,13 @@ class TranslatorService extends BaseTranslator
 
         $trad = $namespace.'::'.$group;
         $rows = trans($trad);
-        $item_keys = explode('.', $item);
+        $item_keys = explode('.', (string) $item);
         $item_keys = implode('"]["', $item_keys);
         $item_keys = '["'.$item_keys.'"]';
         $str = '$rows'.$item_keys.'="'.$value.'";';
         try {
             eval($str); // fa schifo ma funziona
-        } catch (\Exception $e) {
+        } catch (Exception) {
         }
         ArrayService::save(['data' => $rows, 'filename' => $filename]);
 
@@ -176,7 +175,7 @@ class TranslatorService extends BaseTranslator
                     'data' => $data,
                 ]
             );
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
         $merged = collect($original)
             ->merge($data)
@@ -195,7 +194,7 @@ class TranslatorService extends BaseTranslator
     {
         $missing = collect($data)
             ->filter(
-                function ($item) use ($key) {
+                function (string $item) use ($key): bool {
                     $k = $key.'.'.$item;
                     $v = trans($k);
 
@@ -210,15 +209,13 @@ class TranslatorService extends BaseTranslator
     {
         self::addMissing($key, $data);
 
-        $data = collect($data)->map(
-            function ($item) use ($key) {
+        return collect($data)->map(
+            function (string $item) use ($key) {
                 $k = $key.'.'.$item;
 
                 return trans($k);
             }
         )->all();
-
-        return $data;
     }
 
     /**

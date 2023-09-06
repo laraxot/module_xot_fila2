@@ -8,7 +8,7 @@ namespace Modules\Xot\Transformers;
 *  GEOJSON e' uno standard
 * https://it.wikipedia.org/wiki/GeoJSON
 */
-
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\ResourceCollection;
 
 /**
@@ -30,7 +30,7 @@ class GeoJsonCollection extends ResourceCollection
      *
      * @return array<string, mixed>
      */
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray(Request $request): array
     {
         return [
             'type' => 'FeatureCollection',

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
+use Modules\Xot\Providers\Traits\TranslatorTrait;
+use Modules\Cms\Services\PanelService;
+use Modules\Xot\Services\ProfileTest;
+use Modules\Xot\Console\Commands\DatabaseBackUpCommand;
 use Illuminate\Database\Events\MigrationsEnded;
 use Illuminate\Foundation\AliasLoader;
 use Illuminate\Support\Facades\Artisan;
@@ -19,7 +23,7 @@ use Modules\Xot\View\Composers\XotComposer;
 class XotServiceProvider extends XotBaseServiceProvider
 {
     // use Traits\PresenterTrait;
-    use Traits\TranslatorTrait;
+    use TranslatorTrait;
 
     public string $module_name = 'xot';
     /**
@@ -57,8 +61,8 @@ class XotServiceProvider extends XotBaseServiceProvider
     public function registerCallback(): void
     {
         // $this->loadHelpersFrom(__DIR__.'/../Helpers'); //non serve piu
-        $loader = AliasLoader::getInstance();
-        $loader->alias('Panel', 'Modules\Cms\Services\PanelService');
+        $aliasLoader = AliasLoader::getInstance();
+        $aliasLoader->alias('Panel', PanelService::class);
 
         // $loader->alias(\Modules\Xot\Facades\Profile::class,
         // $this->registerPresenter();
@@ -72,9 +76,7 @@ class XotServiceProvider extends XotBaseServiceProvider
 
         $this->app->bind(
             'profile',
-            function () {
-                return new \Modules\Xot\Services\ProfileTest();
-            }
+            fn(): ProfileTest => new ProfileTest()
         );
     }
 
@@ -119,18 +121,15 @@ class XotServiceProvider extends XotBaseServiceProvider
 
     private function redirectSSL(): void
     {
-        if (config('xra.forcessl')) {
-            // --- meglio ficcare un controllo anche sull'env
-            if (isset($_SERVER['SERVER_NAME']) && 'localhost' !== $_SERVER['SERVER_NAME']
-                && isset($_SERVER['REQUEST_SCHEME']) && 'http' === $_SERVER['REQUEST_SCHEME']
-            ) {
-                URL::forceScheme('https');
-                /*
-                 * da fare in htaccess
-                 */
-                if (! request()->secure() /* && in_array(env('APP_ENV'), ['stage', 'production']) */) {
-                    exit(redirect()->secure(request()->getRequestUri()));
-                }
+        // --- meglio ficcare un controllo anche sull'env
+        if (config('xra.forcessl') && (isset($_SERVER['SERVER_NAME']) && 'localhost' !== $_SERVER['SERVER_NAME']
+            && isset($_SERVER['REQUEST_SCHEME']) && 'http' === $_SERVER['REQUEST_SCHEME'])) {
+            URL::forceScheme('https');
+            /*
+             * da fare in htaccess
+             */
+            if (! request()->secure() /* && in_array(env('APP_ENV'), ['stage', 'production']) */) {
+                exit(redirect()->secure(request()->getRequestUri()));
             }
         }
     }
@@ -160,7 +159,7 @@ class XotServiceProvider extends XotBaseServiceProvider
                 // \Modules\Xot\Console\CreateAllRepositoriesCommand::class,
                 // \Modules\Xot\Console\PanelMakeCommand::class,
                 // \Modules\Xot\Console\FixProvidersCommand::class,
-                \Modules\Xot\Console\Commands\DatabaseBackUpCommand::class,
+                DatabaseBackUpCommand::class,
                 // \Modules\Xot\Console\Commands\WorkerCheck::class,
                 // \Modules\Xot\Console\Commands\WorkerRetry::class,
                 // \Modules\Xot\Console\Commands\WorkerStop::class,

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Store;
 
+use Exception;
+use App;
 use Fidum\EloquentMorphToOne\MorphToOne;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Xot\DTOs\RelationDTO;
@@ -13,23 +15,19 @@ class MorphToOneAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
         // dddx(['row' => $row, 'relation' => $relation, 'relation_data' => $relation->data]);
-        if (! $relation->rows instanceof MorphToOne) {
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+        if (! $relationDTO->rows instanceof MorphToOne) {
+            throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
-        $rows = $relation->rows;
+        $rows = $relationDTO->rows;
 
         // if (is_array($relation->data)) {
-        if (! isset($relation->data['lang'])) {
-            $relation->data['lang'] = \App::getLocale();
+        if (! isset($relationDTO->data['lang'])) {
+            $relationDTO->data['lang'] = App::getLocale();
         }
-        $rows->create($relation->data);
+        $rows->create($relationDTO->data);
         // } else {
         //    $rows->sync($relation->data);
         // }

@@ -40,44 +40,32 @@ abstract class XotBaseThemeServiceProvider
     {
         Blade::directive(
             'md',
-            function ($expression) {
-                return '<'."?php echo md_to_html({$expression}); ?".'>';
-            }
+            fn($expression): string => '<'."?php echo md_to_html({$expression}); ?".'>'
         );
 
         Blade::directive(
             'formGroup',
-            function ($expression) {
-                return '<div class="form-group<'."?php echo \$errors->has({$expression}) ? ' has-error' : '' ?".'>">';
-            }
+            fn($expression): string => '<div class="form-group<'."?php echo \$errors->has({$expression}) ? ' has-error' : '' ?".'>">'
         );
 
         Blade::directive(
             'endFormGroup',
-            function ($expression) {
-                return '</div>';
-            }
+            fn($expression): string => '</div>'
         );
 
         Blade::directive(
             'title',
-            function ($expression) {
-                return '<'."?php \$title = {$expression} ?".'>';
-            }
+            fn($expression): string => '<'."?php \$title = {$expression} ?".'>'
         );
 
         Blade::directive(
             'shareImage',
-            function ($expression) {
-                return '<'."?php \$shareImage = {$expression} ?".'>';
-            }
+            fn($expression): string => '<'."?php \$shareImage = {$expression} ?".'>'
         );
 
         Blade::directive(
             'canonical',
-            function ($expression) {
-                return '<'."?php \$canonical = {$expression} ?".'>';
-            }
+            fn($expression): string => '<'."?php \$canonical = {$expression} ?".'>'
         );
     }
 

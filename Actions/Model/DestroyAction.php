@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model;
 
+use Session;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
@@ -11,11 +12,7 @@ class DestroyAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
-    public function execute(Model $row, array $data, array $rules): Model
+    public function execute(Model $model, array $data, array $rules): Model
     {
         // prende la chiave del modello
 
@@ -28,13 +25,13 @@ class DestroyAction
         // DA FIXARE: se le tabelle pivot e tabella finale hanno id sfasati allora non CANCELLA giusto
         // e nemmeno EDIT lo fa giusto
 
-        $res = $row->delete();
+        $res = $model->delete();
         if ($res) {
-            \Session::flash('status', 'eliminato');
+            Session::flash('status', 'eliminato');
         } else {
-            \Session::flash('status', 'NON eliminato');
+            Session::flash('status', 'NON eliminato');
         }
 
-        return $row;
+        return $model;
     }
 }

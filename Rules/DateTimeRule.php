@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Rules;
 
+use Exception;
 use Carbon\Carbon;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -12,17 +13,11 @@ use Illuminate\Contracts\Validation\Rule;
  */
 class DateTimeRule implements Rule
 {
-    public function __construct()
-    {
-    }
-
     /**
      * @param string $attribute
      * @param string $value
-     *
-     * @return bool
      */
-    public function passes($attribute, $value)
+    public function passes($attribute, $value): bool
     {
         // dddx($attribute); //published_at
         // dddx($value);//10/10/2019 13:43
@@ -31,7 +26,7 @@ class DateTimeRule implements Rule
         $format = 'd/m/Y H:i';
         try {
             $value_new = Carbon::createFromFormat($format, $value);
-        } catch (\Exception $e) {
+        } catch (Exception) {
             return false;
         }
         /* -- non fa il suo dovere --

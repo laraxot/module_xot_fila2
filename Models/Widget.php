@@ -5,6 +5,16 @@ declare(strict_types=1);
 namespace Modules\Xot\Models;
 
 // ------ ext models---
+use Illuminate\Support\Carbon;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Modules\Xot\Database\Factories\WidgetFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use App;
+use Exception;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Modules\Xot\Models\Traits\WidgetTrait;
 
@@ -22,36 +32,36 @@ use Modules\Xot\Models\Traits\WidgetTrait;
  * @property string|null                                           $model
  * @property int|null                                              $limit
  * @property string|null                                           $order_by
- * @property \Illuminate\Support\Carbon|null                       $created_at
+ * @property Carbon|null $created_at
  * @property string|null                                           $created_by
- * @property \Illuminate\Support\Carbon|null                       $updated_at
+ * @property Carbon|null $updated_at
  * @property string|null                                           $updated_by
- * @property \Illuminate\Database\Eloquent\Collection<int, Widget> $containerWidgets
+ * @property Collection<int, Widget> $containerWidgets
  * @property int|null                                              $container_widgets_count
- * @property \Illuminate\Database\Eloquent\Model|\Eloquent         $linked
- * @property \Illuminate\Database\Eloquent\Collection<int, Widget> $widgets
+ * @property Model|\Eloquent $linked
+ * @property Collection<int, Widget> $widgets
  * @property int|null                                              $widgets_count
  *
- * @method static \Modules\Xot\Database\Factories\WidgetFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  ofLayoutPosition($layout_position)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  query()
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereBlade($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereCreatedBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereImageSrc($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereLayoutPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereLimit($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereModel($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereOrderBy($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  wherePos($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  wherePostId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  wherePostType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Widget  whereUpdatedBy($value)
+ * @method static WidgetFactory factory($count = null, $state = [])
+ * @method static Builder|Widget newModelQuery()
+ * @method static Builder|Widget newQuery()
+ * @method static Builder|Widget ofLayoutPosition($layout_position)
+ * @method static Builder|Widget query()
+ * @method static Builder|Widget whereBlade($value)
+ * @method static Builder|Widget whereCreatedAt($value)
+ * @method static Builder|Widget whereCreatedBy($value)
+ * @method static Builder|Widget whereId($value)
+ * @method static Builder|Widget whereImageSrc($value)
+ * @method static Builder|Widget whereLayoutPosition($value)
+ * @method static Builder|Widget whereLimit($value)
+ * @method static Builder|Widget whereModel($value)
+ * @method static Builder|Widget whereOrderBy($value)
+ * @method static Builder|Widget wherePos($value)
+ * @method static Builder|Widget wherePostId($value)
+ * @method static Builder|Widget wherePostType($value)
+ * @method static Builder|Widget whereTitle($value)
+ * @method static Builder|Widget whereUpdatedAt($value)
+ * @method static Builder|Widget whereUpdatedBy($value)
  *
  * @mixin \Eloquent
  */
@@ -88,7 +98,7 @@ class Widget extends BaseModel
         return self::max('pos') + 1;
     }
 
-    public function toHtml(array $params = null): \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+    public function toHtml(array $params = null): Application|Factory|View
     {
         /**
          * @phpstan-var view-string
@@ -99,7 +109,7 @@ class Widget extends BaseModel
         }
         $view .= '.'.$this->blade;
         $view_params = [
-            'lang' => \App::getLocale(),
+            'lang' => App::getLocale(),
             'view' => $view,
             'row' => $this->linked,
             'widget' => $this,
@@ -112,7 +122,7 @@ class Widget extends BaseModel
         }
         try {
             return view($view, $view_params);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             dddx([$e]);
         }
 

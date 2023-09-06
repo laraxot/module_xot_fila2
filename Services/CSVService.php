@@ -30,7 +30,7 @@ class CSVService
      */
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\CSVService) {
             self::$instance = new self();
         }
 
@@ -56,7 +56,7 @@ class CSVService
         // }
         $csv = [];
         foreach ($lines as $key => $value) {
-            $csv[$key] = str_getcsv($value);
+            $csv[$key] = str_getcsv((string) $value);
         }
 
         return $csv;

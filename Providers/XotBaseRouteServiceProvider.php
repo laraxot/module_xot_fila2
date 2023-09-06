@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
+use Config;
+use Request;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -32,7 +34,7 @@ abstract class XotBaseRouteServiceProvider extends RouteServiceProvider
      */
     public function boot(): void
     {
-        \Config::set('extra_conn', \Request::segment(2)); // Se configurato va a prendere db diverso
+        Config::set('extra_conn', Request::segment(2)); // Se configurato va a prendere db diverso
         if (method_exists($this, 'bootCallback')) {
             $this->bootCallback();
         }

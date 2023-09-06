@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use ReflectionException;
+use ReflectionClass;
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use function get_class;
 
 use Illuminate\Support\Facades\Auth;
@@ -19,12 +23,12 @@ class PolicyService
     protected static array $in_vars = [];
 
     protected static array $out_vars = [];
-    private static ?PolicyService $instance = null;
+    private static ?PolicyService $policyService = null;
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
-            self::$instance = new self();
+        if (null === self::$policyService) {
+            self::$policyService = new self();
         }
 
         /*
@@ -32,11 +36,11 @@ class PolicyService
             throw new \Exception('something gone bad');
         }
         */
-        return self::$instance;
+        return self::$policyService;
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     // ret PolicyService|null
     public static function get(object $obj): self
@@ -56,10 +60,10 @@ class PolicyService
 
         self::$in_vars['namespace'] = $class_ns;
         self::$in_vars['class'] = $class;
-        $autoloader_reflector = new \ReflectionClass(self::$in_vars['class']);
-        $filename = $autoloader_reflector->getFileName();
+        $reflectionClass = new ReflectionClass(self::$in_vars['class']);
+        $filename = $reflectionClass->getFileName();
         if (false === $filename) {
-            throw new \Exception('autoloader_reflector error');
+            throw new Exception('autoloader_reflector error');
         }
         $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
         self::$in_vars['filename'] = $filename;
@@ -81,13 +85,13 @@ class PolicyService
         $xotData = XotData::make();
         extract(self::$out_vars);
         if (! isset($namespace)) {
-            throw new \Exception('namespace is missing');
+            throw new Exception('namespace is missing');
         }
         if (! isset($class_name)) {
-            throw new \Exception('class_name is missing');
+            throw new Exception('class_name is missing');
         }
         if (! isset($class)) {
-            throw new \Exception('class is missing');
+            throw new Exception('class is missing');
         }
         // $user_class = get_class(Auth::user());
         $user_class = $xotData->getUserClass();
@@ -114,7 +118,7 @@ class PolicyService
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function createIfNotExists(): self
     {
@@ -130,7 +134,7 @@ class PolicyService
         $stub = File::get($stub_file);
 
         $replace = self::replaces();
-        $stub = str_replace(array_keys($replace), array_values($replace), $stub);
+        $stub = str_replace(array_keys($replace), array_values($replace), (string) $stub);
 
         File::makeDirectory(self::$out_vars['dirname'], $mode = 0777, true, true);
 

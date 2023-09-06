@@ -68,14 +68,14 @@ class XotData extends Data
 
     public function getProfileModelByUserId(string $user_id): Model
     {
-        $profile_class = $this->getProfileClass();
+        $profileClass = $this->getProfileClass();
 
-        return app($profile_class)->firstOrCreate(['user_id' => $user_id]);
+        return app($profileClass)->firstOrCreate(['user_id' => $user_id]);
     }
 
     public function getProfileModel(): Model
     {
-        $user_id = strval(auth()->id());
+        $user_id = (string) auth()->id();
 
         return $this->getProfileModelByUserId($user_id);
     }
