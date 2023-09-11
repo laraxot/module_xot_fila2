@@ -4,26 +4,30 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
+use Modules\User\Models\User;
+use Spatie\ModelStatus\Status;
 
 /**
  * Modules\Xot\Contracts\ModelWithPosContract.
  *
- * @property int                                                                   $id
- * @property int|null                                                              $user_id
- * @property string|null                                                           $post_type
- * @property \Illuminate\Support\Carbon|null                                       $created_at
- * @property \Illuminate\Support\Carbon|null                                       $updated_at
- * @property string|null                                                           $created_by
- * @property string|null                                                           $updated_by
- * @property string|null                                                           $title
- * @property PivotContract|null                                                    $pivot
- * @property string                                                                $tennant_name
- * @property \Modules\User\Models\User|null                                        $user
- * @property string                                                                $status
- * @property \Illuminate\Database\Eloquent\Collection|\Spatie\ModelStatus\Status[] $statuses
- * @property int|null                                                              $statuses_count
- * @property int|null                                                              $pos
+ * @property int                 $id
+ * @property int|null            $user_id
+ * @property string|null         $post_type
+ * @property Carbon|null         $created_at
+ * @property Carbon|null         $updated_at
+ * @property string|null         $created_by
+ * @property string|null         $updated_by
+ * @property string|null         $title
+ * @property PivotContract|null  $pivot
+ * @property string              $tennant_name
+ * @property User|null           $user
+ * @property string              $status
+ * @property Collection|Status[] $statuses
+ * @property int|null            $statuses_count
+ * @property int|null            $pos
  *
  * @method mixed     getKey()
  * @method string    getRouteKey()

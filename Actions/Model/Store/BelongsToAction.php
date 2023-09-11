@@ -13,19 +13,15 @@ class BelongsToAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
-    {
-        if (! $relation->rows instanceof BelongsTo) {
+        if (! $relationDTO->rows instanceof BelongsTo) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
 
-        $related = $relation->rows->create($relation->data);
+        $related = $relationDTO->rows->create($relationDTO->data);
 
-        $relation->rows->associate($related);
+        $relationDTO->rows->associate($related);
 
         // $rows = $relation->rows;
 

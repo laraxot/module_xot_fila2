@@ -26,7 +26,8 @@ class XotComposer
 
     public function asset(string $str): string
     {
-        $url = Module::asset($str);
+        Module::asset($str);
+
         /*
         dddx([
             'str'=>$str, //ewall::js/schedule.js

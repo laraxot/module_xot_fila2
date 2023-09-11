@@ -8,7 +8,6 @@ use function call_user_func_array;
 
 use Illuminate\Support\Arr;
 use Nwidart\Modules\Facades\Module;
-use Nwidart\Modules\Laravel\Module as LaravelModule;
 
 /**
  * --.
@@ -39,9 +38,6 @@ abstract class XotBaseComposer
      */
     public function call(string $func, ...$args)
     {
-        /**
-         * @var LaravelModule
-         */
         $module = Module::find($this->module_name);
         if (! \is_object($module)) {
             throw new \Exception('not find ['.$this->module_name.'] on Modules ['.__LINE__.']['.__FILE__.']');
@@ -66,12 +62,9 @@ abstract class XotBaseComposer
     {
         $modules = Module::getOrdered();
 
-        /**
-         * @var \Nwidart\Modules\Module|null
-         */
         $module = Arr::first(
             $modules,
-            function ($module) use ($name) {
+            function ($module) use ($name): bool {
                 $class = '\Modules\\'.$module->getName().'\View\Composers\ThemeComposer';
 
                 return method_exists($class, $name);
@@ -83,9 +76,6 @@ abstract class XotBaseComposer
         $class = '\Modules\\'.$module->getName().'\View\Composers\ThemeComposer';
         // Parameter #1 $callback of function call_user_func_array expects callable(): mixed, array{*NEVER*, string} given.
         $app = app($class);
-        /**
-         * @var callable
-         */
         $callback = [$app, $name];
 
         return \call_user_func_array($callback, $arguments);

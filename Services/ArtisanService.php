@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -26,7 +28,7 @@ if (! defined('STDIN')) {
 class ArtisanService
 {
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public static function act(string $act): string
     {
@@ -128,10 +130,8 @@ class ArtisanService
         $files = File::files(storage_path('logs'));
         $log = request('log', '');
         $content = '';
-        if ('' !== $log) {
-            if (File::exists(storage_path('logs/'.$log))) {
-                $content = File::get(storage_path('logs/'.$log));
-            }
+        if ('' !== $log && File::exists(storage_path('logs/'.$log))) {
+            $content = File::get(storage_path('logs/'.$log));
         }
         $pattern = '/url":"([^"]*)"/';
         preg_match_all($pattern, $content, $matches);

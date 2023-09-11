@@ -31,9 +31,9 @@ trait Cacheable
     /**
      * Set cache manager.
      */
-    public static function setCacheInstance(CacheManager $cache): void
+    public static function setCacheInstance(CacheManager $cacheManager): void
     {
-        self::$cache = $cache;
+        self::$cache = $cacheManager;
     }
 
     /**
@@ -41,7 +41,7 @@ trait Cacheable
      */
     public static function getCacheInstance(): CacheManager
     {
-        if (null === self::$cache) {
+        if (! self::$cache instanceof CacheManager) {
             self::$cache = app('cache');
         }
 
@@ -63,9 +63,9 @@ trait Cacheable
     public function getCacheKey(string $method, $args, string $tag): string
     {
         // Sort through arguments
-        foreach ($args as &$a) {
-            if ($a instanceof Model) {
-                $a = $a::class.'|'.$a->getKey();
+        foreach ($args as &$arg) {
+            if ($arg instanceof Model) {
+                $arg = $arg::class.'|'.$arg->getKey();
             }
         }
 
@@ -128,6 +128,6 @@ trait Cacheable
                 : $this->cacheMinutes;
         }
 
-        return $time ? $time : $this->cacheMinutes;
+        return $time ?: $this->cacheMinutes;
     }
 }

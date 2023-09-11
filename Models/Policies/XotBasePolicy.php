@@ -18,14 +18,14 @@ abstract class XotBasePolicy
 
     public function before(User $user, string $ability): bool|null
     {
-        $xot = XotData::make();
+        $xotData = XotData::make();
         if ($user->hasRole('super-admin')) {
             return true;
         }
-        if ($user->email == $xot->super_admin && null != $xot->super_admin) {
+        if ($user->email == $xotData->super_admin && null != $xotData->super_admin) {
             try {
                 $user->assignRole('super-admin');
-            } catch (RoleDoesNotExist $e) {
+            } catch (RoleDoesNotExist) {
                 $role = Role::firstOrCreate(['name' => 'super-admin', 'team_id' => null]);
                 $user->assignRole($role);
             }

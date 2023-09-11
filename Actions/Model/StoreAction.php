@@ -13,13 +13,9 @@ class StoreAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, array $data, array $rules): Model
     {
-    }
-
-    public function execute(Model $row, array $data, array $rules): Model
-    {
-        if (! isset($data['lang']) && \in_array('lang', $row->getFillable(), true)) {
+        if (! isset($data['lang']) && \in_array('lang', $model->getFillable(), true)) {
             $data['lang'] = app()->getLocale();
         }
         /*if (
@@ -33,25 +29,25 @@ class StoreAction
         $validator = Validator::make($data, $rules);
         $validator->validate();
 
-        $row = $row->fill($data);
+        $model = $model->fill($data);
 
-        $row->save();
+        $model->save();
 
-        $relations = app(FilterRelationsAction::class)->execute($row, $data);
+        $relations = app(FilterRelationsAction::class)->execute($model, $data);
 
         foreach ($relations as $relation) {
             $act = __NAMESPACE__.'\\Store\\'.$relation->relationship_type.'Action';
             // dddx(['act'=>$act,'row'=>$row,'relation'=>$relation,'data'=>$data]);
             // if (\is_array($data[$relation->name])) {
             // $relation->data = $data[$relation->name];
-            app($act)->execute($row, $relation);
+            app($act)->execute($model, $relation);
             // }
         }
 
-        $msg = 'created! ['.$row->getKey().']!';
+        $msg = 'created! ['.$model->getKey().']!';
 
         Session::flash('status', $msg); // .
 
-        return $row;
+        return $model;
     }
 }

@@ -14,56 +14,52 @@ class BelongsToAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
-    {
-        if (! $relation->rows instanceof BelongsTo) {
+        if (! $relationDTO->rows instanceof BelongsTo) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
-        $rows = $relation->rows;
+        $rows = $relationDTO->rows;
 
-        if (! \is_array($relation->data)) {
+        if (! \is_array($relationDTO->data)) {
             $related = $rows->getRelated();
-            $related = $related->find($relation->data);
+            $related = $related->find($relationDTO->data);
             $res = $rows->associate($related);
             $res->save();
 
             return;
         }
 
-        if (! Arr::isAssoc($relation->data) && 1 == count($relation->data)) {
-            $related_id = $relation->data[0];
-            $related = $relation->related->find($related_id);
+        if (! Arr::isAssoc($relationDTO->data) && 1 == count($relationDTO->data)) {
+            $related_id = $relationDTO->data[0];
+            $related = $relationDTO->related->find($related_id);
             $res = $rows->associate($related);
             $res->save();
 
             return;
         }
 
-        if (Arr::isAssoc($relation->data)) {
+        if (Arr::isAssoc($relationDTO->data)) {
             $sub = $rows->first();
             if (null == $sub) {
                 throw new \Exception('['.__LINE__.']['.__FILE__.']');
             }
-            app(RelationAction::class)->execute($sub, $relation->data);
+            app(RelationAction::class)->execute($sub, $relationDTO->data);
         }
 
-        $fillable = collect($relation->related->getFillable())->merge($relation->related->getHidden());
-        $data = collect($relation->data)->only($fillable)->all();
+        $fillable = collect($relationDTO->related->getFillable())->merge($relationDTO->related->getHidden());
+        $data = collect($relationDTO->data)->only($fillable)->all();
 
         if ($rows->exists()) {
             // $rows->update($data); // non passa per il mutator
-            $row->{$relation->name}->update($data);
+            $model->{$relationDTO->name}->update($data);
 
             return;
         }
 
         // dddx([$relation->related, $data]);
 
-        $related = $relation->related->create($data);
+        $related = $relationDTO->related->create($data);
         $res = $rows->associate($related);
         $res->save();
     }

@@ -5,17 +5,14 @@ declare(strict_types=1);
 namespace Modules\Xot\Actions\Model\Store;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
 class PivotAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
-    public function execute(Model $row, \Modules\Xot\DTOs\RelationDTO $relation): void
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
         dddx('wip');
         /*

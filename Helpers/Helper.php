@@ -1,9 +1,11 @@
 <?php
 
 declare(strict_types=1);
-
 // use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -88,7 +90,7 @@ if (! function_exists('dddx')) {
         $file = $tmp[0]['file'] ?? 'file-unknown';
         $file = str_replace('/', DIRECTORY_SEPARATOR, $file);
         $doc_root = $_SERVER['DOCUMENT_ROOT'];
-        $doc_root = str_replace('/', DIRECTORY_SEPARATOR, $doc_root);
+        $doc_root = str_replace('/', DIRECTORY_SEPARATOR, (string) $doc_root);
         $dir_piece = explode(DIRECTORY_SEPARATOR, __DIR__);
         $dir_piece = array_slice($dir_piece, 0, -6);
         $dir_copy = implode(DIRECTORY_SEPARATOR, $dir_piece);
@@ -122,17 +124,13 @@ if (! function_exists('debug_methods')) {
         $methods = get_class_methods($rows);
         // *
         $methods_get = collect($methods)->filter(
-            function ($item) {
-                return Str::startsWith($item, 'get');
-            }
+            fn ($item) => Str::startsWith($item, 'get')
         )->map(
             function ($item) use ($rows) {
                 $value = 'Undefined';
                 try {
                     $value = $rows->{$item}();
-                } catch (\Exception $e) {
-                    $value = $e->getMessage();
-                } catch (ArgumentCountError $e) {
+                } catch (Exception|ArgumentCountError $e) {
                     $value = $e->getMessage();
                 }
 
@@ -154,13 +152,13 @@ if (! function_exists('getFilename')) {
     function getFilename(array $params): string
     {
         $tmp = debug_backtrace();
-        $class = (string) class_basename($tmp[1]['class'] ?? 'class-unknown');
+        $class = class_basename($tmp[1]['class'] ?? 'class-unknown');
 
-        $func = (string) $tmp[1]['function'];
+        $func = $tmp[1]['function'];
         $params_list = collect($params)->except(['_token', '_method'])->implode('_');
 
         return Str::slug(
-            (string) str_replace('Controller', '', $class).
+            str_replace('Controller', '', $class).
                 '_'.str_replace('do_', '', $func).
                 '_'.$params_list
         );
@@ -197,17 +195,12 @@ if (! function_exists('inAdmin')) {
             return config()->get('in_admin');
         }
         */
-        if ('admin' === \Request::segment(1)) {
+        if ('admin' === Request::segment(1)) {
             return true;
         }
-        $segments = \Request::segments();
-        if (\count($segments) > 0 && 'livewire' === $segments[0]) {
-            if (true === session('in_admin')) {
-                return true;
-            }
-        }
+        $segments = Request::segments();
 
-        return false;
+        return (is_countable($segments) ? \count($segments) : 0) > 0 && 'livewire' === $segments[0] && true === session('in_admin');
     }
 }
 
@@ -300,8 +293,6 @@ if (! function_exists('isItem')) {
 
 if (! function_exists('params2ContainerItem')) {
     /**
-     * @param array $params
-     *
      * @return array<array>
      */
     function params2ContainerItem(array $params = null): array
@@ -313,19 +304,19 @@ if (! function_exists('params2ContainerItem')) {
             // $params = optional(Route::current())->parameters();
             $params = [];
             $route_current = Route::current();
-            if (null !== $route_current) {
+            if ($route_current instanceof \Illuminate\Routing\Route) {
                 $params = $route_current->parameters();
             }
         }
         $container = [];
         $item = [];
         foreach ($params as $k => $v) {
-            $pattern = '/(container|item)([0-9]+)/';
+            $pattern = '/(container|item)(\d+)/';
             preg_match($pattern, $k, $matches);
             if (isset($matches[1]) && isset($matches[2])) {
                 $sk = $matches[1];
                 $sv = $matches[2];
-                $$sk[$sv] = $v;
+                ${$sk}[$sv] = $v;
             }
         }
 
@@ -357,7 +348,7 @@ if (! function_exists('getModelByName')) {
             throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
         $path = collect($files)->first(
-            function ($file) use ($name) {
+            function ($file) use ($name): bool {
                 $info = pathinfo($file);
                 // Offset 'filename' on array{dirname?: string, basename: string, extension?: string, filename: string} on left side of ?? always exists and is not nullable.
                 $filename = $info['filename']; // ?? '';
@@ -397,6 +388,7 @@ if (! function_exists('getModuleFromModel')) {
     {
         $class = $model::class;
         $module_name = Str::before(Str::after($class, 'Modules\\'), '\\Models\\');
+
         // call to an undefined static method  Nwidart\Modules\Facades\Module::find().
         // $mod = Module::find($module_name);
         // Call to an undefined static method Nwidart\Modules\Facades\Module::get().
@@ -414,7 +406,7 @@ if (! function_exists('getModuleNameFromModel')) {
     {
         if (! is_object($model)) {
             dddx(['model' => $model]);
-            throw new \Exception('model is not an object');
+            throw new Exception('model is not an object');
         }
         $class = $model::class;
 
@@ -612,27 +604,21 @@ if (! function_exists('debug_getter_obj')) {
             return $data;
         }
         $methods = collect($methods)->filter(
-            function ($item) {
+            function ($item): bool {
                 $exclude = [
                     'forceDelete',
                     'forceCreate',
                 ];
-                if (! Str::startsWith($item, '__') && ! in_array($item, $exclude, true)) {
-                    return true;
-                }
 
-                return false;
+                return ! Str::startsWith($item, '__') && ! in_array($item, $exclude, true);
             }
         )->all();
         // dddx($methods);
         foreach ($methods as $method) {
-            $reflection = new \ReflectionMethod($obj, $method);
+            $reflection = new ReflectionMethod($obj, $method);
             $args = $reflection->getParameters();
-            if (0 === count($args) && $reflection->class === $obj::class) {
+            if ([] === $args && $reflection->class === $obj::class) {
                 try {
-                    /**
-                     * @var object|string
-                     */
                     $return = $reflection->invoke($obj);
                     // $check = ($return instanceof \Illuminate\Database\Eloquent\Relations\Relation);
                     // if ($check) {
@@ -647,7 +633,7 @@ if (! function_exists('debug_getter_obj')) {
                     ];
                     $data[] = $msg;
                     // }
-                } catch (ErrorException $e) {
+                } catch (ErrorException) {
                 }
             }
         }
@@ -669,13 +655,9 @@ if (! function_exists('dottedToBrackets')) {
     // privacies.111.pivot.title => privacies[111][pivot][title]
     function dottedToBrackets(string $str, string $quotation_marks = ''): string
     {
-        $str = collect(explode('.', $str))->map(
-            function ($v, $k) {
-                return 0 === $k ? $v : '['.$v.']';
-            }
+        return collect(explode('.', $str))->map(
+            fn ($v, $k) => 0 === $k ? $v : '['.$v.']'
         )->implode('');
-
-        return $str;
     }
 }
 
@@ -723,21 +705,21 @@ if (! function_exists('url_queries')) {
     {
         // If a URL isn't supplied, use the current one
         if (! $url) {
-            $url = \Request::fullUrl();
+            $url = Request::fullUrl();
         }
 
         // Split the URL down into an array with all the parts separated out
-        $url_parsed = parse_url($url);
+        $url_parsed = parse_url((string) $url);
 
         if (false === $url_parsed) {
-            throw new \Exception('error parsing url ['.$url.']');
+            throw new Exception('error parsing url ['.$url.']');
         }
         // Turn the query string into an array
         $url_params = [];
         // Cannot access offset 'query' on array(?'scheme' => string, ?'host' => string, ?'port' => int, ?'user' => string, ?'pass' => string, ?'path' => string, ?'query' => string, ?'fragment' => string)|false.
         if (isset($url_parsed['query'])) {
             // if (in_array('query', array_keys($url_parsed))) {
-            parse_str($url_parsed['query'], $url_params);
+            parse_str((string) $url_parsed['query'], $url_params);
         }
 
         // Merge the existing URL's query parameters with our new ones
@@ -748,6 +730,7 @@ if (! function_exists('url_queries')) {
         // Add the new query string back into our URL
         Assert::isArray($url_parsed, 'wip');
         $url_parsed['query'] = $string_query;
+
         // Build the array back into a complete URL string
         return build_url($url_parsed);
     }
@@ -788,14 +771,14 @@ if (! function_exists('getRelationships')) {
             return $data;
         }
         foreach ($methods as $method) {
-            $reflection = new \ReflectionMethod($model, $method);
+            $reflection = new ReflectionMethod($model, $method);
             $args = $reflection->getParameters();
-            if (0 === count($args) && $reflection->class === $model::class) {
+            if ([] === $args && $reflection->class === $model::class) {
                 try {
                     $return = $reflection->invoke($model);
-                    $check = $return instanceof \Illuminate\Database\Eloquent\Relations\Relation;
+                    $check = $return instanceof Relation;
                     if ($check) {
-                        $related_model = (new \ReflectionClass($return->getRelated()))->getName();
+                        $related_model = (new ReflectionClass($return->getRelated()))->getName();
                         $msg = [
                             'name' => $reflection->name,
                             'type' => class_basename($return),
@@ -805,7 +788,7 @@ if (! function_exists('getRelationships')) {
                         ];
                         $data[] = $msg;
                     }
-                } catch (ErrorException $e) {
+                } catch (ErrorException) {
                 }
             }
         }
@@ -860,6 +843,7 @@ if (! function_exists('removeQueryParams')) {
         foreach ($params as $param) {
             unset($query[$param]); // loop through the array of parameters we wish to remove and unset the parameter from the query array
         }
+
         // 924    Parameter #1 $querydata of function http_build_query expects array|object, array|string given.
         return $query ? $url.'?'.http_build_query($query) : $url; // rebuild the URL with the remaining parameters, don't append the "?" if there aren't any query parameters left
     }
@@ -905,7 +889,7 @@ if (! function_exists('isJson')) {
     */
     function isJson(string $string): bool
     {
-        return is_string($string) && is_array(json_decode($string, true)) ? true : false;
+        return is_string($string) && is_array(json_decode($string, true, 512, JSON_THROW_ON_ERROR));
     }
 }
 /*
@@ -931,11 +915,8 @@ if (! function_exists('getExcerpt')) {
 if (! function_exists('getRouteParameters')) {
     function getRouteParameters(): array
     {
-        /**
-         * @var \Illuminate\Routing\Route|null
-         */
         $route = request()->route();
-        if (null === $route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return [];
         }
 
@@ -951,7 +932,7 @@ if (! function_exists('getRouteName')) {
          * @var \Illuminate\Routing\Route|null
          */
         $route = request()->route();
-        if (null === $route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return null;
         }
 
@@ -971,11 +952,11 @@ if (! function_exists('getModTradFilepath')) {
     {
         Assert::string($file_path = Str::replace('\\', '/', $file_path), 'wip');
 
-        $ns = Str::of($file_path)->after('/Modules/')->before('/')->lower();
+        $stringable = Str::of($file_path)->after('/Modules/')->before('/')->lower();
         $info = pathinfo($file_path);
         $group = Str::snake($info['filename']);
 
-        return $ns.'::'.$group;
+        return $stringable.'::'.$group;
     }
 }
 
@@ -997,7 +978,7 @@ if (! function_exists('is_active')) {
      */
     function is_active(array $routes): bool
     {
-        return (bool) call_user_func_array([app('router'), 'is'], (array) $routes);
+        return (bool) call_user_func_array([app('router'), 'is'], $routes);
     }
 }
 
@@ -1034,7 +1015,7 @@ if (! function_exists('debugStack')) {
     function debugStack(): void
     {
         if (! extension_loaded('xdebug')) {
-            throw new \RuntimeException('XDebug must be installed to use this function');
+            throw new RuntimeException('XDebug must be installed to use this function');
         }
 
         xdebug_set_filter(
@@ -1059,9 +1040,8 @@ if (! function_exists('secondsToHms')) {
         if ($hours > 0) {
             $str .= ($hours < 9 ? '0'.$hours : $hours).':';
         }
-        $str .= ($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal);
 
-        return $str;
+        return $str.(($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal));
     }
 }
 
@@ -1069,7 +1049,7 @@ if (! function_exists('rowsToSql')) {
     /**
      * Undocumented function.
      */
-    function rowsToSql(Illuminate\Database\Eloquent\Relations\HasOne|Illuminate\Database\Query\Builder|Illuminate\Database\Eloquent\Builder $rows): string
+    function rowsToSql(HasOne|Builder|Illuminate\Database\Eloquent\Builder $rows): string
     {
         // $sql = str_replace('?', $rows->getBindings(), $rows->toSql());
         /**
@@ -1165,9 +1145,9 @@ if (! function_exists('recursive_unset')) {
 if (! function_exists('profile')) {
     function profile(): Model
     {
-        $xot = XotData::make();
+        $xotData = XotData::make();
 
-        return $xot->getProfileModel();
+        return $xotData->getProfileModel();
     }
 }
 

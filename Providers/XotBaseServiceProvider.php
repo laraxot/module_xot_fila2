@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
@@ -160,7 +161,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
     /**
      * Undocumented function.
      *
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function getEventsFrom(string $path): array
     {
@@ -202,7 +203,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
                 }
             }
             try {
-                $events_content = json_encode($events);
+                $events_content = json_encode($events, JSON_THROW_ON_ERROR);
                 // if (false === $events_content) {
                 //    throw new \Exception('can not encode json');
                 // }
@@ -212,20 +213,20 @@ abstract class XotBaseServiceProvider extends ServiceProvider
             }
         } else {
             $events = File::get($events_file);
-            $events = (array) json_decode($events);
+            $events = (array) json_decode((string) $events, null, 512, JSON_THROW_ON_ERROR);
         }
 
         return $events;
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function loadEventsFrom(string $path): void
     {
         $events = $this->getEventsFrom($path);
-        foreach ($events as $v) {
-            Event::listen($v->event, $v->listener);
+        foreach ($events as $event) {
+            Event::listen($event->event, $event->listener);
         }
     }
 

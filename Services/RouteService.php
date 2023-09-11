@@ -33,13 +33,8 @@ class RouteService
             return true;
         }
         $segments = \Request::segments();
-        if (\count($segments) > 0 && 'livewire' === $segments[0]) {
-            if (true === session('in_admin')) {
-                return true;
-            }
-        }
 
-        return false;
+        return (is_countable($segments) ? \count($segments) : 0) > 0 && 'livewire' === $segments[0] && true === session('in_admin');
     }
 
     // --- sarebbe deprecata ma il mal di testa
@@ -59,7 +54,7 @@ class RouteService
         }
         */
         $route_action = (string) \Route::currentRouteAction();
-        $old_act = Str::snake(Str::after($route_action, '@'));
+        Str::snake(Str::after($route_action, '@'));
         // Cannot call method getName() on mixed.
         $routename = ''; // Request::route()->getName();
         $old_act_route = last(explode('.', $routename));
@@ -414,8 +409,8 @@ class RouteService
 
     public static function getView(): string
     {
-        $tmp = self::getControllerName();
-        $tmp_arr = explode('\\', $tmp);
+        $controllerName = self::getControllerName();
+        $tmp_arr = explode('\\', $controllerName);
 
         $params = getRouteParameters();
         [$containers, $items] = params2ContainerItem($params);
@@ -424,9 +419,7 @@ class RouteService
 
         return collect($tmp_arr)
             ->filter(
-                function ($item) {
-                    return ! \in_array($item, ['Module', 'Item'], true);
-                }
+                fn ($item): bool => ! \in_array($item, ['Module', 'Item'], true)
             )
             ->map(
                 function ($item) use ($params) {

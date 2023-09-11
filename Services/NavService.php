@@ -38,14 +38,10 @@ class NavService
             $tmp['title'] = $year;
             // Strict comparison using === between numeric-string and (float|int) will always evaluate to false
             // if (date('Y') === $params['year']) {
-            if (intval($params['year']) === intval(date('Y'))) {
+            if ((int) $params['year'] === (int) date('Y')) {
                 $tmp['title'] = '['.$tmp['title'].']';
             }
-            if ($year === $params['year']) {
-                $tmp['active'] = 1;
-            } else {
-                $tmp['active'] = 0;
-            }
+            $tmp['active'] = $year === $params['year'] ? 1 : 0;
 
             if (null === $routename) {
                 throw new \Exception('routename is null');
@@ -96,11 +92,7 @@ class NavService
             if (date('Y') === $params['year'] && date('m') === $params['month']) {
                 $tmp['title'] = '['.$tmp['title'].']';
             }
-            if ($year === $params['year'] && $month === $params['month']) {
-                $tmp['active'] = 1;
-            } else {
-                $tmp['active'] = 0;
-            }
+            $tmp['active'] = $year === $params['year'] && $month === $params['month'] ? 1 : 0;
             if (null === $routename) {
                 throw new \Exception('routename is null');
             }

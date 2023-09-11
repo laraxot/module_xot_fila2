@@ -12,18 +12,12 @@ class RelationAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
     /**
      * Undocumented function.
-     *
-     * @return void
      */
-    public function execute(Model $row, array $data)
+    public function execute(Model $model, array $data): void
     {
-        $relations = app(FilterRelationsAction::class)->execute($row, $data);
+        $relations = app(FilterRelationsAction::class)->execute($model, $data);
         /*
         if ('CompanyService' != class_basename($row)) {
             dddx([
@@ -36,7 +30,7 @@ class RelationAction
         */
         foreach ($relations as $relation) {
             $act = __NAMESPACE__.'\\'.$relation->relationship_type.'Action';
-            app($act)->execute($row, $relation);
+            app($act)->execute($model, $relation);
         }
     }
 }

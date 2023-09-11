@@ -15,19 +15,15 @@ class MorphToManyAction
 
     public Collection $res;
 
-    public function __construct()
-    {
-    }
-
     /**
      * Undocumented function.
      *
      * @return void
      */
-    public function execute(Model $row, RelationDTO $relation)
+    public function execute(Model $row, RelationDTO $relationDTO)
     {
-        $data = $relation->data;
-        $name = $relation->name;
+        $data = $relationDTO->data;
+        $name = $relationDTO->name;
         $model = $row;
         if (! is_array($data)) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');

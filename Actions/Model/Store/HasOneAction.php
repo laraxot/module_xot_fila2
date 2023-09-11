@@ -14,22 +14,18 @@ class HasOneAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
         // dddx(['row' => $row, 'relation' => $relation]);
-        if (! $relation->rows instanceof HasOne) {
+        if (! $relationDTO->rows instanceof HasOne) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
 
-        $rows = $relation->rows;
+        $rows = $relationDTO->rows;
 
-        if (! Arr::isAssoc($relation->data) && 1 == count($relation->data)) {
-            $related_id = $relation->data[0];
-            $related = $relation->related->find($related_id);
+        if (! Arr::isAssoc($relationDTO->data) && 1 == count($relationDTO->data)) {
+            $related_id = $relationDTO->data[0];
+            $related = $relationDTO->related->find($related_id);
             if (! $related instanceof Model) {
                 throw new \Exception('['.__LINE__.']['.__FILE__.']');
             }

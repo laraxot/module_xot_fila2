@@ -1,4 +1,4 @@
-name: phpinsights
+name: rector
 on: [push]
 
 jobs:
@@ -11,9 +11,10 @@ jobs:
               with:
                   php-version: 8.1
             - run: composer install --prefer-dist --no-progress
-            - run: composer require nunomaduro/phpinsights --dev
-            - run: cp vendor/nunomaduro/phpinsights/stubs/laravel.php phpinsights.php
-            - run: vendor/bin/phpinsights -n --ansi --format=github-action --fix
+            - run: composer require driftingly/rector-laravel --dev -W
+            - run: composer require rector/phpstan-rules --dev -W
+            - run: composer require rector/rector  --dev -W
+            - run: vendor/bin/rector process
             - uses: stefanzweifel/git-auto-commit-action@v4
               with:
-                commit_message: phpinsights
+                commit_message: rector

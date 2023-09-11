@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Http\Livewire;
 
 // use Illuminate\Support\Carbon;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Str;
 use Livewire\Component;
 
@@ -42,7 +43,7 @@ abstract class XotBaseComponent extends Component
     /**
      * Render the component.
      */
-    public function render(): \Illuminate\Contracts\Support\Renderable
+    public function render(): Renderable
     {
         // per fare copia ed incolla
         $view = $this->getView();

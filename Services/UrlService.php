@@ -23,7 +23,7 @@ class UrlService
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (! self::$instance instanceof \Modules\Xot\Services\UrlService) {
             self::$instance = new self();
         }
 
@@ -40,10 +40,6 @@ class UrlService
 
     public function checkValidUrl(string $url): bool
     {
-        if (false !== filter_var($url, FILTER_VALIDATE_URL)) {
-            return true;
-        }
-
-        return false;
+        return false !== filter_var($url, FILTER_VALIDATE_URL);
     }
 }

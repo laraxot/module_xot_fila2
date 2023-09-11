@@ -155,7 +155,7 @@ class Trend
 
         // Cannot access property $aggregate on mixed.
         $values = $values->map(
-            fn ($value) => TrendData::from(
+            fn ($value): TrendData => TrendData::from(
                 [
                     'date' => $value->{$this->dateAlias},
                     'aggregate' => $value->aggregate,
@@ -168,9 +168,9 @@ class Trend
         // Closure(Illuminate\Support\Carbon): Modules\Xot\Datas\TrendData given
         $placeholders = $this->getDatePeriod()
             ->map(
-                fn (Carbon $date) => TrendData::from(
+                fn (Carbon $carbon): TrendData => TrendData::from(
                     [
-                        'date' => $date->format($this->getCarbonDateFormat()),
+                        'date' => $carbon->format($this->getCarbonDateFormat()),
                         'aggregate' => 0,
                     ]
                 )

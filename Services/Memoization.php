@@ -13,20 +13,13 @@ class Memoization
     private static ?self $_instance = null;
 
     /**
-     * Undocumented function.
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * getInstance.
      *
      * this method will return instance of the class
      */
     public static function getInstance(): self
     {
-        if (! self::$_instance) {
+        if (! self::$_instance instanceof \Modules\Xot\Services\Memoization) {
             self::$_instance = new self();
         }
 

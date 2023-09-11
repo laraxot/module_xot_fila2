@@ -11,22 +11,18 @@ class DetachAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, array $data, array $rules): Model
     {
-    }
-
-    public function execute(Model $row, array $data, array $rules): Model
-    {
-        if (! isset($row->pivot)) {
-            return $row;
+        if (property_exists($model, 'pivot') && null !== $model->pivot) {
+            return $model;
         }
-        $res = $row->pivot->delete();
+        $res = $model->pivot->delete();
         if ($res) {
             \Session::flash('status', 'scollegato');
         } else {
             \Session::flash('status', 'NON scollegato');
         }
 
-        return $row;
+        return $model;
     }
 }

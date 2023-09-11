@@ -21,8 +21,7 @@ class GetModelClassByModelTypeAction
         if (! is_array($morph_map)) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
-        $model_class = collect($morph_map)->get($model_type);
 
-        return $model_class;
+        return collect($morph_map)->get($model_type);
     }
 }

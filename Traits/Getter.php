@@ -73,11 +73,11 @@ trait Getter
 
     public static function __callStatic(string $method, array $args): mixed
     {
-        if (preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {
-            $reflector = new \ReflectionClass(self::class);
-            $property = mb_strtolower($match[2]).$match[3];
-            if ($reflector->hasProperty($property)) {
-                $property = $reflector->getProperty($property);
+        if (0 !== preg_match('/^([gs]et)([A-Z])(.*)$/', $method, $match)) {
+            $reflectionClass = new \ReflectionClass(self::class);
+            $property = mb_strtolower((string) $match[2]).$match[3];
+            if ($reflectionClass->hasProperty($property)) {
+                $property = $reflectionClass->getProperty($property);
                 switch ($match[1]) {
                     case 'get':
                         return $property->getValue();
@@ -115,11 +115,7 @@ trait Getter
 
     public function __get(string $index): mixed
     {
-        if (isset($this->vars[$index])) {
-            return $this->vars[$index];
-        }
-
-        return null;
+        return $this->vars[$index] ?? null;
     }
 
     public function __concatBefore(string $index, string $value): void

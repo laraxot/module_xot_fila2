@@ -13,11 +13,7 @@ class UpdateAction
 {
     use QueueableAction;
 
-    public function __construct()
-    {
-    }
-
-    public function execute(Model $row, array $data, array $rules): Model
+    public function execute(Model $model, array $data, array $rules): Model
     {
         $validator = Validator::make($data, $rules);
         $validator->validate();
@@ -25,20 +21,20 @@ class UpdateAction
         // dddx($data);
 
         try {
-            $row = tap($row)->update($data);
+            $model = tap($model)->update($data);
         } catch (\Exception $e) {
             if ('Node must exists.' === $e->getMessage()) {
-                app($row::class)->fixTree();
-                $row = tap($row)->update($data);
+                app($model::class)->fixTree();
+                $model = tap($model)->update($data);
             }
         }
 
-        app(__NAMESPACE__.'\\Update\RelationAction')->execute($row, $data);
+        app(__NAMESPACE__.'\\Update\RelationAction')->execute($model, $data);
 
-        $msg = 'aggiornato! ['.$row->getKey().']!'; // .'['.implode(',',$row->getChanges()).']';
+        $msg = 'aggiornato! ['.$model->getKey().']!'; // .'['.implode(',',$row->getChanges()).']';
 
         Session::flash('status', $msg); // .
 
-        return $row;
+        return $model;
     }
 }

@@ -40,46 +40,44 @@ trait HasParent
     /**
      * @return self
      */
-    public static function scoped(array $attributes)
+    public static function scoped(array $attributes): QueryBuilder
     {
-        $instance = new static();
+        $static = new static();
 
-        $instance->setRawAttributes($attributes);
+        $static->setRawAttributes($attributes);
 
-        return $instance->newScopedQuery();
+        return $static->newScopedQuery();
     }
 
     /**
      * {@inheritdoc}
      *
      * Use `children` key on `$attributes` to create child nodes.
-     *
-     * @param self $parent
      */
     public static function create(array $attributes = [], self $parent = null)
     {
         $children = Arr::pull($attributes, 'children');
 
-        $instance = new static($attributes);
+        $static = new static($attributes);
 
-        if ($parent) {
-            $instance->appendToNode($parent);
+        if ($parent instanceof \Modules\Xot\Models\Traits\HasParent) {
+            $static->appendToNode($parent);
         }
 
-        $instance->save();
+        $static->save();
 
         // Now create children
         $relation = new EloquentCollection();
 
         foreach ((array) $children as $child) {
-            $relation->add($child = static::create($child, $instance));
+            $relation->add($child = static::create($child, $static));
 
-            $child->setRelation('parent', $instance);
+            $child->setRelation('parent', $static);
         }
 
-        $instance->refreshNode();
+        $static->refreshNode();
 
-        return $instance->setRelation('children', $relation);
+        return $static->setRelation('children', $relation);
     }
 
     /**
@@ -363,7 +361,7 @@ trait HasParent
     /**
      * @since 2.0
      */
-    public function newEloquentBuilder($query)
+    public function newEloquentBuilder($query): QueryBuilder
     {
         return new QueryBuilder($query);
     }
@@ -408,7 +406,7 @@ trait HasParent
         return $query;
     }
 
-    public function newCollection(array $models = [])
+    public function newCollection(array $models = []): Collection
     {
         return new Collection($models);
     }
@@ -446,7 +444,7 @@ trait HasParent
             return;
         }
 
-        if ($value) {
+        if (0 !== $value) {
             $this->appendToNode($this->newScopedQuery()->findOrFail($value));
         } else {
             $this->makeRoot();
@@ -495,7 +493,7 @@ trait HasParent
      */
     public function getLft(): int
     {
-        return intval($this->getAttributeValue($this->getLftName()));
+        return (int) $this->getAttributeValue($this->getLftName());
     }
 
     /**
@@ -503,7 +501,7 @@ trait HasParent
      */
     public function getRgt(): int
     {
-        return intval($this->getAttributeValue($this->getRgtName()));
+        return (int) $this->getAttributeValue($this->getRgtName());
     }
 
     /**
@@ -639,10 +637,7 @@ trait HasParent
         return $this->moved;
     }
 
-    /**
-     * @return array
-     */
-    public function getBounds()
+    public function getBounds(): array
     {
         return [$this->getLft(), $this->getRgt()];
     }
@@ -715,14 +710,11 @@ trait HasParent
             return;
         }
 
-        $method = 'action'.ucfirst(array_shift($this->pending));
+        $method = 'action'.ucfirst((string) array_shift($this->pending));
         $parameters = $this->pending;
 
         $this->pending = null;
 
-        /**
-         * @var callable
-         */
         $callback = [$this, $method];
         $this->moved = call_user_func_array($callback, $parameters);
     }
@@ -780,10 +772,10 @@ trait HasParent
     /**
      * Apply parent model.
      */
-    protected function setParent(?Model $value): self
+    protected function setParent(?Model $model): self
     {
-        $this->setParentId($value ? $value->getKey() : null)
-            ->setRelation('parent', $value);
+        $this->setParentId($model instanceof Model ? $model->getKey() : null)
+            ->setRelation('parent', $model);
 
         return $this;
     }
@@ -904,7 +896,7 @@ trait HasParent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     public function replicate(array $except = null)
     {
@@ -944,14 +936,11 @@ trait HasParent
             return;
         }
 
-        $method = 'action'.ucfirst(array_shift($this->pending));
+        $method = 'action'.ucfirst((string) array_shift($this->pending));
         $parameters = $this->pending;
 
         $this->pending = null;
 
-        /**
-         * @var callable
-         */
         $callback = [$this, $method];
         $this->moved = call_user_func_array($callback, $parameters);
     }
@@ -1013,7 +1002,7 @@ trait HasParent
      */
     protected function setParent($value): self
     {
-        $this->setParentId($value ? $value->getKey() : null)
+        $this->setParentId($value instanceof Model ? $value->getKey() : null)
             ->setRelation('parent', $value);
 
         return $this;
@@ -1040,11 +1029,9 @@ trait HasParent
     {
         ++static::$actionsPerformed;
 
-        $result = $this->exists
+        return $this->exists
             ? $this->moveNode($position)
             : $this->insertNode($position);
-
-        return $result;
     }
 
     /**
@@ -1053,10 +1040,8 @@ trait HasParent
      * @since 2.0
      *
      * @param int $position
-     *
-     * @return int
      */
-    protected function moveNode($position)
+    protected function moveNode($position): bool
     {
         $updated = $this->newNestedSetQuery()
             ->moveNode($this->getKey(), $position) > 0;
@@ -1074,10 +1059,8 @@ trait HasParent
      * @since 2.0
      *
      * @param int $position
-     *
-     * @return bool
      */
-    protected function insertNode($position)
+    protected function insertNode($position): bool
     {
         $this->newNestedSetQuery()->makeGap($position, 2);
 
@@ -1148,10 +1131,8 @@ trait HasParent
 
     /**
      * Get whether user is intended to delete the model from database entirely.
-     *
-     * @return bool
      */
-    protected function hardDeleting()
+    protected function hardDeleting(): bool
     {
         return ! $this->usesSoftDelete() || $this->forceDeleting;
     }

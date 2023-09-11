@@ -13,17 +13,13 @@ class HasManyAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
-    {
-        if (! $relation->rows instanceof HasMany) {
+        if (! $relationDTO->rows instanceof HasMany) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
 
-        $rows = $relation->rows;
-        $rows->create($relation->data);
+        $rows = $relationDTO->rows;
+        $rows->create($relationDTO->data);
     }
 }

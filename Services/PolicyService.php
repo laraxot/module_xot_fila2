@@ -6,6 +6,7 @@ namespace Modules\Xot\Services;
 
 use function get_class;
 
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Modules\Xot\Datas\XotData;
@@ -19,19 +20,20 @@ class PolicyService
     protected static array $in_vars = [];
 
     protected static array $out_vars = [];
-    private static ?PolicyService $instance = null;
+    private static ?PolicyService $policyService = null;
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
-            self::$instance = new self();
+        if (null === self::$policyService) {
+            self::$policyService = new self();
         }
+
         /*
         if (null == self::$instance) {
             throw new \Exception('something gone bad');
         }
         */
-        return self::$instance;
+        return self::$policyService;
     }
 
     /**
@@ -55,8 +57,8 @@ class PolicyService
 
         self::$in_vars['namespace'] = $class_ns;
         self::$in_vars['class'] = $class;
-        $autoloader_reflector = new \ReflectionClass(self::$in_vars['class']);
-        $filename = $autoloader_reflector->getFileName();
+        $reflectionClass = new \ReflectionClass(self::$in_vars['class']);
+        $filename = $reflectionClass->getFileName();
         if (false === $filename) {
             throw new \Exception('autoloader_reflector error');
         }
@@ -113,7 +115,7 @@ class PolicyService
     }
 
     /**
-     * @throws \Illuminate\Contracts\Filesystem\FileNotFoundException
+     * @throws FileNotFoundException
      */
     public function createIfNotExists(): self
     {
@@ -129,7 +131,7 @@ class PolicyService
         $stub = File::get($stub_file);
 
         $replace = self::replaces();
-        $stub = str_replace(array_keys($replace), array_values($replace), $stub);
+        $stub = str_replace(array_keys($replace), array_values($replace), (string) $stub);
 
         File::makeDirectory(self::$out_vars['dirname'], $mode = 0777, true, true);
 

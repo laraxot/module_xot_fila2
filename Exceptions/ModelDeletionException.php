@@ -12,12 +12,10 @@ use Illuminate\Support\Str;
 
 class ModelDeletionException extends ApplicationException
 {
-    private int $id;
-    private string $model;
+    private readonly string $model;
 
-    public function __construct(int $id, string $model)
+    public function __construct(private readonly int $id, string $model)
     {
-        $this->id = $id;
         $this->model = Str::afterLast($model, '\\');
     }
 
