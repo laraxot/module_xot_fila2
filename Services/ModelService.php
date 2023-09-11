@@ -274,6 +274,7 @@ class ModelService
     public function select(string $sql): array
     {
         $model = $this->model;
+
         // $res=$model->getConnection()->statement($sql);
         return $model->getConnection()->select($sql);
     }
