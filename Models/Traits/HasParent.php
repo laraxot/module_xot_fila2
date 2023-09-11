@@ -53,8 +53,6 @@ trait HasParent
      * {@inheritdoc}
      *
      * Use `children` key on `$attributes` to create child nodes.
-     *
-     * @param self $parent
      */
     public static function create(array $attributes = [], self $parent = null)
     {

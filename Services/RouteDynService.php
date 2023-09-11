@@ -51,6 +51,7 @@ class RouteDynService
             */
             return $prefix.'/{'.$param_name.'}';
         }
+
         // */
         /*
         $params_name=self::getParamsName($v,$namespace);
@@ -114,6 +115,7 @@ class RouteDynService
         $v['act'] = Str::camel($v['act']);
         $v['act'] = str_replace('{', '', $v['act']);
         $v['act'] = str_replace('}', '', $v['act']);
+
         // camel_case foo_bar  => fooBar
         // studly_case foo_bar => FooBar
         return Str::camel($v['act']);
@@ -127,6 +129,7 @@ class RouteDynService
         $param_name = 'id_'.$v['name'];
         $param_name = str_replace('{', '', $param_name);
         $param_name = str_replace('}', '', $param_name);
+
         // $param_name=null;
         return mb_strtolower($param_name);
     }
@@ -137,6 +140,7 @@ class RouteDynService
     public static function getParamsName(array $v, ?string $namespace): array|false|string
     {
         $param_name = self::getParamName($v, $namespace);
+
         /*
         Call to function is_array() with string will always evaluate to false.
         if (! \is_array($param_name)) {
