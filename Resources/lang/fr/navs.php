@@ -11,7 +11,7 @@ return [
         'dashboard' => 'Tableau de bord',
         'login' => 'Connexion',
         'macros' => 'Macros',
-        'register' => 'S\'enregistrer',
+        'register' => "S'enregistrer",
         'user' => [
             'account' => 'My Account',
             'administration' => 'Administration',

@@ -32,7 +32,7 @@ return [
     'exists' => 'La selezione per :attribute non è valida.',
     'file' => 'The :attribute must be a file.',
     'filled' => ':attribute è obbligatorio.',
-    'image' => ':attribute deve essere un\'immagine.',
+    'image' => ":attribute deve essere un'immagine.",
     'in' => 'La selezione per :attribute non è valida.',
     'in_array' => 'The :attribute field does not exist in :other.',
     'integer' => ':attribute deve essere un numero intero.',

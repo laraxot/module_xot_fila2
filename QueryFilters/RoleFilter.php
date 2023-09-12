@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Request;
 /**
  * Undocumented class.
  */
-class RoleFilter
+final class RoleFilter
 {
     /**
      * we need to use laravel convention so we need to create the
@@ -27,7 +27,7 @@ class RoleFilter
      *
      * @return mixed => you need to return your filtered data to next element
      */
-    public function handle(Request $request, \Closure $next): mixed
+    public function handle(Request $request, Closure $next): mixed
     {
         if (! request()->has('role')) {
             return $next($request);

@@ -16,7 +16,7 @@ use Modules\Xot\Http\Middleware\SetDefaultLocaleForUrlsMiddleware;
 
 // --- bases -----
 
-class RouteServiceProvider extends XotBaseRouteServiceProvider
+final class RouteServiceProvider extends XotBaseRouteServiceProvider
 {
     /**
      * The module namespace to assume when generating URLs to actions.
@@ -82,8 +82,10 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
             // throw new \Exception('[.__LINE__.]['.class_basename(__CLASS__).']');
             $langs = ['it' => 'it', 'en' => 'en'];
         }
+        
         $lang_pattern = collect(array_keys($langs))->implode('|');
         $lang_pattern = '/|'.$lang_pattern.'|/i';
+        
         $router->pattern('lang', $lang_pattern);
         // -------------------------------------------------------------
         // $models = TenantService::config('morph_map');
@@ -92,16 +94,12 @@ class RouteServiceProvider extends XotBaseRouteServiceProvider
             // throw new Exception('[' . print_r($models, true) . '][' . __LINE__ . '][' . class_basename(__CLASS__) . ']');
             $models = [];
         }
+        
         $models_collect = collect(array_keys($models));
-        $pattern = $models_collect->implode('|');
-        $pattern_plural = $models_collect->map(
-            function ($item) {
-                return Str::plural((string) $item);
-            }
+        $models_collect->implode('|');
+        $models_collect->map(
+            static fn($item) => Str::plural((string) $item)
         )->implode('|');
-
-        // $pattern = '/|'.$pattern.'|/i';
-        $container0_pattern = '/|'.$pattern.'|'.$pattern_plural.'|/i';
         /*--pattern vuoto
         dddx([
             'lang_pattern' => $lang_pattern,

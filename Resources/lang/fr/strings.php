@@ -34,8 +34,8 @@ return [
                 'offline' => 'Hors ligne',
             ],
             'you_have' => [
-                'messages' => '{0} Vous n\'avez pas de message|{1} Vous avez 1 message|[2,Inf] Vous avez :number messages',
-                'notifications' => '{0} Vous n\'avez pas de notification|{1} Vous avez 1 notification|[2,Inf] Vous avez :number notifications',
+                'messages' => "{0} Vous n'avez pas de message|{1} Vous avez 1 message|[2,Inf] Vous avez :number messages",
+                'notifications' => "{0} Vous n'avez pas de notification|{1} Vous avez 1 notification|[2,Inf] Vous avez :number notifications",
                 'tasks' => '{0} Vous n\'avez pas de tâche affectée|{1} Vous avez 1 tâche affectée|[2,Inf] Vous avez :number tâches affectées',
             ],
         ],
@@ -85,9 +85,9 @@ return [
                 'role_id' => 'L\'utilisateur doit disposer d\'un rôle identifié par son ID',
                 'role_name' => 'L\'utilisateur doit disposer d\'un rôle identifié par son nom',
             ],
-            'view_console_it_works' => 'Sur la console du navigateur, vous devriez voir  \'it works!\', ce qui est produit depuis le FrontendController@index',
+            'view_console_it_works' => "Sur la console du navigateur, vous devriez voir  'it works!', ce qui est produit depuis le FrontendController@index",
             'you_can_see_because' => 'Vous voyez ce message car vous disposez du rôle \':role\'!',
-            'you_can_see_because_permission' => 'Vous voyez ce message car vous disposez de la permission \':permission\'!',
+            'you_can_see_because_permission' => "Vous voyez ce message car vous disposez de la permission ':permission'!",
         ],
         'user' => [
             'profile_updated' => 'Profil modifié avec succès.',

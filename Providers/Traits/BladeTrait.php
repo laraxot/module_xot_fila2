@@ -15,7 +15,7 @@ trait BladeTrait
     {
         $this->app->afterResolving(
             'blade.compiler',
-            function (BladeCompiler $bladeCompiler): void {
+            static function (BladeCompiler $bladeCompiler) : void {
                 dddx(['bladeCompiler' => $bladeCompiler]);
             }
         );

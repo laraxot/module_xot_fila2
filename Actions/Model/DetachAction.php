@@ -4,29 +4,27 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model;
 
+use Session;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
-class DetachAction
+final class DetachAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, array $data, array $rules): Model
     {
-    }
-
-    public function execute(Model $row, array $data, array $rules): Model
-    {
-        if (! isset($row->pivot)) {
-            return $row;
+        if (property_exists($model, 'pivot') && $model->pivot !== null) {
+            return $model;
         }
-        $res = $row->pivot->delete();
+        
+        $res = $model->pivot->delete();
         if ($res) {
-            \Session::flash('status', 'scollegato');
+            Session::flash('status', 'scollegato');
         } else {
-            \Session::flash('status', 'NON scollegato');
+            Session::flash('status', 'NON scollegato');
         }
 
-        return $row;
+        return $model;
     }
 }

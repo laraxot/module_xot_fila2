@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Cache;
 // ---- services ---
@@ -19,7 +20,7 @@ use Illuminate\Translation\Translator as BaseTranslator;
 /**
  * Class TranslatorService.
  */
-class TranslatorService extends BaseTranslator
+final class TranslatorService extends BaseTranslator
 {
     public static function parse(array $params): array
     {
@@ -31,6 +32,7 @@ class TranslatorService extends BaseTranslator
 
             return [];
         }
+        
         $translator = app('translator');
         $tmp = $translator->parseKey($key);
         $namespace = $tmp[0];
@@ -40,10 +42,11 @@ class TranslatorService extends BaseTranslator
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
         $filename = $path.'/'.$lang.'/'.$group.'.php';
         $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
+        
         $lang_dir = \dirname($filename, 2);
 
         return [
-            'key' => str_replace(['[', ']'], ['.', ''], $key),
+            'key' => str_replace(['[', ']'], ['.', ''], (string) $key),
             'namespace' => $namespace,
             'group' => $group,
             'ns_group' => $namespace.'::'.$group,
@@ -58,18 +61,15 @@ class TranslatorService extends BaseTranslator
     public static function store(array $data): void
     {
         $data = collect($data)->map(
-            function ($v, $k) {
+            static function ($v, $k) {
                 $item = self::parse(['key' => $k]);
                 $item['value'] = $v;
-
                 return $item;
             }
         )
         // ->dd()
             ->filter(
-                function ($v, $k) {
-                    return $v['dir_exists'] && \strlen($v['lang_dir']) > 3;
-                }
+                static fn($v, $k): bool => $v['dir_exists'] && \strlen((string) $v['lang_dir']) > 3
             )
             ->groupBy(['ns_group'])  // risparmio salvataggi
             ->all();
@@ -82,7 +82,7 @@ class TranslatorService extends BaseTranslator
                 $rows = [];
             }
 
-            foreach ($data0 as $k => $v) {
+            foreach ($data0 as $v) {
                 $key = Str::after($v['key'], $ns_group.'.');
                 Arr::set($rows, $key, $v['value']);
             }
@@ -93,6 +93,7 @@ class TranslatorService extends BaseTranslator
 
                 return;
             }
+            
             $filename = $v['filename'];
             // echo '<h3>['.$filename.']</h3>';
             ArrayService::save(['filename' => $filename, 'data' => $data]);
@@ -117,14 +118,16 @@ class TranslatorService extends BaseTranslator
 
         $trad = $namespace.'::'.$group;
         $rows = trans($trad);
-        $item_keys = explode('.', $item);
+        $item_keys = explode('.', (string) $item);
         $item_keys = implode('"]["', $item_keys);
         $item_keys = '["'.$item_keys.'"]';
+        
         $str = '$rows'.$item_keys.'="'.$value.'";';
         try {
             eval($str); // fa schifo ma funziona
-        } catch (\Exception $e) {
+        } catch (Exception) {
         }
+        
         ArrayService::save(['data' => $rows, 'filename' => $filename]);
 
         Session::flash('status', 'Modifica Eseguita! ['.$filename.']');
@@ -176,8 +179,9 @@ class TranslatorService extends BaseTranslator
                     'data' => $data,
                 ]
             );
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+            throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
+        
         $merged = collect($original)
             ->merge($data)
             ->all();
@@ -195,10 +199,9 @@ class TranslatorService extends BaseTranslator
     {
         $missing = collect($data)
             ->filter(
-                function ($item) use ($key) {
+                static function (string $item) use ($key) : bool {
                     $k = $key.'.'.$item;
                     $v = trans($k);
-
                     return $k === $v;
                 }
             )->all();
@@ -210,15 +213,12 @@ class TranslatorService extends BaseTranslator
     {
         self::addMissing($key, $data);
 
-        $data = collect($data)->map(
-            function ($item) use ($key) {
+        return collect($data)->map(
+            static function (string $item) use ($key) {
                 $k = $key.'.'.$item;
-
                 return trans($k);
             }
         )->all();
-
-        return $data;
     }
 
     /**
@@ -240,6 +240,7 @@ class TranslatorService extends BaseTranslator
         if (null === $locale) {
             $locale = app()->getLocale();
         }
+        
         // */
         $translation = parent::get($key, $replace, $locale, $fallback);
         /*

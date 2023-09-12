@@ -8,15 +8,20 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Validation\ValidationException;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use Illuminate\Support\Collection;
 
 /**
  * Undocumented class.
  */
-class XLSService
+final class XLSService
 {
     private static ?self $instance = null;
-    protected Collection $data;
+    
+    private Collection $data;
 
     public function __construct()
     {
@@ -29,7 +34,7 @@ class XLSService
      */
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\XLSService) {
             self::$instance = new self();
         }
 
@@ -51,7 +56,7 @@ class XLSService
     {
         $numeric = $num % 26;
         $letter = chr(65 + $numeric);
-        $num2 = intval($num / 26);
+        $num2 = (int) ($num / 26);
         if ($num2 > 0) {
             return $this->getNameFromNumber($num2 - 1).$letter;
         }
@@ -71,6 +76,7 @@ class XLSService
                 if (UrlService::make()->checkValidUrl((string) $column)) {
                     $col_row[] = ['col' => $col_key, 'int_col' => $int_col_key, 'row' => $row_key, 'url' => $column];
                 }
+                
                 ++$int_col_key;
             }
         }
@@ -85,7 +91,7 @@ class XLSService
     {
         $file = request()->file('file');
         if (null === $file) {
-            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         return $this->fromRequestFile($file);
@@ -94,27 +100,28 @@ class XLSService
     /**
      * Undocumented function.
      *
-     * @param array<int,\Illuminate\Http\UploadedFile>|\Illuminate\Http\UploadedFile $file
+     * @param array<int, UploadedFile>|UploadedFile $file
      *
-     * @throws \Illuminate\Validation\ValidationException
+     * @throws ValidationException
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      */
-    public function fromRequestFile(array|\Illuminate\Http\UploadedFile $file): self
+    public function fromRequestFile(array|UploadedFile $file): self
     {
         if (! \is_object($file)) {
-            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         if (! method_exists($file, 'getRealPath')) {
-            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
-        $path = $file->getRealPath();
+        
+        $realPath = $file->getRealPath();
 
-        if (false === $path) {
-            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
+        if (false === $realPath) {
+            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
-        return $this->fromFilePath($path);
+        return $this->fromFilePath($realPath);
     }
 
     /**
@@ -130,10 +137,10 @@ class XLSService
          */
         // $reader = Excel::import($path);
 
-        $spreadsheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($path);
-        $sheet = $spreadsheet->getActiveSheet();
-        $row_limit = $sheet->getHighestDataRow();
-        $column_limit = $sheet->getHighestDataColumn();
+        $spreadsheet = IOFactory::load($path);
+        $worksheet = $spreadsheet->getActiveSheet();
+        $row_limit = $worksheet->getHighestDataRow();
+        $column_limit = $worksheet->getHighestDataColumn();
         $row_range = range(1, $row_limit);
         $column_range = range('A', $column_limit);
 
@@ -142,8 +149,9 @@ class XLSService
             $tmp = [];
             foreach ($column_range as $col) {
                 $cell = $col.$row;
-                $tmp[$col] = $sheet->getCell($cell)->getValue();
+                $tmp[$col] = $worksheet->getCell($cell)->getValue();
             }
+            
             $data->push(collect($tmp));
         }
 

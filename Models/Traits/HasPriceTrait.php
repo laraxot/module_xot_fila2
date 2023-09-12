@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models\Traits;
 
+use Cknow\Money\Money;
 // use Laravel\Scout\Searchable;
-
 // ----- models------
-
 // ---- services -----
 // use Modules\Cms\Services\PanelService;
-
 // ------ traits ---
-
 /**
  * Modules\Food\Models\Traits\HasPriceTrait.
  *
@@ -23,28 +20,24 @@ namespace Modules\Xot\Models\Traits;
  */
 trait HasPriceTrait
 {
-    public function getPriceCurrencyAttribute($value): \Cknow\Money\Money
+    public function getPriceCurrencyAttribute($value): Money
     {
         return @money($this->price, $this->currency);
     }
 
-    public function getPriceCompleteCurrencyAttribute($value): \Cknow\Money\Money
+    public function getPriceCompleteCurrencyAttribute($value): Money
     {
         return @money($this->price_complete, $this->currency);
     }
 
-    public function getSubtotalCurrencyAttribute($value): \Cknow\Money\Money
+    public function getSubtotalCurrencyAttribute($value): Money
     {
-        if ($this->qty > 0) {
-            $value = $this->qty * $this->price;
-        } else {
-            $value = $this->price;
-        }
+        $value = $this->qty > 0 ? $this->qty * $this->price : $this->price;
 
         return @money($value, $this->currency);
     }
 
-    public function getCurrency(float $number): \Cknow\Money\Money
+    public function getCurrency(float $number): Money
     {
         return @money($number, $this->currency);
     }

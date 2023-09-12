@@ -20,12 +20,11 @@ abstract class XotBaseRelationManager extends RelationManager
         Assert::notNull(static::$model);
         $modelNameSlug = Str::kebab(class_basename(static::$model));
         $res = $moduleNameLow.'::'.$modelNameSlug.'.'.$key;
-        $trans = __($res);
 
-        return $trans;
+        return __($res);
     }
 
-    public static function getPluralModelLabel(): string
+    protected static function getPluralModelLabel(): string
     {
         return static::trans('navigation.plural');
     }

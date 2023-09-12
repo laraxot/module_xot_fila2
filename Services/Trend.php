@@ -14,7 +14,7 @@ use Modules\Xot\Services\Trend\Adapters\MySqlAdapter;
 use Modules\Xot\Services\Trend\Adapters\PgsqlAdapter;
 use Modules\Xot\Services\Trend\Adapters\SqliteAdapter;
 
-class Trend
+final class Trend
 {
     public string $interval;
 
@@ -155,7 +155,7 @@ class Trend
 
         // Cannot access property $aggregate on mixed.
         $values = $values->map(
-            fn ($value) => TrendData::from(
+            fn ($value): TrendData => TrendData::from(
                 [
                     'date' => $value->{$this->dateAlias},
                     'aggregate' => $value->aggregate,
@@ -168,9 +168,9 @@ class Trend
         // Closure(Illuminate\Support\Carbon): Modules\Xot\Datas\TrendData given
         $placeholders = $this->getDatePeriod()
             ->map(
-                fn (Carbon $date) => TrendData::from(
+                fn (Carbon $carbon): TrendData => TrendData::from(
                     [
-                        'date' => $date->format($this->getCarbonDateFormat()),
+                        'date' => $carbon->format($this->getCarbonDateFormat()),
                         'aggregate' => 0,
                     ]
                 )
@@ -183,7 +183,7 @@ class Trend
             ->flatten();
     }
 
-    protected function getDatePeriod(): Collection
+    private function getDatePeriod(): Collection
     {
         /*
         160    Unable to resolve the template type TKey in call to function collect
@@ -197,24 +197,24 @@ class Trend
             CarbonPeriod::between(
                 $this->start,
                 $this->end,
-            )->interval("1 {$this->interval}")
+            )->interval('1 ' . $this->interval)
         );
     }
 
-    protected function getSqlDate(): string
+    private function getSqlDate(): string
     {
         // Call to an undefined method Illuminate\Database\ConnectionInterface::getDriverName(
         $adapter = match ($this->builder->getConnection()->getDriverName()) {
             'mysql' => new MySqlAdapter(),
             'sqlite' => new SqliteAdapter(),
             'pgsql' => new PgsqlAdapter(),
-            default => throw new \Error('Unsupported database driver.'),
+            default => throw new Error('Unsupported database driver.'),
         };
 
         return $adapter->format($this->dateColumn, $this->interval);
     }
 
-    protected function getCarbonDateFormat(): string
+    private function getCarbonDateFormat(): string
     {
         return match ($this->interval) {
             'minute' => 'Y-m-d H:i:00',
@@ -222,7 +222,7 @@ class Trend
             'day' => 'Y-m-d',
             'month' => 'Y-m',
             'year' => 'Y',
-            default => throw new \Error('Invalid interval.'),
+            default => throw new Error('Invalid interval.'),
         };
     }
 }

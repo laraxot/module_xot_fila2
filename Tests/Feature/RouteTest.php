@@ -8,19 +8,19 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-class RouteTest extends TestCase
+final class RouteTest extends TestCase
 {
     /**
      * A basic test example.
      *
-     * @return void
      *
-     * @test
      */
-    public function routes()
+    #[Test]
+    public function routes(): void
     {
         // dddx('/'.App::getlocale().'/home');
 
@@ -37,13 +37,14 @@ class RouteTest extends TestCase
 
         foreach ($urls as $url) {
             $response = $this->get($url);
-            if (200 !== (int) $response->status()) {
+            if (200 !== $response->status()) {
                 echo $appURL.$url.' (FAILED) did not return a 200.';
                 static::assertTrue(false);
             } else {
                 echo $appURL.$url.' (success ?)';
                 static::assertTrue(true);
             }
+            
             echo PHP_EOL;
         }
     }

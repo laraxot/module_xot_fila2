@@ -7,7 +7,7 @@ namespace Modules\Xot\Services;
 /**
  * Class ProfileTest.
  */
-class ProfileTest
+final class ProfileTest
 {
     public function hello(): void
     {

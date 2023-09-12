@@ -116,7 +116,7 @@ return [
                 ],
             ],
             'territories' => [
-                'canada' => 'Canada\'s provinser og territorier',
+                'canada' => "Canada's provinser og territorier",
             ],
             'timezone' => 'Tidszone',
         ],

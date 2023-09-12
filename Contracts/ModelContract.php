@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -12,8 +13,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int                             $id
  * @property int|null                        $user_id
  * @property string|null                     $post_type
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property string|null                     $created_by
  * @property string|null                     $updated_by
  * @property string|null                     $title

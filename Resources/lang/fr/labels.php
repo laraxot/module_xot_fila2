@@ -27,7 +27,7 @@ return [
                 'edit' => 'Editer un rôle',
                 'management' => 'Gestion des rôles',
                 'table' => [
-                    'number_of_users' => 'Nombre d\'utilisateurs',
+                    'number_of_users' => "Nombre d'utilisateurs",
                     'permissions' => 'Permissions',
                     'role' => 'Rôle',
                     'sort' => 'Ordre',
@@ -86,7 +86,7 @@ return [
             'login_box_title' => 'Connexion',
             'login_button' => 'Entrer',
             'login_with' => 'Se connecter avec :social_media',
-            'register_box_title' => 'S\'enregistrer',
+            'register_box_title' => "S'enregistrer",
             'register_button' => 'Créer le compte',
             'remember_me' => 'Se souvenir de moi',
         ],

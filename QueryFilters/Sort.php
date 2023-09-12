@@ -9,14 +9,15 @@ declare(strict_types=1);
 
 namespace Modules\Xot\QueryFilters;
 
+use Closure;
 use Illuminate\Support\Facades\Request;
 
-class Sort
+final class Sort
 {
     /**
      * Undocumented function.
      */
-    public function handle(Request $request, \Closure $next): \Closure
+    public function handle(Request $request, Closure $next): Closure
     {
         if (! request()->has('sort')) {
             return $next($request);

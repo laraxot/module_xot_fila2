@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Database\Factories;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Xot\Models\Feed;
 
-class FeedFactory extends Factory
+final class FeedFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<Model>
      */
     protected $model = Feed::class;
 

@@ -16,7 +16,7 @@ use function Safe\exec;
 
 use Webmozart\Assert\Assert;
 
-class DatabaseBackUpCommand extends Command
+final class DatabaseBackUpCommand extends Command
 {
     /**
      * The name and signature of the console command.
@@ -44,10 +44,8 @@ class DatabaseBackUpCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
         $filename = 'backup-'.Carbon::now()->format('Y-m-d').'.gz';
         $backup_path = storage_path('app/backup/'.$filename);

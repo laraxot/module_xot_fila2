@@ -11,7 +11,7 @@ namespace Modules\Xot\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Profile extends Facade
+final class Profile extends Facade
 {
     /**
      * Get the registered name of the component.

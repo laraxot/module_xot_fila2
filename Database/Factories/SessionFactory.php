@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Database\Factories;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\Xot\Models\Session;
 
-class SessionFactory extends Factory
+final class SessionFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
-     * @var class-string<\Illuminate\Database\Eloquent\Model>
+     * @var class-string<Model>
      */
     protected $model = Session::class;
 

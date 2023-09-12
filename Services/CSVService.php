@@ -14,10 +14,10 @@ use function Safe\file;
 /**
  * Class CSVService.
  */
-class CSVService
+final class CSVService
 {
     private static ?self $instance = null;
-    protected Collection $data;
+    
 
     public function __construct()
     {
@@ -30,7 +30,7 @@ class CSVService
      */
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\CSVService) {
             self::$instance = new self();
         }
 

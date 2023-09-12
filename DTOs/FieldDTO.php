@@ -9,13 +9,15 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-class FieldDTO extends Data
+final class FieldDTO extends Data
 {
     public string $param_name;
+    
     /**
      * Undocumented variable.
      */
     public string|array|null $rules = null;
+    
     /*
      * Undocumented function.
      */
