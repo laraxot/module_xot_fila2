@@ -7,15 +7,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Illuminate\Support\Collection;
-
 /**
  * Class ConfigService.
  */
 class ConfigService
 {
     private static ?self $instance = null;
-    
 
     public function __construct()
     {
@@ -28,7 +25,7 @@ class ConfigService
      */
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\ConfigService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\ConfigService) {
             self::$instance = new self();
         }
 

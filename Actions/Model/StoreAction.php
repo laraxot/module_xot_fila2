@@ -18,7 +18,7 @@ class StoreAction
         if (! isset($data['lang']) && \in_array('lang', $model->getFillable(), true)) {
             $data['lang'] = app()->getLocale();
         }
-        
+
         /*if (
             ! isset($data['user_id'])
             && \in_array('user_id', $row->getFillable(), true)

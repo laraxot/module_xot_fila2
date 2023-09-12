@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -43,7 +42,7 @@ class FactoryService
             return $factory_class::new();
         }
 
-        throw new Exception('Generating Factory ['.$factory_class.'] press [F5] to refresh page ['.__LINE__.']['.__FILE__.']');
+        throw new \Exception('Generating Factory ['.$factory_class.'] press [F5] to refresh page ['.__LINE__.']['.__FILE__.']');
         // per ora è lasciato come prima
     }
 }

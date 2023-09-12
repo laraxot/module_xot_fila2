@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Models\Traits;
 
 use Cknow\Money\Money;
+
 // use Laravel\Scout\Searchable;
 // ----- models------
 // ---- services -----

@@ -22,6 +22,6 @@ class GetModuleContexts
 
         return collect(Filament::getContexts())
             ->keys()
-            ->filter(static fn($item) => Str::of($item)->contains($prefix));
+            ->filter(static fn ($item) => Str::of($item)->contains($prefix));
     }
 }

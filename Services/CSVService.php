@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Illuminate\Support\Collection;
-
 use function Safe\file;
 
 /**
@@ -17,7 +15,6 @@ use function Safe\file;
 class CSVService
 {
     private static ?self $instance = null;
-    
 
     public function __construct()
     {
@@ -30,7 +27,7 @@ class CSVService
      */
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\CSVService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\CSVService) {
             self::$instance = new self();
         }
 

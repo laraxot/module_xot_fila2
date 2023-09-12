@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model;
 
-use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
@@ -23,7 +22,7 @@ class UpdateAction
 
         try {
             $model = tap($model)->update($data);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             if ('Node must exists.' === $exception->getMessage()) {
                 app($model::class)->fixTree();
                 $model = tap($model)->update($data);

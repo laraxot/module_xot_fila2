@@ -16,6 +16,7 @@ class Small implements FilterInterface
         // return $image->fit(120, 90);
         $width = 120;
         $height = 120;
+
         return $image->fit($width, $height);
 
         /*

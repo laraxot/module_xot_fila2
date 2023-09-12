@@ -12,6 +12,6 @@ use Spatie\LaravelData\Data;
 class TrendData extends Data
 {
     public string $date;
-    
+
     public mixed $aggregate;
 }

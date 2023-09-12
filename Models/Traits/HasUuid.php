@@ -35,7 +35,7 @@ trait HasUuid
     {
         // parent::boot();
         static::creating(
-            static function ($model) : void {
+            static function ($model): void {
                 if (empty($model->{$model->getKeyName()})) {
                     $model->{$model->getKeyName()} = Str::uuid()->toString();
                 }

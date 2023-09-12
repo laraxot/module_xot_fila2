@@ -16,22 +16,23 @@ class FilterRelationsAction
     use QueueableAction;
 
     /**
-     * @return DataCollection<(int | string), RelationDTO>
+     * @return DataCollection<(int|string), ReRelationDTO
      */
     public function execute(Model $model, array $data): DataCollection
     {
         $methods = get_class_methods($model);
         $res = collect($data)
             ->filter(
-                static fn($value, $item): bool => \in_array($item, $methods, true)
+                static fn ($value, $item): bool => \in_array($item, $methods, true)
             )
             ->filter(
-                static function ($value, $item) use ($model) : bool {
+                static function ($value, $item) use ($model): bool {
                     $rows = $model->$item();
+
                     return $rows instanceof Relation;
                 }
             )->map(
-                static function ($value, $item) use ($model) : array {
+                static function ($value, $item) use ($model): array {
                     $rows = $model->$item();
                     // $related = null;
                     // if (method_exists($rows, 'getRelated')) {

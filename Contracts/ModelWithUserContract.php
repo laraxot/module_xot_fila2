@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Carbon;
 use Modules\User\Models\User;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * Modules\Xot\Contracts\ModelContract.
  *
- * @property int                             $id
- * @property int|null                        $user_id
- * @property string|null                     $post_type
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property string|null                     $created_by
- * @property string|null                     $updated_by
- * @property string|null                     $title
- * @property PivotContract|null              $pivot
- * @property string                          $tennant_name
- * @property User|null $user
+ * @property int                $id
+ * @property int|null           $user_id
+ * @property string|null        $post_type
+ * @property Carbon|null        $created_at
+ * @property Carbon|null        $updated_at
+ * @property string|null        $created_by
+ * @property string|null        $updated_by
+ * @property string|null        $title
+ * @property PivotContract|null $pivot
+ * @property string             $tennant_name
+ * @property User|null          $user
  *
  * @method mixed     getKey()
  * @method string    getRouteKey()

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Store;
 
-use Modules\Xot\DTOs\RelationDTO;
-use Session;
 use Illuminate\Database\Eloquent\Model;
+use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
 class BelongsToManyAction
@@ -25,11 +24,11 @@ class BelongsToManyAction
             $to = $relationDTO->data['to'] ?? [];
             $model->{$relationDTO->name}()->sync($to);
             $status = 'collegati ['.implode(', ', $to).'] ';
-            Session::flash('status', $status);
+            \Session::flash('status', $status);
 
             return;
         }
-        
+
         $model->{$relationDTO->name}()->sync($relationDTO->data);
     }
 }

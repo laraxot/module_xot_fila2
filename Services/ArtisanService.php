@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use Request;
-use DB;
 use Exception;
+use Illuminate\Contracts\Filesystem\FileNotFoundException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
@@ -37,11 +35,11 @@ class ArtisanService
         // echo '<h3>['.TenantService::getName().']</h3>';
         // echo '<pre>'.print_r(TenantService::config('database'), true).'</pre>';
         // da fare anche in noconsole, e magari mettere un policy
-        $module_name = Request::input('module', '');
+        $module_name = \Request::input('module', '');
         switch ($act) {
             case 'migrate':
-                DB::purge('mysql');
-                DB::reconnect('mysql');
+                \DB::purge('mysql');
+                \DB::reconnect('mysql');
                 if ('' !== $module_name) {
                     echo '<h3>Module '.$module_name.'</h3>';
 
@@ -135,7 +133,7 @@ class ArtisanService
         if ('' !== $log && File::exists(storage_path('logs/'.$log))) {
             $content = File::get(storage_path('logs/'.$log));
         }
-        
+
         $pattern = '/url":"([^"]*)"/';
         preg_match_all($pattern, $content, $matches);
 
@@ -249,7 +247,7 @@ class ArtisanService
             Artisan::call($command, $arguments);
 
             return $output.'[<pre>'.Artisan::output().'</pre>]';  // dato che mi carico solo le route minime menufull.delete non esiste.. impostare delle route comuni.
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             // throw new Exception('['.__LINE__.']['.class_basename(__CLASS__).']');
             return '[<pre>'.$exception->getMessage().'</pre>]';
             // dddx(get_class_methods($e));

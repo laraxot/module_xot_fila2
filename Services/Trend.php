@@ -197,7 +197,7 @@ class Trend
             CarbonPeriod::between(
                 $this->start,
                 $this->end,
-            )->interval('1 ' . $this->interval)
+            )->interval('1 '.$this->interval)
         );
     }
 
@@ -208,7 +208,7 @@ class Trend
             'mysql' => new MySqlAdapter(),
             'sqlite' => new SqliteAdapter(),
             'pgsql' => new PgsqlAdapter(),
-            default => throw new Error('Unsupported database driver.'),
+            default => throw new \Error('Unsupported database driver.'),
         };
 
         return $adapter->format($this->dateColumn, $this->interval);
@@ -222,7 +222,7 @@ class Trend
             'day' => 'Y-m-d',
             'month' => 'Y-m',
             'year' => 'Y',
-            default => throw new Error('Invalid interval.'),
+            default => throw new \Error('Invalid interval.'),
         };
     }
 }

@@ -7,8 +7,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models\Traits;
 
-use Exception;
-use LogicException;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +27,7 @@ trait HasParent
      * Keep track of the number of performed operations.
      */
     public static int $actionsPerformed = 0;
-    
+
     /**
      * Pending operation.
      */
@@ -409,7 +407,7 @@ trait HasParent
         return $query;
     }
 
-    public function newCollection(array $models = []): \Kalnoy\Nestedset\Collection
+    public function newCollection(array $models = []): Collection
     {
         return new Collection($models);
     }
@@ -439,7 +437,7 @@ trait HasParent
      *
      * Behind the scenes node is appended to found parent node.
      *
-     * @throws Exception If parent node doesn't exists
+     * @throws \Exception If parent node doesn't exists
      */
     public function setParentIdAttribute(int $value): void
     {
@@ -447,7 +445,7 @@ trait HasParent
             return;
         }
 
-        if ($value !== 0) {
+        if (0 !== $value) {
             $this->appendToNode($this->newScopedQuery()->findOrFail($value));
         } else {
             $this->makeRoot();
@@ -898,6 +896,7 @@ trait HasParent
         if (! $this->usesSoftDelete()) {
             return true;
         }
+
         return (bool) $this->forceDeleting;
     }
 
@@ -1143,6 +1142,7 @@ trait HasParent
         if (! $this->usesSoftDelete()) {
             return true;
         }
+
         return (bool) $this->forceDeleting;
     }
 
@@ -1163,7 +1163,7 @@ trait HasParent
     protected function assertNotDescendant(self $node)
     {
         if ($node === $this || $node->isDescendantOf($this)) {
-            throw new LogicException('Node must not be a descendant.');
+            throw new \LogicException('Node must not be a descendant.');
         }
 
         return $this;
@@ -1175,7 +1175,7 @@ trait HasParent
     protected function assertNodeExists(self $node)
     {
         if (! $node->getLft() || ! $node->getRgt()) {
-            throw new LogicException('Node must exists.');
+            throw new \LogicException('Node must exists.');
         }
 
         return $this;
@@ -1184,7 +1184,7 @@ trait HasParent
     /**
      * Summary of assertSameScope.
      *
-     * @throws LogicException
+     * @throws \LogicException
      */
     protected function assertSameScope(self $node): void
     {
@@ -1194,7 +1194,7 @@ trait HasParent
 
         foreach ($scoped as $attr) {
             if ($this->getAttribute($attr) !== $node->getAttribute($attr)) {
-                throw new LogicException('Nodes must be in the same scope');
+                throw new \LogicException('Nodes must be in the same scope');
             }
         }
     }

@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Models;
 
-use Modules\Xot\Database\Factories\FeedFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
+use Modules\Xot\Database\Factories\FeedFactory;
+
 // --- services
 // --- TRAITS ---
 /**
  * Modules\Xot\Models\Feed.
  *
- * @method static FeedFactory factory($count = null, $state = [])
+ * @method static FeedFactory  factory($count = null, $state = [])
  * @method static Builder|Feed newModelQuery()
  * @method static Builder|Feed newQuery()
  * @method static Builder|Feed query()
  *
  * @mixin IdeHelperFeed
  *
- * @property int                             $id
- * @property string|null                     $created_by
- * @property string|null                     $updated_by
+ * @property int         $id
+ * @property string|null $created_by
+ * @property string|null $updated_by
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *

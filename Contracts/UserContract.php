@@ -6,24 +6,24 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 /**
  * Modules\User\Contracts\UserContract.
  *
- * @property ModelProfileContract|null                                            $profile
- * @property int                                                                  $id
- * @property string                                                               $handle
- * @property string|null                                                          $first_name
- * @property string|null                                                          $last_name
- * @property string|null                                                          $full_name
- * @property string|null                                                          $phone
- * @property string|null                                                          $email
+ * @property ModelProfileContract|null              $profile
+ * @property int                                    $id
+ * @property string                                 $handle
+ * @property string|null                            $first_name
+ * @property string|null                            $last_name
+ * @property string|null                            $full_name
+ * @property string|null                            $phone
+ * @property string|null                            $email
  * @property Collection|\Modules\User\Models\Area[] $areas
- * @property \Modules\User\Models\PermUser|null                                   $perm
+ * @property \Modules\User\Models\PermUser|null     $perm
  *
  * @mixin    \Eloquent
  */

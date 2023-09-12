@@ -5,44 +5,42 @@ declare(strict_types=1);
 namespace Modules\Xot\Models;
 
 // ------ ext models---
-use Illuminate\Support\Carbon;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-use Modules\Xot\Database\Factories\WidgetFactory;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
-use App;
-use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
+use Modules\Xot\Database\Factories\WidgetFactory;
 use Modules\Xot\Models\Traits\WidgetTrait;
 
 /**
  * Modules\Xot\Models\Widget.
  *
- * @property int                                                   $id
- * @property string|null                                           $post_type
- * @property string|null                                           $layout_position
- * @property string|null                                           $title
- * @property int|null                                              $post_id
- * @property string|null                                           $blade
- * @property string|null                                           $image_src
- * @property int|mixed                                             $pos
- * @property string|null                                           $model
- * @property int|null                                              $limit
- * @property string|null                                           $order_by
- * @property Carbon|null $created_at
- * @property string|null                                           $created_by
- * @property Carbon|null $updated_at
- * @property string|null                                           $updated_by
+ * @property int                     $id
+ * @property string|null             $post_type
+ * @property string|null             $layout_position
+ * @property string|null             $title
+ * @property int|null                $post_id
+ * @property string|null             $blade
+ * @property string|null             $image_src
+ * @property int|mixed               $pos
+ * @property string|null             $model
+ * @property int|null                $limit
+ * @property string|null             $order_by
+ * @property Carbon|null             $created_at
+ * @property string|null             $created_by
+ * @property Carbon|null             $updated_at
+ * @property string|null             $updated_by
  * @property Collection<int, Widget> $containerWidgets
- * @property int|null                                              $container_widgets_count
- * @property Model|\Eloquent $linked
+ * @property int|null                $container_widgets_count
+ * @property Model|\Eloquent         $linked
  * @property Collection<int, Widget> $widgets
- * @property int|null                                              $widgets_count
+ * @property int|null                $widgets_count
  *
- * @method static WidgetFactory factory($count = null, $state = [])
+ * @method static WidgetFactory  factory($count = null, $state = [])
  * @method static Builder|Widget newModelQuery()
  * @method static Builder|Widget newQuery()
  * @method static Builder|Widget ofLayoutPosition($layout_position)
@@ -107,10 +105,10 @@ class Widget extends BaseModel
         if (null !== $this->layout_position) {
             $view .= '.'.$this->layout_position;
         }
-        
+
         $view .= '.'.$this->blade;
         $view_params = [
-            'lang' => App::getLocale(),
+            'lang' => \App::getLocale(),
             'view' => $view,
             'row' => $this->linked,
             'widget' => $this,
@@ -118,14 +116,14 @@ class Widget extends BaseModel
         if (null !== $params) {
             $view_params['params'] = $params;
         }
-        
+
         if (! view()->exists($view)) {
             dddx(['View ['.$view.'] Not Exists !']);
         }
-        
+
         try {
             return view($view, $view_params);
-        } catch (Exception $exception) {
+        } catch (\Exception $exception) {
             dddx([$exception]);
         }
 
