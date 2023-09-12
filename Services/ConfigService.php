@@ -12,10 +12,10 @@ use Illuminate\Support\Collection;
 /**
  * Class ConfigService.
  */
-class ConfigService
+final class ConfigService
 {
     private static ?self $instance = null;
-    protected Collection $data;
+    
 
     public function __construct()
     {
@@ -28,7 +28,7 @@ class ConfigService
      */
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\ConfigService) {
             self::$instance = new self();
         }
 

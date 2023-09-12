@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
+use Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -18,13 +21,15 @@ use function Safe\fputcsv;
 /**
  * Class ArrayService.
  */
-class ArrayService
+final class ArrayService
 {
     private static ?self $instance = null;
 
     public array $array;
+    
     public ?string $filename = null;
-    protected int $export_processor = 1;
+    
+    private int $export_processor = 1;
 
     public function __construct()
     {
@@ -34,7 +39,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (null === self::$instance) {
+        if (!self::$instance instanceof \Modules\Xot\Services\ArrayService) {
             self::$instance = new self();
         }
 
@@ -54,11 +59,13 @@ class ArrayService
 
             return;
         }
+        
         if (! isset($filename)) {
             dddx(['filename' => 'filename is missing']);
 
             return;
         }
+        
         $content = var_export($data, true);
 
         // HHVM fails at __set_state, so just use object cast for now
@@ -66,7 +73,7 @@ class ArrayService
 
         $content = '<?php '.\chr(13).'return '.$content.';'.\chr(13);
         // $content = str_replace('stdClass::__set_state', '(object)', $content);
-        File::makeDirectory(\dirname($filename), 0775, true, true);
+        File::makeDirectory(\dirname((string) $filename), 0775, true, true);
         File::put($filename, $content);
     }
 
@@ -75,10 +82,8 @@ class ArrayService
      *
      * @param array|object $arrObjData
      * @param array        $arrSkipIndices
-     *
-     * @return array
      */
-    public static function fromObjects($arrObjData, $arrSkipIndices = [])
+    public static function fromObjects($arrObjData, $arrSkipIndices = []): array
     {
         $arrData = [];
 
@@ -92,9 +97,11 @@ class ArrayService
                 if (\is_object($value) || \is_array($value)) {
                     $value = self::fromObjects($value, $arrSkipIndices); // recursive call
                 }
+                
                 if (\in_array($index, $arrSkipIndices, true)) {
                     continue;
                 }
+                
                 $arrData[$index] = $value;
             }
         }
@@ -109,25 +116,31 @@ class ArrayService
      * @param int $b0
      * @param int $a1
      * @param int $b1
-     *
-     * @return array|bool
      */
-    public static function rangeIntersect($a0, $b0, $a1, $b1)
+    public static function rangeIntersect($a0, $b0, $a1, $b1): array|bool
     {
         if ($a1 >= $a0 && $a1 <= $b0 && $b0 <= $b1) {
             return [$a1, $b0];
         }
+        
         if ($a0 >= $a1 && $a0 <= $b0 && $b0 <= $b1) {
             return [$a0, $b0];
         }
+        
         if ($a1 >= $a0 && $a1 <= $b1 && $b1 <= $b0) {
             return [$a1, $b1];
         }
-        if ($a0 >= $a1 && $a0 <= $b1 && $b1 <= $b0) {
-            return [$a0, $b1];
-        }
 
-        return false;
+        if ($a0 < $a1) {
+            return false;
+        }
+        if ($a0 > $b1) {
+            return false;
+        }
+        if ($b1 > $b0) {
+            return false;
+        }
+        return [$a0, $b1];
     }
 
     /**
@@ -137,22 +150,19 @@ class ArrayService
     {
         $res = collect($data)
             ->map(
-                function ($item) {
+                static function ($item) {
                     if (! is_array($item)) {
-                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new Exception('['.__LINE__.']['.__FILE__.']');
                     }
-                    $item = collect($item)
+                    return collect($item)
                         ->map(
-                            function ($item0) {
+                            static function ($item0) {
                                 if (is_numeric($item0)) {
-                                    $item0 = $item0 * 1;
+                                    return $item0 * 1;
                                 }
-
                                 return $item0;
                             }
                         )->all();
-
-                    return $item;
                 }
             );
 
@@ -168,11 +178,11 @@ class ArrayService
         $arr_2 = self::fixType($arr_2);
 
         $ris = $coll_1->filter(
-            function ($value, $key) use ($arr_2) {
+            static function ($value, $key) use ($arr_2) {
                 try {
                     return ! \in_array($value, $arr_2, true);
-                } catch (\Exception $e) {
-                    dddx(['err' => $e->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
+                } catch (Exception $exception) {
+                    dddx(['err' => $exception->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
                 }
             }
         );
@@ -205,6 +215,7 @@ class ArrayService
         if (null !== $filename) {
             return $filename;
         }
+        
         // dddx(debug_backtrace());
         return 'test';
     }
@@ -216,11 +227,12 @@ class ArrayService
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function toXLS(): \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
+    public function toXLS(): BinaryFileResponse|Renderable
     {
         if (1 === request('debug', 0) * 1) {
             return self::toHtml();
         }
+        
         // include_once __DIR__.'/vendor/autoload.php';
         $data = $this->array;
         $res = [];
@@ -231,17 +243,15 @@ class ArrayService
                 }
             }
         }
+        
         $this->array = $res;
-
-        switch ($this->export_processor) {
-            case 1:
-                return self::toXLS_phpoffice(); // break;
-                // case 2:return self::toXLS_Maatwebsite($params); //break;
-                // case 3:return self::toXLS_phpexcel($params); //break;
-            default:
-                $msg = 'unknown export_processor ['.$this->export_processor.']';
-                throw new \Exception($msg.'['.__LINE__.']['.__FILE__.']');
+        if ($this->export_processor == 1) {
+            return self::toXLS_phpoffice();
         }
+        $msg = 'unknown export_processor ['.$this->export_processor.']';
+        throw new Exception($msg.'['.__LINE__.']['.__FILE__.']');
+        $msg = 'unknown export_processor ['.$this->export_processor.']';
+        throw new Exception($msg.'['.__LINE__.']['.__FILE__.']');
     }
 
     public function toHtml(): Renderable
@@ -285,7 +295,7 @@ class ArrayService
         $view = 'xot::services.table';
         $view_params = [
             // 'header'=>$this->getHeader(),
-            'rows' => $this->getArray(),
+            'rows' => $this->array,
         ];
 
         return view($view, $view_params);
@@ -298,6 +308,7 @@ class ArrayService
         if (! \is_array($firstrow)) {
             $firstrow = [];
         }
+        
         $header = array_keys($firstrow);
 
         $debug = debug_backtrace();
@@ -312,9 +323,9 @@ class ArrayService
 
     // ret array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
 
-    public function fixCellsType(Worksheet &$sheet): void
+    public function fixCellsType(Worksheet &$worksheet): void
     {
-        foreach ($sheet->getRowIterator() as $row) {
+        foreach ($worksheet->getRowIterator() as $row) {
             $cellIterator = $row->getCellIterator();
             $cellIterator->setIterateOnlyExistingCells(false);
 
@@ -322,32 +333,28 @@ class ArrayService
                 if (filter_var($cell->getValue(), FILTER_VALIDATE_URL)) {
                     $cell_value = $cell->getValue();
                     if (! is_string($cell_value)) {
-                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new Exception('['.__LINE__.']['.__FILE__.']');
                     }
-                    $sheet->getCell($cell->getCoordinate())->getHyperlink()->setUrl($cell_value);
+                    
+                    $worksheet->getCell($cell->getCoordinate())->getHyperlink()->setUrl($cell_value);
                 }
             }
         }
     }
 
-    public function toCsv(): \Symfony\Component\HttpFoundation\StreamedResponse
+    public function toCsv(): StreamedResponse
     {
         $filename = $this->getFilename();
 
         $headers = [
             'Content-type' => 'text/csv',
-            'Content-Disposition' => "attachment; filename={$filename}",
+            'Content-Disposition' => 'attachment; filename=' . $filename,
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
         ];
 
-        $columns = ['Title', 'Assign', 'Description', 'Start Date', 'Due Date'];
-
         $callback = function (): void {
-            /**
-             * @var resource
-             */
             $file = fopen('php://output', 'w');
 
             fputcsv($file, $this->array);
@@ -363,7 +370,7 @@ class ArrayService
      *
      * return array|\Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|Illuminate\Contracts\View\View|string|\Symfony\Component\HttpFoundation\BinaryFileResponse
      */
-    public function toXLS_phpoffice(?string $out = 'download'): \Symfony\Component\HttpFoundation\BinaryFileResponse|Renderable
+    public function toXLS_phpoffice(?string $out = 'download'): BinaryFileResponse|Renderable
     {
         $spreadsheet = new Spreadsheet();
         // ----
@@ -391,10 +398,10 @@ class ArrayService
         $this->fixCellsType($sheet);
 
         // $sheet->setCellValue('A1', 'Hello World !');
-        $writer = new Xlsx($spreadsheet);
+        $xlsx = new Xlsx($spreadsheet);
 
         $pathToFile = Storage::disk('local')->path($filename.'.xlsx');
-        $writer->save($pathToFile); // $writer->save('php://output'); // per out diretto ?
+        $xlsx->save($pathToFile); // $writer->save('php://output'); // per out diretto ?
 
         $view_params = [
             'file' => $pathToFile,
@@ -402,32 +409,11 @@ class ArrayService
             'text' => '.',
             // 'text'=>$text,
         ];
-
-        // if (! isset($out)) {
-        //    $out = 'download';
-        // }
-        // return response()->download($pathToFile);
-        // $out='link';
-        // exit(response()->download($pathToFile));
-        // }
-        // Variable $text in isset() is never defined
-        // if (! isset($text)) {
-        //    $text = 'text';
-        // }
-
-        switch ($out) {
-            case 'link':
-                return view()->make('ui::download_icon', $view_params);
-            case 'download':
-                return response()->download($pathToFile);
-                // case 'file':
-                //    return $pathToFile;
-            case 'link_file':
-                return view()->make('ui::download_icon', $view_params);
-
-                // return [$link, $pathToFile];
-        }
-        // 231    Unreachable statement - code above always terminates.
-        throw new \Exception('['.__LINE__.']['.__FILE__.']');
+        return match ($out) {
+            'link' => view()->make('ui::download_icon', $view_params),
+            'download' => response()->download($pathToFile),
+            'link_file' => view()->make('ui::download_icon', $view_params),
+            default => throw new Exception('['.__LINE__.']['.__FILE__.']'),
+        };
     }
 }

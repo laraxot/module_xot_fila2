@@ -9,8 +9,9 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-class TrendData extends Data
+final class TrendData extends Data
 {
     public string $date;
+    
     public mixed $aggregate;
 }

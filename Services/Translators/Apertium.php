@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services\Translators;
 
-class Apertium extends BaseTranslator
+final class Apertium extends BaseTranslator
 {
 }

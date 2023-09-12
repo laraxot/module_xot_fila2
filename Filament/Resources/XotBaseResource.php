@@ -16,6 +16,7 @@ abstract class XotBaseResource extends Resource
     use ContextualResource;
 
     protected static ?string $model = null;
+    
     // protected static ?string $navigationIcon = 'heroicon-o-bell';
     // protected static ?string $navigationLabel = 'Custom Navigation Label';
     // protected static ?string $activeNavigationIcon = 'heroicon-s-document-text';
@@ -25,9 +26,7 @@ abstract class XotBaseResource extends Resource
 
     public static function getModuleNameFromFile():string {
         
-        $moduleName=Str::between(static::$resourceFile, 'Modules/', '/Filament');
-
-        return $moduleName;
+        return Str::between(static::$resourceFile, 'Modules/', '/Filament');
     }
 
     public static function trans(string $key): string
@@ -36,9 +35,8 @@ abstract class XotBaseResource extends Resource
         Assert::notNull(static::$model);
         $modelNameSlug = Str::kebab(class_basename(static::$model));
         $res = $moduleNameLow.'::'.$modelNameSlug.'.'.$key;
-        $trans = __($res);
 
-        return $trans;
+        return __($res);
     }
 
     public static function getModel(): string
@@ -47,7 +45,7 @@ abstract class XotBaseResource extends Resource
         //    return static::$model;
         // }
         //$moduleName = static::getModuleName()->toString();
-        $moduleName = static::getModuleNameFromFile();
+        $moduleNameFromFile = static::getModuleNameFromFile();
         /*
 if (! in_array($moduleName, ['User'])) {
     
@@ -61,8 +59,8 @@ if (! in_array($moduleName, ['User'])) {
     ]);
 }
 */
-        $modelName = Str::before(class_basename(get_called_class()), 'Resource');
-        $res = 'Modules\\'.$moduleName.'\Models\\'.$modelName;
+        $modelName = Str::before(class_basename(static::class), 'Resource');
+        $res = 'Modules\\'.$moduleNameFromFile.'\Models\\'.$modelName;
         static::$model = $res;
 
         return $res;
@@ -73,13 +71,13 @@ if (! in_array($moduleName, ['User'])) {
         return static::trans('navigation.plural');
     }
 
-    public static function getNavigationLabel(): string
+    protected static function getNavigationLabel(): string
     {
         return static::trans('navigation.name');
         // return static::trans('navigation.plural');
     }
 
-    public static function getNavigationGroup(): string
+    protected static function getNavigationGroup(): string
     {
         return static::trans('navigation.group.name');
     }

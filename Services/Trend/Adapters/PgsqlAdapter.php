@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services\Trend\Adapters;
 
-class PgsqlAdapter extends AbstractAdapter
+use Error;
+final class PgsqlAdapter extends AbstractAdapter
 {
     public function format(string $column, string $interval): string
     {
@@ -14,9 +15,9 @@ class PgsqlAdapter extends AbstractAdapter
             'day' => 'YYYY-MM-DD',
             'month' => 'YYYY-MM',
             'year' => 'YYYY',
-            default => throw new \Error('Invalid interval.'),
+            default => throw new Error('Invalid interval.'),
         };
 
-        return "to_char({$column}, '{$format}')";
+        return sprintf('to_char(%s, \'%s\')', $column, $format);
     }
 }

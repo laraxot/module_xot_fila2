@@ -15,11 +15,10 @@ trait TranslatorTrait
         // Override the JSON Translator
         $this->app->extend(
             'translator',
-            function (Translator $translator) {
-                $trans = new TranslatorService($translator->getLoader(), $translator->getLocale());
-                $trans->setFallback($translator->getFallback());
-
-                return $trans;
+            static function (Translator $translator) : TranslatorService {
+                $translatorService = new TranslatorService($translator->getLoader(), $translator->getLocale());
+                $translatorService->setFallback($translator->getFallback());
+                return $translatorService;
             }
         );
     }

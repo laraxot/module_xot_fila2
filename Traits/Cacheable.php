@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Traits;
 
+use Closure;
 use Carbon\Carbon;
 use Illuminate\Cache\CacheManager;
 use Illuminate\Database\Eloquent\Model;
@@ -31,9 +32,9 @@ trait Cacheable
     /**
      * Set cache manager.
      */
-    public static function setCacheInstance(CacheManager $cache): void
+    public static function setCacheInstance(CacheManager $cacheManager): void
     {
-        self::$cache = $cache;
+        self::$cache = $cacheManager;
     }
 
     /**
@@ -41,7 +42,7 @@ trait Cacheable
      */
     public static function getCacheInstance(): CacheManager
     {
-        if (null === self::$cache) {
+        if (!self::$cache instanceof CacheManager) {
             self::$cache = app('cache');
         }
 
@@ -63,9 +64,9 @@ trait Cacheable
     public function getCacheKey(string $method, $args, string $tag): string
     {
         // Sort through arguments
-        foreach ($args as &$a) {
-            if ($a instanceof Model) {
-                $a = $a::class.'|'.$a->getKey();
+        foreach ($args as &$arg) {
+            if ($arg instanceof Model) {
+                $arg = $arg::class.'|'.$arg->getKey();
             }
         }
 
@@ -84,7 +85,7 @@ trait Cacheable
     /**
      * Get an item from the cache, or store the default value.
      */
-    public function cacheCallback(string $method, array $args, \Closure $callback, mixed $time = null)
+    public function cacheCallback(string $method, array $args, Closure $callback, mixed $time = null)
     {
         // Cache disabled, just execute query & return result
         if (true === $this->skippedCache()) {
@@ -128,6 +129,6 @@ trait Cacheable
                 : $this->cacheMinutes;
         }
 
-        return $time ? $time : $this->cacheMinutes;
+        return $time ?: $this->cacheMinutes;
     }
 }

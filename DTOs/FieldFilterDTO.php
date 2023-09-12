@@ -9,7 +9,7 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-class FieldFilterDTO extends Data
+final class FieldFilterDTO extends Data
 {
     public function __construct(
         public string $param_name,

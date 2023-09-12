@@ -17,7 +17,9 @@ use Modules\Xot\Services\LivewireService;
 abstract class XotBaseThemeServiceProvider
 {
     public string $dir = '';
+    
     public string $name = '';
+    
     public string $ns = '';
 
     public function bootCallback(): void
@@ -40,44 +42,32 @@ abstract class XotBaseThemeServiceProvider
     {
         Blade::directive(
             'md',
-            function ($expression) {
-                return '<'."?php echo md_to_html({$expression}); ?".'>';
-            }
+            static fn($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
         );
 
         Blade::directive(
             'formGroup',
-            function ($expression) {
-                return '<div class="form-group<'."?php echo \$errors->has({$expression}) ? ' has-error' : '' ?".'>">';
-            }
+            static fn($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
         );
 
         Blade::directive(
             'endFormGroup',
-            function ($expression) {
-                return '</div>';
-            }
+            static fn($expression): string => '</div>'
         );
 
         Blade::directive(
             'title',
-            function ($expression) {
-                return '<'."?php \$title = {$expression} ?".'>';
-            }
+            static fn($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'shareImage',
-            function ($expression) {
-                return '<'."?php \$shareImage = {$expression} ?".'>';
-            }
+            static fn($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'canonical',
-            function ($expression) {
-                return '<'."?php \$canonical = {$expression} ?".'>';
-            }
+            static fn($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
         );
     }
 

@@ -8,17 +8,19 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
+use Exception;
+use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-class RouteDomTest extends TestCase
+final class RouteDomTest extends TestCase
 {
     /**
      * A basic test example.
-     *
-     * @test
      */
+    #[Test]
     public function routes(): void
     {
         $urls = [
@@ -37,7 +39,6 @@ class RouteDomTest extends TestCase
         if ($depth > 4) {
             return;
         }
-        $i = 0;
 
         foreach ($urls as $url) {
             /*
@@ -45,21 +46,24 @@ class RouteDomTest extends TestCase
                 return;
             }
             */
-            $url = str_replace('index.php', '', $url);
+            $url = str_replace('index.php', '', (string) $url);
             if (null === $url) {
-                throw new \Exception('url is null');
+                throw new Exception('url is null');
             }
+            
             if (! \is_string($url)) {
-                throw new \Exception('url is not a string');
+                throw new Exception('url is not a string');
             }
+            
             $response = $this->get($url);
             $html = $response->getContent();
             if (false === $html) {
-                throw new \Exception('cannot get content');
+                throw new Exception('cannot get content');
             }
+            
             // dd(get_class_methods($response));
             // dd($response->streamedContent());The response is not a streamed response
-            $status = (int) $response->status();
+            $status = $response->status();
             if (! \in_array($status, [200, 302], true)) {
                 echo $base_url.$url.' (FAILED) did not return a 200 or 302 ['.$response->status().'].'.\chr(13);
                 // dd($base_url.$url);
@@ -68,21 +72,18 @@ class RouteDomTest extends TestCase
                 echo $base_url.$url.' (success ?)'.\chr(13);
                 static::assertTrue(true);
             }
+            
             echo PHP_EOL;
 
             $dom = $this->dom($html);
             // $links = $dom->filter('a')->links();
             $links = $dom->filter('a')->each(
-                function ($node) {
-                    return $node->attr('href');
-                }
+                static fn($node) => $node->attr('href')
             );
             $links = collect($links)->filter(
-                function ($item) {
-                    return ! Str::startsWith($item, 'mailto:')
-                        && ! Str::startsWith($item, 'https://mail.')
-                        && Str::startsWith($item, '/');
-                }
+                static fn($item): bool => ! Str::startsWith($item, 'mailto:')
+                    && ! Str::startsWith($item, 'https://mail.')
+                    && Str::startsWith($item, '/')
             )->all();
 
             $this->checkLinks($links, $depth + 1);
@@ -94,11 +95,11 @@ class RouteDomTest extends TestCase
     so you must define its base URI passing an absolute URL to the constructor of the
     "Symfony\Component\DomCrawler\AbstractUriElement" class ("" was passed)
     */
-    private function dom(string $html): \Symfony\Component\DomCrawler\Crawler
+    private function dom(string $html): Crawler
     {
-        $dom = new \Symfony\Component\DomCrawler\Crawler();
-        $dom->addHTMLContent($html, 'UTF-8');
+        $crawler = new Crawler();
+        $crawler->addHTMLContent($html, 'UTF-8');
 
-        return $dom;
+        return $crawler;
     }
 }

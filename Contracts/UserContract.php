@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -21,7 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property string|null                                                          $full_name
  * @property string|null                                                          $phone
  * @property string|null                                                          $email
- * @property \Illuminate\Database\Eloquent\Collection|\Modules\User\Models\Area[] $areas
+ * @property Collection|\Modules\User\Models\Area[] $areas
  * @property \Modules\User\Models\PermUser|null                                   $perm
  *
  * @mixin    \Eloquent

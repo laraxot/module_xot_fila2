@@ -4,94 +4,73 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Tests\Feature;
 
+use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-class FileServiceTest extends TestCase
+final class FileServiceTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function asset()
+    #[Test]
+    public function asset(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function viewNamespaceToDir()
+    #[Test]
+    public function viewNamespaceToDir(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function getViewNameSpacePath()
+    #[Test]
+    public function getViewNameSpacePath(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function getViewNameSpaceUrl()
+    #[Test]
+    public function getViewNameSpaceUrl(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function getViewNameSpaceUrlNomodule()
+    #[Test]
+    public function getViewNameSpaceUrlNomodule(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function path2Url()
+    #[Test]
+    public function path2Url(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function viewThemeNamespaceToAsset()
+    #[Test]
+    public function viewThemeNamespaceToAsset(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function viewNamespaceToAsset()
+    #[Test]
+    public function viewNamespaceToAsset(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function getFileUrl()
+    #[Test]
+    public function getFileUrl(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function viewNamespaceToUrl()
+    #[Test]
+    public function viewNamespaceToUrl(): void
     {
         static::assertTrue(true);
     }
 
-    /**
-     * @test
-     */
-    public function getRealFile()
+    #[Test]
+    public function getRealFile(): void
     {
         static::assertTrue(true);
     }

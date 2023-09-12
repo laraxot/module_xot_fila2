@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\QueueableAction\QueueableAction;
 
-class GetModuleContexts
+final class GetModuleContexts
 {
     use QueueableAction;
 
@@ -22,6 +22,6 @@ class GetModuleContexts
 
         return collect(Filament::getContexts())
             ->keys()
-            ->filter(fn ($item) => Str::of($item)->contains("{$prefix}"));
+            ->filter(static fn($item) => Str::of($item)->contains($prefix));
     }
 }

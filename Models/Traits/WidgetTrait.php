@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace Modules\Xot\Models\Traits;
 
 // use Laravel\Scout\Searchable;
-
 // ----- models------
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Builder;
 use Modules\Xot\Models\Widget;
 
@@ -20,13 +21,13 @@ use Modules\Xot\Models\Widget;
  */
 trait WidgetTrait
 {
-    public function widgets(): \Illuminate\Database\Eloquent\Relations\MorphMany
+    public function widgets(): MorphMany
     {
         // questo sarebbe itemWidgets, ma teniamo questo nome
         return $this->morphMany(Widget::class, 'post')
             // ->whereNull('layout_position')
             ->where(
-                function ($query): void {
+                static function ($query) : void {
                     $query->where('layout_position', '')
                         ->orWhereNull('layout_position');
                 }
@@ -34,7 +35,7 @@ trait WidgetTrait
             ->orderBy('pos');
     }
 
-    public function containerWidgets(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function containerWidgets(): HasMany
     {
         return $this->hasMany(Widget::class, 'post_type', 'post_type')
             ->orderBy('pos');
@@ -43,8 +44,8 @@ trait WidgetTrait
 
     // non sembra funzionare, perchè?
 
-    public function scopeOfLayoutPosition(Builder $query, string $layout_position): Builder
+    public function scopeOfLayoutPosition(Builder $builder, string $layout_position): Builder
     {
-        return $query->where('layout_position', $layout_position);
+        return $builder->where('layout_position', $layout_position);
     }
 }

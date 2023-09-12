@@ -4,36 +4,36 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Model\Store;
 
+use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-class MorphToManyAction
+final class MorphToManyAction
 {
     use QueueableAction;
 
-    public function __construct()
+    public function execute(Model $model, RelationDTO $relationDTO): void
     {
-    }
-
-    public function execute(Model $row, RelationDTO $relation): void
-    {
-        if (! $relation->rows instanceof MorphToMany) {
-            throw new \Exception('['.__LINE__.']['.__FILE__.']');
+        if (! $relationDTO->rows instanceof MorphToMany) {
+            throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
-        $data = $relation->data;
+        
+        $data = $relationDTO->data;
         if (\in_array('to', array_keys($data), true) || \in_array('from', array_keys($data), true)) {
             if (! isset($data['to'])) {
                 $data['to'] = [];
             }
+            
             $data = $data['to'];
         }
+        
         // dddx(['row' => $row, 'relation' => $relation, 't1' => Arr::isAssoc($data)]);
 
         if (! Arr::isAssoc($data)) {
-            $relation->rows->sync($data);
+            $relationDTO->rows->sync($data);
 
             return;
         }
@@ -41,10 +41,10 @@ class MorphToManyAction
         dddx(
             [
                 'message' => 'wip',
-                'row' => $row,
-                'relation' => $relation,
-                'relation_rows' => $relation->rows->exists(),
-                't' => $row->{$relation->name},
+                'row' => $model,
+                'relation' => $relationDTO,
+                'relation_rows' => $relationDTO->rows->exists(),
+                't' => $model->{$relationDTO->name},
             ]
         );
 

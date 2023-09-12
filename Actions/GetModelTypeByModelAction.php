@@ -10,17 +10,15 @@ use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
 use Spatie\QueueableAction\QueueableAction;
 
-class GetModelTypeByModelAction
+final class GetModelTypeByModelAction
 {
     use QueueableAction;
 
     /**
      * Execute the action.
      */
-    public function execute(ModelContract $model): string
+    public function execute(ModelContract $modelContract): string
     {
-        $model_class = Str::snake(class_basename($model));
-
-        return $model_class;
+        return Str::snake(class_basename($modelContract));
     }
 }

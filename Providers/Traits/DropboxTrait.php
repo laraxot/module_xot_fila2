@@ -16,13 +16,11 @@ trait DropboxTrait
     {
         Storage::extend(
             'dropbox',
-            function ($app, $config) {
+            static function ($app, array $config) : Filesystem {
                 // dddx($config);
-
                 $client = new DropboxClient($config['authorizationToken']);
-                $adapter = new DropboxAdapter($client);
-
-                return new Filesystem($adapter, ['case_sensitive' => false]);
+                $dropboxAdapter = new DropboxAdapter($client);
+                return new Filesystem($dropboxAdapter, ['case_sensitive' => false]);
             }
         );
     }

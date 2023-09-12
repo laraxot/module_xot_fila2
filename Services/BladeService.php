@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Blade;
 /**
  * BladeService.
  */
-class BladeService
+final class BladeService
 {
     /**
      * Undocumented function.

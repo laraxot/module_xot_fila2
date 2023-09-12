@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Contracts;
 
+use Illuminate\Database\Eloquent\Collection;
+use Modules\User\Models\Role;
+use Spatie\Permission\Contracts\Permission;
+use Illuminate\Database\Query\Builder;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 /**
@@ -11,7 +15,7 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
  *
  * @property string                                                                   $id
  * @property string                                                                   $email
- * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\User\Models\Role> $roles
+ * @property Collection<int, Role> $roles
  * @property int|null                                                                 $roles_count
  *
  * @mixin \Eloquent
@@ -21,11 +25,11 @@ interface ModelProfileContract extends ModelContract
     /**
      * Grant the given permission(s) to a role.
      *
-     * @param string|int|array|\Spatie\Permission\Contracts\Permission|\Illuminate\Support\Collection $permissions
+     * @param string|int|array|Permission|\Illuminate\Support\Collection $permissions
      *
      * @return $this
      */
-    public function givePermissionTo(...$permissions);
+    public function givePermissionTo(array $permissions = []);
 
     /**
      * Assign the given role to the model.
@@ -34,7 +38,7 @@ interface ModelProfileContract extends ModelContract
      *
      * @return $this
      */
-    public function assignRole(...$roles);
+    public function assignRole(array $roles = []);
 
     /**
      * Determine if the model has (one of) the given role(s).
@@ -50,12 +54,12 @@ interface ModelProfileContract extends ModelContract
      *
      * @param string|int|array|\Spatie\Permission\Contracts\Role|\Illuminate\Support\Collection $roles
      */
-    public function hasAnyRole(...$roles): bool;
+    public function hasAnyRole(array $roles = []): bool;
 
     /**
      * Determine if the model may perform the given permission.
      *
-     * @param string|int|\Spatie\Permission\Contracts\Permission $permission
+     * @param string|int|Permission $permission
      * @param string|null                                        $guardName
      *
      * @throws PermissionDoesNotExist
@@ -65,7 +69,7 @@ interface ModelProfileContract extends ModelContract
     /**
      * Create a new Eloquent query builder for the model.
      *
-     * @param \Illuminate\Database\Query\Builder $query
+     * @param Builder $query
      *
      * @return \Illuminate\Database\Eloquent\Builder|static
      */
