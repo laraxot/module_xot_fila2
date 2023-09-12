@@ -1768,11 +1768,6 @@ class HtmlService
             dddx($formatter->getHtmlMessage());
             echo $formatter->getHtmlMessage();
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         // } catch (HTML2PDF_exception $e) {
         // } catch (Html2PdfException $e) {
         //    echo '<pre>';

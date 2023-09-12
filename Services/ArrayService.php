@@ -215,11 +215,6 @@ class ArrayService
         if (null !== $filename) {
             return $filename;
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         // dddx(debug_backtrace());
         return 'test';
     }
