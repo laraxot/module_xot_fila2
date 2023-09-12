@@ -77,7 +77,7 @@ class XotServiceProvider extends XotBaseServiceProvider
 
         $this->app->bind(
             'profile',
-            static fn (): ProfileTest => new ProfileTest()
+            fn (): ProfileTest => new ProfileTest()
         );
     }
 
