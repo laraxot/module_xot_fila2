@@ -61,6 +61,7 @@ return [
         if (Str::startsWith($path, 'http')) {
             return $path;
         }
+
         // return url('/'.$page->lang.'/'.trimPath($path));
         return url('/'.trimPath($path));
     },

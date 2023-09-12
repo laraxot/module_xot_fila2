@@ -31,7 +31,11 @@ class PolicyService
         if (null === self::$policyService) {
             self::$policyService = new self();
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         /*
         if (null == self::$instance) {
             throw new \Exception('something gone bad');

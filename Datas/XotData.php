@@ -96,7 +96,11 @@ class XotData extends Data
         foreach ($data as $k => $v) {
             $this->{$k} = $v;
         }
+<<<<<<< HEAD
         
+=======
+
+>>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         // $this->save();
         return $this;
     }
