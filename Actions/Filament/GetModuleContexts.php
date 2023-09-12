@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Spatie\QueueableAction\QueueableAction;
 
-final class GetModuleContexts
+class GetModuleContexts
 {
     use QueueableAction;
 

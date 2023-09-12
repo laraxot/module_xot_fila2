@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
  *
  * @method string urlAct($params)
  */
-final class RouteService
+class RouteService
 {
     public static function inAdmin(array $params = []): mixed
     {

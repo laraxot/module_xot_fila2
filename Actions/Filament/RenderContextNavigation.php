@@ -8,7 +8,7 @@ use Filament\Facades\Filament;
 use Illuminate\Support\Facades\Blade;
 use Spatie\QueueableAction\QueueableAction;
 
-final class RenderContextNavigation
+class RenderContextNavigation
 {
     use QueueableAction;
 

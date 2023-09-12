@@ -10,7 +10,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
-final class GetModelByModelTypeAction
+class GetModelByModelTypeAction
 {
     use QueueableAction;
 

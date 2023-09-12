@@ -30,7 +30,7 @@ function chain(string $primary_field, string $parent_field, string $sort_field, 
 /**
  * Class ChainService.
  */
-final class ChainService
+class ChainService
 {
     public array $table = [];
 

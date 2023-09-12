@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Xot\Actions\Model\FilterRelationsAction;
 use Spatie\QueueableAction\QueueableAction;
 
-final class RelationAction
+class RelationAction
 {
     use QueueableAction;
 

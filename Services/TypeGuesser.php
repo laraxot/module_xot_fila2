@@ -10,7 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
 
-final class TypeGuesser
+class TypeGuesser
 {
     private static string $default = 'word';
     

@@ -9,7 +9,7 @@ namespace Modules\Xot\Filters\Images;
 use Intervention\Image\Filters\FilterInterface;
 use Intervention\Image\Image;
 
-final class Medium implements FilterInterface
+class Medium implements FilterInterface
 {
     public function applyFilter(Image $image)
     {

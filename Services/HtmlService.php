@@ -28,7 +28,7 @@ TableException
 /**
  * Class HtmlService.
  */
-final class HtmlService
+class HtmlService
 {
     public static function toPdf(array $params): string
     {

@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
 use Spatie\QueueableAction\QueueableAction;
 
-final class RegisterFilamentNavigationItem
+class RegisterFilamentNavigationItem
 {
     use QueueableAction;
 

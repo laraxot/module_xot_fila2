@@ -11,7 +11,7 @@ use Exception;
 use Illuminate\Http\Response;
 use Illuminate\Support\Str;
 
-final class ModelDeletionException extends ApplicationException
+class ModelDeletionException extends ApplicationException
 {
     private readonly string $model;
 

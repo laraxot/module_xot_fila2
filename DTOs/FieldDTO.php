@@ -9,7 +9,7 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-final class FieldDTO extends Data
+class FieldDTO extends Data
 {
     public string $param_name;
     

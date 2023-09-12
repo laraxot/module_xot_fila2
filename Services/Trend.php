@@ -14,7 +14,7 @@ use Modules\Xot\Services\Trend\Adapters\MySqlAdapter;
 use Modules\Xot\Services\Trend\Adapters\PgsqlAdapter;
 use Modules\Xot\Services\Trend\Adapters\SqliteAdapter;
 
-final class Trend
+class Trend
 {
     public string $interval;
 

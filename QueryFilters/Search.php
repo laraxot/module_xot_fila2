@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 /**
  * Undocumented class.
  */
-final class Search
+class Search
 {
     /**
      * Undocumented function.

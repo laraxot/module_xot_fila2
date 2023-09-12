@@ -11,7 +11,7 @@ use Modules\Xot\DTOs\RelationDTO;
 use Spatie\LaravelData\DataCollection;
 use Spatie\QueueableAction\QueueableAction;
 
-final class FilterRelationsAction
+class FilterRelationsAction
 {
     use QueueableAction;
 

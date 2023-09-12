@@ -13,7 +13,7 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-final class RelationDTO extends Data
+class RelationDTO extends Data
 {
     public Relation $rows;
 

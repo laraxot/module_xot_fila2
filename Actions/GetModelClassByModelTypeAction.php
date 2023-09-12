@@ -9,7 +9,7 @@ namespace Modules\Xot\Actions;
 use Exception;
 use Spatie\QueueableAction\QueueableAction;
 
-final class GetModelClassByModelTypeAction
+class GetModelClassByModelTypeAction
 {
     use QueueableAction;
 

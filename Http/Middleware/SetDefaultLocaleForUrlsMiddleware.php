@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\URL;
 /**
  * Class SetDefaultLocaleForUrlsMiddleware.
  */
-final class SetDefaultLocaleForUrlsMiddleware
+class SetDefaultLocaleForUrlsMiddleware
 {
     /**
      * Handle the incoming request.

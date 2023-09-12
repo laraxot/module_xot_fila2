@@ -10,7 +10,7 @@ namespace Modules\Xot\Exceptions;
 use Exception;
 use Illuminate\Http\Response;
 
-final class JsonEncodeException extends ApplicationException
+class JsonEncodeException extends ApplicationException
 {
     public function status(): int
     {

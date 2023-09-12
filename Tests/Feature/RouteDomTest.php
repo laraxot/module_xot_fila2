@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
-final class RouteDomTest extends TestCase
+class RouteDomTest extends TestCase
 {
     /**
      * A basic test example.

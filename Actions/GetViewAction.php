@@ -10,7 +10,7 @@ use Modules\Xot\Services\FileService;
 use Spatie\QueueableAction\QueueableAction;
 use Webmozart\Assert\Assert;
 
-final class GetViewAction
+class GetViewAction
 {
     use QueueableAction;
 

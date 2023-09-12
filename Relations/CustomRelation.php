@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @method static Builder selectRaw($expression, array $bindings = []);
  * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
  */
-final class CustomRelation extends Relation
+class CustomRelation extends Relation
 {
     /**
      * Create a new belongs to relationship instance.

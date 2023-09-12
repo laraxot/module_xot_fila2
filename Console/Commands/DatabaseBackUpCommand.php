@@ -16,7 +16,7 @@ use function Safe\exec;
 
 use Webmozart\Assert\Assert;
 
-final class DatabaseBackUpCommand extends Command
+class DatabaseBackUpCommand extends Command
 {
     /**
      * The name and signature of the console command.

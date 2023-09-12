@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 /**
  * Class ConfigService.
  */
-final class ConfigService
+class ConfigService
 {
     private static ?self $instance = null;
     

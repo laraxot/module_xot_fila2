@@ -17,7 +17,7 @@ use Illuminate\Support\Collection;
 /**
  * Undocumented class.
  */
-final class XLSService
+class XLSService
 {
     private static ?self $instance = null;
     

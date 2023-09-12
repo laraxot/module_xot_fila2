@@ -8,6 +8,6 @@ use Exception;
 /**
  * Class RepositoryException.
  */
-final class RepositoryException extends Exception
+class RepositoryException extends Exception
 {
 }

@@ -21,7 +21,7 @@ use function Safe\fputcsv;
 /**
  * Class ArrayService.
  */
-final class ArrayService
+class ArrayService
 {
     private static ?self $instance = null;
 

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-final class MorphToOneAction
+class MorphToOneAction
 {
     use QueueableAction;
 

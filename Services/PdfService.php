@@ -12,7 +12,7 @@ use Illuminate\Support\Str;
 /**
  * Class PdfService.
  */
-final class PdfService
+class PdfService
 {
     private static ?self $instance = null;
     
