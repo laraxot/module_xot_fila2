@@ -11,7 +11,7 @@ use Illuminate\Contracts\Validation\Rule;
 /**
  * Class DateTimeRule.
  */
-final class DateTimeRule implements Rule
+class DateTimeRule implements Rule
 {
     /**
      * @param string $attribute

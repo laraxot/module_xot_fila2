@@ -12,7 +12,7 @@ use PHPUnit\Framework\Attributes\Test;
 use Illuminate\Support\Facades\App;
 use Tests\TestCase;
 
-final class RouteTest extends TestCase
+class RouteTest extends TestCase
 {
     /**
      * A basic test example.

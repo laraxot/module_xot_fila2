@@ -20,7 +20,7 @@ use Modules\Xot\View\Composers\XotComposer;
 /**
  * Class XotServiceProvider.
  */
-final class XotServiceProvider extends XotBaseServiceProvider
+class XotServiceProvider extends XotBaseServiceProvider
 {
     // use Traits\PresenterTrait;
     use TranslatorTrait;

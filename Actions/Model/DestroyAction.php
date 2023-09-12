@@ -8,7 +8,7 @@ use Session;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
-final class DestroyAction
+class DestroyAction
 {
     use QueueableAction;
 

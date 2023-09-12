@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Services\Trend\Adapters;
 
 use Error;
-final class PgsqlAdapter extends AbstractAdapter
+class PgsqlAdapter extends AbstractAdapter
 {
     public function format(string $column, string $interval): string
     {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Modules\Xot\Services\Trend\Adapters;
 
 use Error;
-final class SqliteAdapter extends AbstractAdapter
+class SqliteAdapter extends AbstractAdapter
 {
     public function format(string $column, string $interval): string
     {

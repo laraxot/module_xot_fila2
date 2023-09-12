@@ -9,7 +9,7 @@ use Spatie\LaravelData\Data;
 /**
  * Undocumented class.
  */
-final class TrendData extends Data
+class TrendData extends Data
 {
     public string $date;
     

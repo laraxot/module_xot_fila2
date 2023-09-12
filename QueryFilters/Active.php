@@ -14,7 +14,7 @@ namespace Modules\Xot\QueryFilters;
 use Closure;
 use Illuminate\Support\Facades\Request;
 
-final class Active
+class Active
 {
     /**
      * Undocumented function.

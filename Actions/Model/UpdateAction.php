@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Spatie\QueueableAction\QueueableAction;
 
-final class UpdateAction
+class UpdateAction
 {
     use QueueableAction;
 

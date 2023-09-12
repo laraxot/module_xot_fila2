@@ -11,7 +11,7 @@ use Webmozart\Assert\Assert;
 /**
  * Undocumented class.
  */
-final class XotData extends Data
+class XotData extends Data
 {
     public string $main_module;
      // => 'Blog'

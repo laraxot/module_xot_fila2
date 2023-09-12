@@ -27,7 +27,7 @@ if (! defined('STDIN')) {
 /**
  * Class ArtisanService.
  */
-final class ArtisanService
+class ArtisanService
 {
     /**
      * @throws FileNotFoundException

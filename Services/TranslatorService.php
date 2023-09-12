@@ -20,7 +20,7 @@ use Illuminate\Translation\Translator as BaseTranslator;
 /**
  * Class TranslatorService.
  */
-final class TranslatorService extends BaseTranslator
+class TranslatorService extends BaseTranslator
 {
     public static function parse(array $params): array
     {

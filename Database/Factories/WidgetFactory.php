@@ -11,7 +11,7 @@ use Modules\Xot\Models\Widget;
 /**
  * Undocumented class.
  */
-final class WidgetFactory extends Factory
+class WidgetFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-final class BelongsToAction
+class BelongsToAction
 {
     use QueueableAction;
 

@@ -13,7 +13,7 @@ namespace Modules\Xot\QueryFilters;
 use Closure;
 use Illuminate\Database\Eloquent\Builder;
 
-final class Status
+class Status
 {
     /**
      * Undocumented function.

@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Request;
 /**
  * Undocumented class.
  */
-final class RoleFilter
+class RoleFilter
 {
     /**
      * we need to use laravel convention so we need to create the

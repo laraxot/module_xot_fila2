@@ -18,7 +18,7 @@ use Webmozart\Assert\Assert;
 /**
  * Class RouteDynService.
  */
-final class RouteDynService
+class RouteDynService
 {
     private static ?string $namespace_start = '';
 

@@ -7,7 +7,7 @@ namespace Modules\Xot\Tests\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-final class ArrayServiceTest extends TestCase
+class ArrayServiceTest extends TestCase
 {
     #[Test]
     public function toXLS(): void

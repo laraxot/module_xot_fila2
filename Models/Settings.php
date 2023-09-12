@@ -29,7 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @mixin IdeHelperSettings
  * @mixin \Eloquent
  */
-final class Settings extends Model
+class Settings extends Model
 {
     /**
      * @var string[]

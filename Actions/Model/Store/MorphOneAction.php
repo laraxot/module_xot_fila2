@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-final class MorphOneAction
+class MorphOneAction
 {
     use QueueableAction;
 

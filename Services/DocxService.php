@@ -31,7 +31,7 @@ use function Safe\json_decode;
 /**
  * Class DocxService.
  */
-final class DocxService
+class DocxService
 {
     private static ?self $instance = null;
     

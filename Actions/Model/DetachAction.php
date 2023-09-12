@@ -8,7 +8,7 @@ use Session;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
-final class DetachAction
+class DetachAction
 {
     use QueueableAction;
 

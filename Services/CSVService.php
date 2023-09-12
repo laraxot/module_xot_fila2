@@ -14,7 +14,7 @@ use function Safe\file;
 /**
  * Class CSVService.
  */
-final class CSVService
+class CSVService
 {
     private static ?self $instance = null;
     

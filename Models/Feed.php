@@ -33,7 +33,7 @@ use Illuminate\Support\Carbon;
  *
  * @mixin \Eloquent
  */
-final class Feed extends BaseModel
+class Feed extends BaseModel
 {
     /**
      * @var string[]

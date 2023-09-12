@@ -10,7 +10,7 @@ use Illuminate\Database\Seeder;
 /**
  * Class XotDatabaseSeeder.
  */
-final class XotDatabaseSeeder extends Seeder
+class XotDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

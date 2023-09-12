@@ -17,7 +17,7 @@ use Modules\Xot\Datas\XotData;
 /**
  * Class PolicyService.
  */
-final class PolicyService
+class PolicyService
 {
     // protected static $obj;
     private static array $in_vars = [];

@@ -11,7 +11,7 @@ use Illuminate\Support\Collection;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-final class MorphToManyAction
+class MorphToManyAction
 {
     use QueueableAction;
 

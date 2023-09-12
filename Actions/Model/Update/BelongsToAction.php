@@ -11,7 +11,7 @@ use Illuminate\Support\Arr;
 use Modules\Xot\DTOs\RelationDTO;
 use Spatie\QueueableAction\QueueableAction;
 
-final class BelongsToAction
+class BelongsToAction
 {
     use QueueableAction;
 

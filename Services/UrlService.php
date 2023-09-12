@@ -11,7 +11,7 @@ namespace Modules\Xot\Services;
 /**
  * Undocumented class.
  */
-final class UrlService
+class UrlService
 {
     private static ?self $instance = null;
 

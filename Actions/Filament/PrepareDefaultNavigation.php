@@ -7,7 +7,7 @@ namespace Modules\Xot\Actions\Filament;
 use Filament\Facades\Filament;
 use Spatie\QueueableAction\QueueableAction;
 
-final class PrepareDefaultNavigation
+class PrepareDefaultNavigation
 {
     use QueueableAction;
 

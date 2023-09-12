@@ -9,7 +9,7 @@ use InvalidArgumentException;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Modules\Xot\ValueObjects\PhoneValueObject;
 
-final class PhoneCast implements CastsAttributes
+class PhoneCast implements CastsAttributes
 {
     /**
      * Cast the given value.

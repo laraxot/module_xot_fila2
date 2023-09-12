@@ -16,7 +16,7 @@ use Modules\Xot\Http\Middleware\SetDefaultLocaleForUrlsMiddleware;
 
 // --- bases -----
 
-final class RouteServiceProvider extends XotBaseRouteServiceProvider
+class RouteServiceProvider extends XotBaseRouteServiceProvider
 {
     /**
      * The module namespace to assume when generating URLs to actions.

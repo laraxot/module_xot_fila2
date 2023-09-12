@@ -65,7 +65,7 @@ use Modules\Xot\Models\Traits\WidgetTrait;
  *
  * @mixin \Eloquent
  */
-final class Widget extends BaseModel
+class Widget extends BaseModel
 {
     use WidgetTrait;
 

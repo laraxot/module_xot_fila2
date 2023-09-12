@@ -8,7 +8,7 @@ use Modules\Xot\DTOs\RelationDTO;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\QueueableAction\QueueableAction;
 
-final class MorphManyAction
+class MorphManyAction
 {
     use QueueableAction;
 

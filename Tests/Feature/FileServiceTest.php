@@ -7,7 +7,7 @@ namespace Modules\Xot\Tests\Feature;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
 
-final class FileServiceTest extends TestCase
+class FileServiceTest extends TestCase
 {
     #[Test]
     public function asset(): void

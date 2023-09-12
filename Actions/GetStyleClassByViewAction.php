@@ -6,7 +6,7 @@ namespace Modules\Xot\Actions;
 
 use Spatie\QueueableAction\QueueableAction;
 
-final class GetStyleClassByViewAction
+class GetStyleClassByViewAction
 {
     use QueueableAction;
 

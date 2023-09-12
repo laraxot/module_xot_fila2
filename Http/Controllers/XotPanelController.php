@@ -11,7 +11,7 @@ use Illuminate\Support\Str;
 /**
  * Class XotPanelController.
  */
-final class XotPanelController extends Controller
+class XotPanelController extends Controller
 {
     /**
      * @param string $method
