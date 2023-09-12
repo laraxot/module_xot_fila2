@@ -137,7 +137,11 @@ class DocxService
                         }
                         $data[$prefix.'.'.$key.'_'.$k] = $v;
                     }
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
                     // dddx($data);
                     return $data;
                 }
@@ -182,10 +186,24 @@ class DocxService
         $data = collect($arr)->map(
             static function ($item, string $key) use ($row, $prefix, $arr) : array {
                 // *
+<<<<<<< HEAD
                 if ('' !== $arr[$key] && \is_object($row->$key) && $row->$key instanceof Carbon) {
                     try {
                         $item = $row->$key->format('d/m/Y');
                     } catch (Exception) {
+=======
+                if ('' !== $arr[$key] && \is_object($row->$key)) {
+                    if ($row->$key instanceof Carbon) {
+                        try {
+                            $item = $row->$key->format('d/m/Y');
+                        } catch (\Exception $e) {
+                            return [
+                                $prefix.'.'.$key => $item,
+                            ];
+                        }
+
+                        // Carbon::setLocale('it');
+>>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
                         return [
                             $prefix.'.'.$key => $item,
                         ];
@@ -214,7 +232,11 @@ class DocxService
                         }
                         $data[$prefix.'.'.$key.'_'.$k] = $v;
                     }
+<<<<<<< HEAD
                     
+=======
+
+>>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
                     // dddx($data);
                     return $data;
                 }

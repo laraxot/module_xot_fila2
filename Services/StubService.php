@@ -227,6 +227,7 @@ class StubService
             'NamespacedDummyModel' => $this->model_class,
             'dummy_timestamps' => $dummy_timestamps,
         ];
+
         // dddx($replaces);
         return array_merge($replaces, $this->custom_replaces);
     }
@@ -306,6 +307,7 @@ class StubService
                         line:['.$e->getLine().']
                         caller:['.__LINE__.']['.basename(__FILE__).']
                         ';
+
                     // throw new \Exception($msg);
                     return null;
                     /*
@@ -397,6 +399,7 @@ class StubService
         $tmp = collect(explode('\\', $class))->slice(0, -1)->implode('\\');
         // $path = base_path($class);
         $path = base_path($tmp);
+
         // dddx([$class,$path,$tmp]);
         return FileService::fixPath($path);
     }

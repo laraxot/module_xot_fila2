@@ -37,6 +37,7 @@ class FilterRelationsAction
                     // if (method_exists($rows, 'getRelated')) {
                     // Cannot call method getRelated() on class-string|object
                     $related = $rows->getRelated();
+
                     // }
                     // if(!is_array($value)){
                     //    dddx(['item'=>$item,'value'=>$value]);
