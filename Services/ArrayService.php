@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
@@ -18,6 +15,9 @@ use function Safe\fclose;
 use function Safe\fopen;
 use function Safe\fputcsv;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+
 /**
  * Class ArrayService.
  */
@@ -26,9 +26,9 @@ class ArrayService
     private static ?self $instance = null;
 
     public array $array;
-    
+
     public ?string $filename = null;
-    
+
     private int $export_processor = 1;
 
     public function __construct()
@@ -39,7 +39,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\ArrayService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\ArrayService) {
             self::$instance = new self();
         }
 
@@ -59,13 +59,13 @@ class ArrayService
 
             return;
         }
-        
+
         if (! isset($filename)) {
             dddx(['filename' => 'filename is missing']);
 
             return;
         }
-        
+
         $content = var_export($data, true);
 
         // HHVM fails at __set_state, so just use object cast for now
@@ -97,11 +97,11 @@ class ArrayService
                 if (\is_object($value) || \is_array($value)) {
                     $value = self::fromObjects($value, $arrSkipIndices); // recursive call
                 }
-                
+
                 if (\in_array($index, $arrSkipIndices, true)) {
                     continue;
                 }
-                
+
                 $arrData[$index] = $value;
             }
         }
@@ -122,11 +122,11 @@ class ArrayService
         if ($a1 >= $a0 && $a1 <= $b0 && $b0 <= $b1) {
             return [$a1, $b0];
         }
-        
+
         if ($a0 >= $a1 && $a0 <= $b0 && $b0 <= $b1) {
             return [$a0, $b0];
         }
-        
+
         if ($a1 >= $a0 && $a1 <= $b1 && $b1 <= $b0) {
             return [$a1, $b1];
         }
@@ -140,6 +140,7 @@ class ArrayService
         if ($b1 > $b0) {
             return false;
         }
+
         return [$a0, $b1];
     }
 
@@ -152,14 +153,16 @@ class ArrayService
             ->map(
                 static function ($item) {
                     if (! is_array($item)) {
-                        throw new Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
+
                     return collect($item)
                         ->map(
                             static function ($item0) {
                                 if (is_numeric($item0)) {
                                     return $item0 * 1;
                                 }
+
                                 return $item0;
                             }
                         )->all();
@@ -181,7 +184,7 @@ class ArrayService
             static function ($value, $key) use ($arr_2) {
                 try {
                     return ! \in_array($value, $arr_2, true);
-                } catch (Exception $exception) {
+                } catch (\Exception $exception) {
                     dddx(['err' => $exception->getMessage(), 'value' => $value, 'key' => $key, 'arr_2' => $arr_2]);
                 }
             }
@@ -215,6 +218,7 @@ class ArrayService
         if (null !== $filename) {
             return $filename;
         }
+
         // dddx(debug_backtrace());
         return 'test';
     }
@@ -231,7 +235,7 @@ class ArrayService
         if (1 === request('debug', 0) * 1) {
             return self::toHtml();
         }
-        
+
         // include_once __DIR__.'/vendor/autoload.php';
         $data = $this->array;
         $res = [];
@@ -242,15 +246,15 @@ class ArrayService
                 }
             }
         }
-        
+
         $this->array = $res;
-        if ($this->export_processor == 1) {
+        if (1 == $this->export_processor) {
             return self::toXLS_phpoffice();
         }
         $msg = 'unknown export_processor ['.$this->export_processor.']';
-        throw new Exception($msg.'['.__LINE__.']['.__FILE__.']');
+        throw new \Exception($msg.'['.__LINE__.']['.__FILE__.']');
         $msg = 'unknown export_processor ['.$this->export_processor.']';
-        throw new Exception($msg.'['.__LINE__.']['.__FILE__.']');
+        throw new \Exception($msg.'['.__LINE__.']['.__FILE__.']');
     }
 
     public function toHtml(): Renderable
@@ -307,7 +311,7 @@ class ArrayService
         if (! \is_array($firstrow)) {
             $firstrow = [];
         }
-        
+
         $header = array_keys($firstrow);
 
         $debug = debug_backtrace();
@@ -332,9 +336,9 @@ class ArrayService
                 if (filter_var($cell->getValue(), FILTER_VALIDATE_URL)) {
                     $cell_value = $cell->getValue();
                     if (! is_string($cell_value)) {
-                        throw new Exception('['.__LINE__.']['.__FILE__.']');
+                        throw new \Exception('['.__LINE__.']['.__FILE__.']');
                     }
-                    
+
                     $worksheet->getCell($cell->getCoordinate())->getHyperlink()->setUrl($cell_value);
                 }
             }
@@ -347,7 +351,7 @@ class ArrayService
 
         $headers = [
             'Content-type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename=' . $filename,
+            'Content-Disposition' => 'attachment; filename='.$filename,
             'Pragma' => 'no-cache',
             'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
             'Expires' => '0',
@@ -408,11 +412,12 @@ class ArrayService
             'text' => '.',
             // 'text'=>$text,
         ];
+
         return match ($out) {
             'link' => view()->make('ui::download_icon', $view_params),
             'download' => response()->download($pathToFile),
             'link_file' => view()->make('ui::download_icon', $view_params),
-            default => throw new Exception('['.__LINE__.']['.__FILE__.']'),
+            default => throw new \Exception('['.__LINE__.']['.__FILE__.']'),
         };
     }
 }

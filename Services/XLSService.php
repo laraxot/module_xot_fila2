@@ -8,11 +8,10 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Services;
 
-use Exception;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use Illuminate\Support\Collection;
 
 /**
  * Undocumented class.
@@ -20,7 +19,7 @@ use Illuminate\Support\Collection;
 class XLSService
 {
     private static ?self $instance = null;
-    
+
     private Collection $data;
 
     public function __construct()
@@ -34,7 +33,7 @@ class XLSService
      */
     public static function getInstance(): self
     {
-        if (!self::$instance instanceof \Modules\Xot\Services\XLSService) {
+        if (! self::$instance instanceof \Modules\Xot\Services\XLSService) {
             self::$instance = new self();
         }
 
@@ -76,7 +75,7 @@ class XLSService
                 if (UrlService::make()->checkValidUrl((string) $column)) {
                     $col_row[] = ['col' => $col_key, 'int_col' => $int_col_key, 'row' => $row_key, 'url' => $column];
                 }
-                
+
                 ++$int_col_key;
             }
         }
@@ -91,7 +90,7 @@ class XLSService
     {
         $file = request()->file('file');
         if (null === $file) {
-            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         return $this->fromRequestFile($file);
@@ -108,17 +107,17 @@ class XLSService
     public function fromRequestFile(array|UploadedFile $file): self
     {
         if (! \is_object($file)) {
-            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         if (! method_exists($file, 'getRealPath')) {
-            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
-        
+
         $realPath = $file->getRealPath();
 
         if (false === $realPath) {
-            throw new Exception('[.__LINE__.]['.class_basename(self::class).']');
+            throw new \Exception('[.__LINE__.]['.class_basename(self::class).']');
         }
 
         return $this->fromFilePath($realPath);
@@ -151,7 +150,7 @@ class XLSService
                 $cell = $col.$row;
                 $tmp[$col] = $worksheet->getCell($cell)->getValue();
             }
-            
+
             $data->push(collect($tmp));
         }
 

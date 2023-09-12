@@ -13,7 +13,7 @@ use Savannabits\FilamentModules\ContextServiceProvider;
 class XotBaseContextServiceProvider extends ContextServiceProvider
 {
     public static string $name = 'xot-filament';
-    
+
     public static string $module = 'Xot';
 
     public function packageRegistered(): void

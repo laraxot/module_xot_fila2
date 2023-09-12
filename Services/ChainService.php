@@ -39,14 +39,14 @@ class ChainService
     /**
      * ChainService constructor.
      *
+     * @param (Collection&\iterable<Model>) $rows
+     *
      * @return void
-     * @param (Collection & \iterable<Model>) $rows
      */
     public function __construct(public string $primary_field, public string $parent_field, public string $sort_field, /**
      * Undocumented variable.
-     *
      */
-    public Collection $rows, int $root_id = 0, int $maxlevel = 25)
+        public Collection $rows, int $root_id = 0, int $maxlevel = 25)
     {
         $this->buildChain($root_id, $maxlevel);
     }
@@ -62,10 +62,10 @@ class ChainService
                 $row[$this->parent_field] = 0;
                 $row->save();
             }
-            
+
             $this->table[$row[$this->parent_field]][$row[$this->primary_field]] = $row;
         }
-        
+
         $this->makeBranch($rootcatid, 0, $maxlevel);
     }
 
@@ -74,22 +74,22 @@ class ChainService
         if (! \is_array($this->table)) {
             $this->table = [];
         }
-        
+
         // dddx([$this->table, $parent_id]);
         if (! \array_key_exists($parent_id, $this->table)) {
             return;
         }
-        
+
         $rows = $this->table[$parent_id];
         foreach ($rows as $key => $value) {
             $rows[$key]['key'] = $this->sort_field;
         }
-        
-        usort($rows, fn(array $a, array $b): int => $this->chainCMP($a, $b));
+
+        usort($rows, fn (array $a, array $b): int => $this->chainCMP($a, $b));
         foreach ($rows as $row) {
             $row['indent'] = $level;
             $this->chain_table[] = $row;
-            if (!isset($this->table[$row[$this->primary_field]])) {
+            if (! isset($this->table[$row[$this->primary_field]])) {
                 continue;
             }
             if ($maxlevel <= $level + 1 && 0 !== $maxlevel) {

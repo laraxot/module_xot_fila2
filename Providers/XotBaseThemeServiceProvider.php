@@ -17,9 +17,9 @@ use Modules\Xot\Services\LivewireService;
 abstract class XotBaseThemeServiceProvider
 {
     public string $dir = '';
-    
+
     public string $name = '';
-    
+
     public string $ns = '';
 
     public function bootCallback(): void
@@ -42,32 +42,32 @@ abstract class XotBaseThemeServiceProvider
     {
         Blade::directive(
             'md',
-            static fn($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
+            static fn ($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
         );
 
         Blade::directive(
             'formGroup',
-            static fn($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
+            static fn ($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
         );
 
         Blade::directive(
             'endFormGroup',
-            static fn($expression): string => '</div>'
+            static fn ($expression): string => '</div>'
         );
 
         Blade::directive(
             'title',
-            static fn($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
+            static fn ($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'shareImage',
-            static fn($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
+            static fn ($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'canonical',
-            static fn($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
+            static fn ($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
         );
     }
 

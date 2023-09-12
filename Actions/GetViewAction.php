@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions;
 
-use Exception;
 use Illuminate\Support\Str;
 use Modules\Xot\Services\FileService;
 use Spatie\QueueableAction\QueueableAction;
@@ -23,7 +22,7 @@ class GetViewAction
             $backtrace = debug_backtrace();
             $file0 = FileService::fixpath($backtrace[0]['file'] ?? '');
         }
-        
+
         $file0 = Str::after($file0, base_path());
         $arr = explode(DIRECTORY_SEPARATOR, $file0);
 
@@ -38,6 +37,7 @@ class GetViewAction
         $tmp = collect($tmp)->map(
             static function ($item) {
                 $item = str_replace('.php', '', $item);
+
                 return Str::slug(Str::snake($item));
             }
         )->implode('.');
@@ -53,11 +53,11 @@ class GetViewAction
             $view = Str::replace('::panels.actions.', $to, $view);
             $view = Str::replace('-action', '', $view);
         }
-        
+
         // }
         Assert::string($view);
         if (! view()->exists($view)) {
-            throw new Exception('View ['.$view.'] not found');
+            throw new \Exception('View ['.$view.'] not found');
         }
 
         return $view;

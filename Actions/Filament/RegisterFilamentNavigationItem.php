@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Actions\Filament;
 
-use Exception;
 use Filament\Facades\Filament;
 use Filament\Navigation\NavigationItem;
 use Illuminate\Support\Str;
@@ -29,10 +28,10 @@ class RegisterFilamentNavigationItem
         if (! is_string($icon)) {
             $enabled = Module::isEnabled($module);
             if (! $enabled) {
-                throw new Exception('module ['.$module.'] NOT ENABLED ! ');
+                throw new \Exception('module ['.$module.'] NOT ENABLED ! ');
             }
-            
-            throw new Exception('check config ['.$module_lower.'].icon');
+
+            throw new \Exception('check config ['.$module_lower.'].icon');
         }
 
         $navItem = NavigationItem::make($context)
@@ -43,7 +42,7 @@ class RegisterFilamentNavigationItem
             ->group('Modules');
         // if ($can) {
         Filament::registerNavigationItems([
-            1 === $moduleContexts->count() ? $navItem->label($module) : $navItem->label($stringable . ' Panel')->group($module . ' Module'),
+            1 === $moduleContexts->count() ? $navItem->label($module) : $navItem->label($stringable.' Panel')->group($module.' Module'),
         ]);
         // }
     }

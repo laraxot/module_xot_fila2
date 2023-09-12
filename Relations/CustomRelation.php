@@ -9,7 +9,6 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Relations;
 
-use Exception;
 use function call_user_func;
 
 use Closure;
@@ -32,16 +31,16 @@ class CustomRelation extends Relation
      * Create a new belongs to relationship instance.
      */
     public function __construct(Builder $builder, Model $model, /* implements BuilderContract */
-    /**
-     * The baseConstraints callback.
-     */
-    protected Closure $baseConstraints, /**
+        /**
+         * The baseConstraints callback.
+         */
+        protected \Closure $baseConstraints, /**
      * The eagerConstraints callback.
      */
-    protected ?Closure $eagerConstraints, /**
+        protected ?\Closure $eagerConstraints, /**
      * The eager constraints model matcher.
      */
-    protected ?Closure $eagerMatcher)
+        protected ?\Closure $eagerMatcher)
     {
         parent::__construct($builder, $model);
     }
@@ -61,9 +60,9 @@ class CustomRelation extends Relation
     {
         // Parameter #1 $function of function call_user_func expects callable(): mixed, Closure|null given.
         if (! \is_callable($this->eagerConstraints)) {
-            throw new Exception('eagerConstraints is not callable');
+            throw new \Exception('eagerConstraints is not callable');
         }
-        
+
         \call_user_func($this->eagerConstraints, $this, $models);
     }
 
@@ -94,7 +93,7 @@ class CustomRelation extends Relation
     {
         // Trying to invoke Closure|null but it might not be a callable.
         if (! \is_callable($this->eagerMatcher)) {
-            throw new Exception('eagerMatcher is not callable');
+            throw new \Exception('eagerMatcher is not callable');
         }
 
         return ($this->eagerMatcher)($models, $results, $relation, $this);

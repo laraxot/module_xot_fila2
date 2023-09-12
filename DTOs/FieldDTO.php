@@ -12,12 +12,12 @@ use Spatie\LaravelData\Data;
 class FieldDTO extends Data
 {
     public string $param_name;
-    
+
     /**
      * Undocumented variable.
      */
     public string|array|null $rules = null;
-    
+
     /*
      * Undocumented function.
      */

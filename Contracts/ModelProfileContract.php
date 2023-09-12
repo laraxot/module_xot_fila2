@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace Modules\Xot\Contracts;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Query\Builder;
 use Modules\User\Models\Role;
 use Spatie\Permission\Contracts\Permission;
-use Illuminate\Database\Query\Builder;
 use Spatie\Permission\Exceptions\PermissionDoesNotExist;
 
 /**
  * Modules\Xot\Contracts\ModelProfileContract.
  *
- * @property string                                                                   $id
- * @property string                                                                   $email
+ * @property string                $id
+ * @property string                $email
  * @property Collection<int, Role> $roles
- * @property int|null                                                                 $roles_count
+ * @property int|null              $roles_count
  *
  * @mixin \Eloquent
  */
@@ -60,7 +60,7 @@ interface ModelProfileContract extends ModelContract
      * Determine if the model may perform the given permission.
      *
      * @param string|int|Permission $permission
-     * @param string|null                                        $guardName
+     * @param string|null           $guardName
      *
      * @throws PermissionDoesNotExist
      */

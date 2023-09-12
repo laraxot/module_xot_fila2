@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Modules\Xot\Providers;
 
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
-use stdClass;
-use Exception;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\File;
@@ -28,7 +26,7 @@ use function Safe\realpath;
 abstract class XotBaseServiceProvider extends ServiceProvider
 {
     public string $module_name = 'xot';
-    
+
     protected string $module_dir = __DIR__;
 
     protected string $module_ns = __NAMESPACE__;
@@ -48,7 +46,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         if (method_exists($this, 'bootCallback')) {
             $this->bootCallback();
         }
-        
+
         // Illuminate\Contracts\Container\BindingResolutionException: Target class [livewire] does not exist.
         $this->registerLivewireComponents();
         // Illuminate\Contracts\Container\BindingResolutionException: Target class [modules] does not exist.
@@ -65,7 +63,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         if (method_exists($this, 'registerCallback')) {
             $this->registerCallback();
         }
-        
+
         // echo '<h3>Time :'.class_basename($this).' '.(microtime(true) - LARAVEL_START).'</h3>';
     }
 
@@ -174,7 +172,7 @@ abstract class XotBaseServiceProvider extends ServiceProvider
         if (! File::isDirectory($path)) {
             File::makeDirectory($path, 0777, true, true);
         }
-        
+
         $events_file = $path.'/_events.json';
         $force_recreate = request()->input('force_recreate', true);
         if (! File::exists($events_file) || $force_recreate) {
@@ -201,21 +199,21 @@ abstract class XotBaseServiceProvider extends ServiceProvider
                     ];
                     if (class_exists($event) && class_exists($listener)) {
                         // \Event::listen($event, $listener);
-                        $tmp = new stdClass();
+                        $tmp = new \stdClass();
                         $tmp->event = $event;
                         $tmp->listener = $listener;
                         $events[] = $tmp;
                     }
                 }
             }
-            
+
             try {
                 $events_content = json_encode($events, JSON_THROW_ON_ERROR);
                 // if (false === $events_content) {
                 //    throw new \Exception('can not encode json');
                 // }
                 File::put($events_file, $events_content);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 dd($e);
             }
         } else {

@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 // use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\Relations\Relation;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Query\Builder;
-
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
@@ -90,20 +89,20 @@ if (! function_exists('dddx')) {
         $tmp = debug_backtrace();
         $file = $tmp[0]['file'] ?? 'file-unknown';
         $file = str_replace('/', DIRECTORY_SEPARATOR, $file);
-        
+
         $doc_root = $_SERVER['DOCUMENT_ROOT'];
         $doc_root = str_replace('/', DIRECTORY_SEPARATOR, (string) $doc_root);
-        
+
         $dir_piece = explode(DIRECTORY_SEPARATOR, __DIR__);
         $dir_piece = array_slice($dir_piece, 0, -6);
-        
+
         $dir_copy = implode(DIRECTORY_SEPARATOR, $dir_piece);
         $file = str_replace($dir_copy, $doc_root, $file);
 
         if (! defined('LARAVEL_START')) {
             define('LARAVEL_START', microtime(true));
         }
-        
+
         $start = LARAVEL_START;
         $data = [
             '_' => $params,
@@ -117,7 +116,7 @@ if (! function_exists('dddx')) {
             $content = File::get($data['file']);
             $data['view_file'] = FileService::fixPath(Str::between($content, '/**PATH ', ' ENDPATH**/'));
         }
-        
+
         dd(
             $data,
         );
@@ -130,7 +129,7 @@ if (! function_exists('debug_methods')) {
         $methods = get_class_methods($rows);
         // *
         $methods_get = collect($methods)->filter(
-            static fn($item) => Str::startsWith($item, 'get')
+            static fn ($item) => Str::startsWith($item, 'get')
         )->map(
             static function ($item) use ($rows) {
                 $value = 'Undefined';
@@ -139,6 +138,7 @@ if (! function_exists('debug_methods')) {
                 } catch (Exception|ArgumentCountError $e) {
                     $value = $e->getMessage();
                 }
+
                 return [
                     'name' => $item,
                     'value' => $value,
@@ -196,7 +196,7 @@ if (! function_exists('inAdmin')) {
         if (isset($params['in_admin'])) {
             return (bool) $params['in_admin'];
         }
-        
+
         // dddx(ThemeService::__getStatic('in_admin'));
         /* Cannot call method get() on mixed
         if (null !== config()->get('in_admin')) {
@@ -206,7 +206,7 @@ if (! function_exists('inAdmin')) {
         if ('admin' === Request::segment(1)) {
             return true;
         }
-        
+
         $segments = Request::segments();
         if ((is_countable($segments) ? \count($segments) : 0) <= 0) {
             return false;
@@ -214,6 +214,7 @@ if (! function_exists('inAdmin')) {
         if ('livewire' !== $segments[0]) {
             return false;
         }
+
         return true === session('in_admin');
     }
 }
@@ -324,7 +325,7 @@ if (! function_exists('params2ContainerItem')) {
                 $params = $route_current->parameters();
             }
         }
-        
+
         $container = [];
         $item = [];
         foreach ($params as $k => $v) {
@@ -364,12 +365,13 @@ if (! function_exists('getModelByName')) {
         if (false == $files) {
             throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
-        
+
         $path = collect($files)->first(
-            static function ($file) use ($name) : bool {
+            static function ($file) use ($name): bool {
                 $info = pathinfo($file);
                 // Offset 'filename' on array{dirname?: string, basename: string, extension?: string, filename: string} on left side of ?? always exists and is not nullable.
                 $filename = $info['filename'];
+
                 // ?? '';
                 return Str::snake($filename) === $name;
             }
@@ -380,7 +382,7 @@ if (! function_exists('getModelByName')) {
         if (null === $path) {
             throw new Exception('['.$name.'] not in morph_map ['.__LINE__.']['.__FILE__.']');
         }
-        
+
         $path = FileService::fixPath($path);
         $info = pathinfo($path);
         $module_name = Str::between($path, 'Modules'.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.'Models');
@@ -428,7 +430,7 @@ if (! function_exists('getModuleNameFromModel')) {
             dddx(['model' => $model]);
             throw new Exception('model is not an object');
         }
-        
+
         $class = $model::class;
 
         return Str::before(Str::after($class, 'Modules\\'), '\\Models\\');
@@ -442,7 +444,7 @@ if (! function_exists('getModuleNameFromModelName')) {
         if (! is_string($model_class)) {
             throw new Exception('['.__LINE__.']['.__FILE__.']');
         }
-        
+
         $model = app($model_class);
 
         return getModuleNameFromModel($model);
@@ -620,19 +622,20 @@ if (! function_exists('debug_getter_obj')) {
 
             return null;
         }
-        
+
         $methods = get_class_methods($obj);
         $data = [];
         if (! is_array($methods)) {
             return $data;
         }
-        
+
         $methods = collect($methods)->filter(
-            static function ($item) : bool {
+            static function ($item): bool {
                 $exclude = [
                     'forceDelete',
                     'forceCreate',
                 ];
+
                 return ! Str::startsWith($item, '__') && ! in_array($item, $exclude, true);
             }
         )->all();
@@ -664,7 +667,7 @@ if (! function_exists('debug_getter_obj')) {
             } catch (ErrorException) {
             }
         }
-        
+
         dddx($data);
 
         return $data;
@@ -685,7 +688,7 @@ if (! function_exists('dottedToBrackets')) {
     function dottedToBrackets(string $str, string $quotation_marks = ''): string
     {
         return collect(explode('.', $str))->map(
-            static fn($v, $k) => 0 === $k ? $v : '['.$v.']'
+            static fn ($v, $k) => 0 === $k ? $v : '['.$v.']'
         )->implode('');
     }
 }
@@ -743,7 +746,7 @@ if (! function_exists('url_queries')) {
         if (false === $url_parsed) {
             throw new Exception('error parsing url ['.$url.']');
         }
-        
+
         // Turn the query string into an array
         $url_params = [];
         // Cannot access offset 'query' on array(?'scheme' => string, ?'host' => string, ?'port' => int, ?'user' => string, ?'pass' => string, ?'path' => string, ?'query' => string, ?'fragment' => string)|false.
@@ -776,16 +779,16 @@ if (! function_exists('build_url')) {
      */
     function build_url(array $parts): string
     {
-        return (isset($parts['scheme']) ? $parts['scheme'] . ':' : '').
+        return (isset($parts['scheme']) ? $parts['scheme'].':' : '').
             (isset($parts['user']) || isset($parts['host']) ? '//' : '').
             ($parts['user'] ?? '').
-            (isset($parts['pass']) ? ':' . $parts['pass'] : '').
+            (isset($parts['pass']) ? ':'.$parts['pass'] : '').
             (isset($parts['user']) ? '@' : '').
             ($parts['host'] ?? '').
-            (isset($parts['port']) ? ':' . $parts['port'] : '').
+            (isset($parts['port']) ? ':'.$parts['port'] : '').
             ($parts['path'] ?? '').
-            (isset($parts['query']) ? '?' . $parts['query'] : '').
-            (isset($parts['fragment']) ? '#' . $parts['fragment'] : '');
+            (isset($parts['query']) ? '?'.$parts['query'] : '').
+            (isset($parts['fragment']) ? '#'.$parts['fragment'] : '');
     }
 }
 
@@ -801,7 +804,7 @@ if (! function_exists('getRelationships')) {
         if (! is_array($methods)) {
             return $data;
         }
-        
+
         foreach ($methods as $method) {
             $reflection = new ReflectionMethod($model, $method);
             $args = $reflection->getParameters();
@@ -879,6 +882,7 @@ if (! function_exists('removeQueryParams')) {
         foreach ($params as $param) {
             unset($query[$param]); // loop through the array of parameters we wish to remove and unset the parameter from the query array
         }
+
         // 924    Parameter #1 $querydata of function http_build_query expects array|object, array|string given.
         return $query ? $url.'?'.http_build_query($query) : $url; // rebuild the URL with the remaining parameters, don't append the "?" if there aren't any query parameters left
     }
@@ -952,7 +956,7 @@ if (! function_exists('getRouteParameters')) {
     function getRouteParameters(): array
     {
         $route = request()->route();
-        if (!$route instanceof \Illuminate\Routing\Route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return [];
         }
 
@@ -968,7 +972,7 @@ if (! function_exists('getRouteName')) {
          * @var \Illuminate\Routing\Route|null
          */
         $route = request()->route();
-        if (!$route instanceof \Illuminate\Routing\Route) {
+        if (! $route instanceof \Illuminate\Routing\Route) {
             return null;
         }
 
@@ -1077,7 +1081,7 @@ if (! function_exists('secondsToHms')) {
             $str .= ($hours < 9 ? '0'.$hours : $hours).':';
         }
 
-        return $str . (($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal));
+        return $str.(($minutes < 9 ? '0'.$minutes : $minutes).':'.round($seconds, $decimal));
     }
 }
 
@@ -1106,7 +1110,7 @@ if (! function_exists('getServerName')) {
             // throw new Exception('['.$default.']['.__LINE__.']['.class_basename(__CLASS__).']');
             $default = 'localhost';
         }
-        
+
         $default = Str::after($default, '//');
 
         $server_name = $default;
@@ -1145,6 +1149,7 @@ if (! function_exists('inArrayBetween')) {
             if ($curr > $v[$field_end]) {
                 continue;
             }
+
             return true;
         }
 
@@ -1162,6 +1167,7 @@ if (! function_exists('inArrayBetweenKey')) {
             if ($curr > $v[$field_end]) {
                 continue;
             }
+
             return $k;
         }
 

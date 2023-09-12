@@ -16,7 +16,7 @@ abstract class XotBaseResource extends Resource
     use ContextualResource;
 
     protected static ?string $model = null;
-    
+
     // protected static ?string $navigationIcon = 'heroicon-o-bell';
     // protected static ?string $navigationLabel = 'Custom Navigation Label';
     // protected static ?string $activeNavigationIcon = 'heroicon-s-document-text';
@@ -24,8 +24,8 @@ abstract class XotBaseResource extends Resource
     // protected static ?string $navigationGroup = 'Parametri di Sistema';
     protected static ?int $navigationSort = 3;
 
-    public static function getModuleNameFromFile():string {
-        
+    public static function getModuleNameFromFile(): string
+    {
         return Str::between(static::$resourceFile, 'Modules/', '/Filament');
     }
 
@@ -44,11 +44,11 @@ abstract class XotBaseResource extends Resource
         // if (null != static::$model) {
         //    return static::$model;
         // }
-        //$moduleName = static::getModuleName()->toString();
+        // $moduleName = static::getModuleName()->toString();
         $moduleNameFromFile = static::getModuleNameFromFile();
         /*
 if (! in_array($moduleName, ['User'])) {
-    
+
     $pathInfo=pathinfo(static::$resourceFile);
     $modelName=Str::replaceLast('Resource','',$pathInfo['filename']);
     dddx([
