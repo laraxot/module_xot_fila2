@@ -49,7 +49,7 @@ class PdfService
 
         $pdfMerger = new PDFMerger();
         $pdf_files = collect(File::files($path))->filter(
-            static fn ($file, $key): bool =>
+            fn ($file, $key): bool =>
                 // dddx(get_class_methods($file));
                 // dddx($file->getBasename());
                 'pdf' === $file->getExtension() && ! Str::startsWith($file->getBasename(), '_')

@@ -42,32 +42,32 @@ abstract class XotBaseThemeServiceProvider
     {
         Blade::directive(
             'md',
-            static fn ($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
+            fn ($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
         );
 
         Blade::directive(
             'formGroup',
-            static fn ($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
+            fn ($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
         );
 
         Blade::directive(
             'endFormGroup',
-            static fn ($expression): string => '</div>'
+            fn ($expression): string => '</div>'
         );
 
         Blade::directive(
             'title',
-            static fn ($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
+            fn ($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'shareImage',
-            static fn ($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
+            fn ($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
         );
 
         Blade::directive(
             'canonical',
-            static fn ($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
+            fn ($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
         );
     }
 

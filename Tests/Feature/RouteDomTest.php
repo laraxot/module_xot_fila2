@@ -77,10 +77,10 @@ class RouteDomTest extends TestCase
             $dom = $this->dom($html);
             // $links = $dom->filter('a')->links();
             $links = $dom->filter('a')->each(
-                static fn ($node) => $node->attr('href')
+                fn ($node) => $node->attr('href')
             );
             $links = collect($links)->filter(
-                static fn ($item): bool => ! Str::startsWith($item, 'mailto:')
+                fn ($item): bool => ! Str::startsWith($item, 'mailto:')
                     && ! Str::startsWith($item, 'https://mail.')
                     && Str::startsWith($item, '/')
             )->all();

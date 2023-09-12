@@ -23,7 +23,7 @@ class FilterRelationsAction
         $methods = get_class_methods($model);
         $res = collect($data)
             ->filter(
-                static fn ($value, $item): bool => \in_array($item, $methods, true)
+                fn ($value, $item): bool => \in_array($item, $methods, true)
             )
             ->filter(
                 static function ($value, $item) use ($model): bool {

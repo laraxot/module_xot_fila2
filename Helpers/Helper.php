@@ -129,7 +129,7 @@ if (! function_exists('debug_methods')) {
         $methods = get_class_methods($rows);
         // *
         $methods_get = collect($methods)->filter(
-            static fn ($item) => Str::startsWith($item, 'get')
+            fn ($item) => Str::startsWith($item, 'get')
         )->map(
             static function ($item) use ($rows) {
                 $value = 'Undefined';
@@ -688,7 +688,7 @@ if (! function_exists('dottedToBrackets')) {
     function dottedToBrackets(string $str, string $quotation_marks = ''): string
     {
         return collect(explode('.', $str))->map(
-            static fn ($v, $k) => 0 === $k ? $v : '['.$v.']'
+            fn ($v, $k) => 0 === $k ? $v : '['.$v.']'
         )->implode('');
     }
 }
