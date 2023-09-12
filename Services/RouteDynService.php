@@ -53,11 +53,6 @@ class RouteDynService
             */
             return $prefix.'/{'.$param_name.'}';
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         // */
         /*
         $params_name=self::getParamsName($v,$namespace);

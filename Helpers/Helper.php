@@ -879,11 +879,6 @@ if (! function_exists('removeQueryParams')) {
         foreach ($params as $param) {
             unset($query[$param]); // loop through the array of parameters we wish to remove and unset the parameter from the query array
         }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> c786c6bea59364567ff1d21c80fe2764498347b3
         // 924    Parameter #1 $querydata of function http_build_query expects array|object, array|string given.
         return $query ? $url.'?'.http_build_query($query) : $url; // rebuild the URL with the remaining parameters, don't append the "?" if there aren't any query parameters left
     }
