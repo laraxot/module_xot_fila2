@@ -53,8 +53,6 @@ trait HasParent
      * {@inheritdoc}
      *
      * Use `children` key on `$attributes` to create child nodes.
-     *
-     * @param self $parent
      */
     public static function create(array $attributes = [], self $parent = null)
     {
@@ -137,7 +135,7 @@ trait HasParent
     /**
      * Get the node siblings and the node itself.
      *
-     * @return \Kalnoy\Nestedset\QueryBuilder
+     * @return QueryBuilder
      */
     public function siblingsAndSelf()
     {
@@ -753,7 +751,7 @@ trait HasParent
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Model
+     * @return Model
      */
     public function replicate(array $except = null)
     {

@@ -53,6 +53,7 @@ class RouteDynService
             */
             return $prefix.'/{'.$param_name.'}';
         }
+
         // */
         /*
         $params_name=self::getParamsName($v,$namespace);
@@ -116,6 +117,7 @@ class RouteDynService
         $v['act'] = Str::camel($v['act']);
         $v['act'] = str_replace('{', '', $v['act']);
         $v['act'] = str_replace('}', '', $v['act']);
+
         // camel_case foo_bar  => fooBar
         // studly_case foo_bar => FooBar
         return Str::camel($v['act']);
@@ -204,6 +206,7 @@ class RouteDynService
     public static function getUri(array $v, ?string $namespace): string
     {
         $uri = mb_strtolower($v['name']);
+
         /*
         $v['prefix']=self::getPrefix($v,$namespace);
         if(isset($v['prefix'])){ //------------ !!!!! da verificare che non faccia danni
