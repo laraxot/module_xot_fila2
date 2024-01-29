@@ -25,7 +25,7 @@ class PdfService
 
     public static function getInstance(): self
     {
-        if (! self::$instance instanceof \Modules\Xot\Services\PdfService) {
+        if (! self::$instance instanceof PdfService) {
             self::$instance = new self();
         }
 

@@ -27,7 +27,7 @@ class CSVService
      */
     public static function getInstance(): self
     {
-        if (! self::$instance instanceof \Modules\Xot\Services\CSVService) {
+        if (! self::$instance instanceof CSVService) {
             self::$instance = new self();
         }
 

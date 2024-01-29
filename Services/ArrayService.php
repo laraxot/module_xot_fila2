@@ -39,7 +39,7 @@ class ArrayService
 
     public static function getInstance(): self
     {
-        if (! self::$instance instanceof \Modules\Xot\Services\ArrayService) {
+        if (! self::$instance instanceof ArrayService) {
             self::$instance = new self();
         }
 

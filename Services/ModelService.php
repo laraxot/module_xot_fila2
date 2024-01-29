@@ -94,7 +94,7 @@ class ModelService
 
                 return (object) [
                     'relationship_type' => class_basename($rows),
-                    'is_relation' => $rows instanceof \Illuminate\Database\Eloquent\Relations\Relation,
+                    'is_relation' => $rows instanceof Relation,
                     'related' => $related,
                     'data' => $v,
                     'name' => $k,
