@@ -42,7 +42,11 @@ class DocxService
 
     public static function getInstance(): self
     {
+<<<<<<< HEAD
         if (! self::$instance instanceof DocxService) {
+=======
+        if (! self::$instance instanceof \Modules\Xot\Services\DocxService) {
+>>>>>>> master
             self::$instance = new self();
         }
 

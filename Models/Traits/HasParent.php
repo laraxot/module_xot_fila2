@@ -61,7 +61,11 @@ trait HasParent
 
         $static = new static($attributes);
 
+<<<<<<< HEAD
         if ($parent instanceof HasParent) {
+=======
+        if ($parent instanceof \Modules\Xot\Models\Traits\HasParent) {
+>>>>>>> master
             $static->appendToNode($parent);
         }
 
