@@ -18,6 +18,11 @@ use function Safe\json_decode;
 use function Safe\json_encode;
 use function Safe\realpath;
 
+use function Safe\glob;
+use function Safe\json_decode;
+use function Safe\json_encode;
+use function Safe\realpath;
+
 // use Modules;
 
 /**
@@ -26,7 +31,10 @@ use function Safe\realpath;
 abstract class XotBaseServiceProvider extends ServiceProvider
 {
     public string $module_name = 'xot';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     protected string $module_dir = __DIR__;
 
     protected string $module_ns = __NAMESPACE__;
@@ -64,9 +72,12 @@ abstract class XotBaseServiceProvider extends ServiceProvider
             $this->registerCallback();
         }
 
+<<<<<<< HEAD
         // echo '<h3>Time :'.class_basename($this).' '.(microtime(true) - LARAVEL_START).'</h3>';
     }
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     /**
      * Register views.
      */
@@ -208,7 +219,11 @@ abstract class XotBaseServiceProvider extends ServiceProvider
             }
 
             try {
+<<<<<<< HEAD
                 $events_content = json_encode($events, JSON_THROW_ON_ERROR);
+=======
+                $events_content = json_encode($events);
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 // if (false === $events_content) {
                 //    throw new \Exception('can not encode json');
                 // }

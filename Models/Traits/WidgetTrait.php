@@ -44,7 +44,11 @@ trait WidgetTrait
 
     // non sembra funzionare, perchè?
 
+<<<<<<< HEAD
     public function scopeOfLayoutPosition(Builder $builder, string $layout_position): Builder
+=======
+    public function scopeOfLayoutPosition(Builder $query, string $layout_position): Builder
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         return $builder->where('layout_position', $layout_position);
     }

@@ -17,6 +17,10 @@ class PgsqlAdapter extends AbstractAdapter
             default => throw new \Error('Invalid interval.'),
         };
 
+<<<<<<< HEAD
         return sprintf('to_char(%s, \'%s\')', $column, $format);
+=======
+        return "to_char({$column}, '{$format}')";
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

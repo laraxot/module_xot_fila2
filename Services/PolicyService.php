@@ -6,7 +6,10 @@ namespace Modules\Xot\Services;
 
 use function get_class;
 
+<<<<<<< HEAD
 use Illuminate\Contracts\Filesystem\FileNotFoundException;
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Modules\Xot\Datas\XotData;
@@ -17,11 +20,18 @@ use Modules\Xot\Datas\XotData;
 class PolicyService
 {
     // protected static $obj;
+<<<<<<< HEAD
     private static array $in_vars = [];
 
     private static array $out_vars = [];
 
     private static ?PolicyService $policyService = null;
+=======
+    protected static array $in_vars = [];
+
+    protected static array $out_vars = [];
+    private static ?PolicyService $instance = null;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
     public static function getInstance(): self
     {
@@ -94,11 +104,17 @@ class PolicyService
         if (! isset($class)) {
             throw new \Exception('class is missing');
         }
+<<<<<<< HEAD
 
         // $user_class = get_class(Auth::user());
         $user_class = $xotData->getUserClass();
 
         return [
+=======
+        // $user_class = get_class(Auth::user());
+        $user_class = $xotData->getUserClass();
+        $replaces = [
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             'DummyNamespace' => $namespace,
             'DummyClass' => $class_name,
             'DummyFullModel' => $class,
@@ -107,6 +123,16 @@ class PolicyService
             'NamespacedDummyUserModel' => $user_class,
             'NamespacedDummyModel' => $class,
         ];
+    }
+
+    public function getClass(): string
+    {
+        return self::$out_vars['class'];
+    }
+
+    public function exists(): bool
+    {
+        return File::exists(self::$out_vars['filename']);
     }
 
     public function getClass(): string

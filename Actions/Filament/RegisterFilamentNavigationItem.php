@@ -19,7 +19,11 @@ class RegisterFilamentNavigationItem
      */
     public static function execute(string $module, string $context): void
     {
+<<<<<<< HEAD
         $stringable = Str::of($context)->after('-')->replace('filament', 'default')->slug()->replace('-', ' ')->title()->title();
+=======
+        $panel = Str::of($context)->after('-')->replace('filament', 'default')->slug()->replace('-', ' ')->title()->title();
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $moduleContexts = app(GetModuleContexts::class)->execute($module);
         $module_lower = Module::findOrFail($module)->getLowerName();
         // $can = static::hasAuthorizedAccess($context);
@@ -30,7 +34,10 @@ class RegisterFilamentNavigationItem
             if (! $enabled) {
                 throw new \Exception('module ['.$module.'] NOT ENABLED ! ');
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             throw new \Exception('check config ['.$module_lower.'].icon');
         }
 
@@ -42,7 +49,11 @@ class RegisterFilamentNavigationItem
             ->group('Modules');
         // if ($can) {
         Filament::registerNavigationItems([
+<<<<<<< HEAD
             1 === $moduleContexts->count() ? $navItem->label($module) : $navItem->label($stringable.' Panel')->group($module.' Module'),
+=======
+            1 === $moduleContexts->count() ? $navItem->label("{$module}") : $navItem->label("{$panel} Panel")->group("{$module} Module"),
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         ]);
         // }
     }

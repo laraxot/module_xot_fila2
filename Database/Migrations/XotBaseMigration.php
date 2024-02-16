@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Database\Migrations;
 
+<<<<<<< HEAD
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Index;
 use Doctrine\DBAL\Schema\Table;
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Migrations\Migration;
@@ -75,8 +78,19 @@ abstract class XotBaseMigration extends Migration
         if (! $this->model instanceof Model) {
             return '';
         }
+<<<<<<< HEAD
 
         return $this->model->getTable();
+=======
+        $table = $this->model->getTable();
+
+        /*
+        if (Str::endsWith($table, '_pivot')) {
+            $table = Str::before($table, '_pivot');
+        }
+        */
+        return $table;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     public function getConn(): Builder
@@ -180,6 +194,7 @@ abstract class XotBaseMigration extends Migration
         $doctrineTable = $this->getTableDetails();
 
         // $indexes=$this->getTableIndexes();
+<<<<<<< HEAD
         return $doctrineTable->hasIndex($table.'_'.$index.'_'.$type);
     }
 
@@ -191,6 +206,12 @@ abstract class XotBaseMigration extends Migration
         if ($exists) {
             $doctrineTable->dropIndex($table.'_'.$index);
         }
+=======
+        $has_index = $doctrineTable->hasIndex($tbl.'_'.$index.'_index');
+
+        // dddx(['indexes'=>$indexes,'has_index'=>$has_index]);
+        return $has_index;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     public function hasIndexName(string $name): bool

@@ -19,6 +19,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 class XLSService
 {
     private static ?self $instance = null;
+    protected Collection $data;
 
     private Collection $data;
 

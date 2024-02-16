@@ -1,28 +1,48 @@
 <?php
+<<<<<<< HEAD
 /**
  * ---.
  */
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
 declare(strict_types=1);
 
 namespace Modules\Xot\Providers;
 
+<<<<<<< HEAD
 use Modules\Xot\Actions\Filament\PrepareDefaultNavigation;
 use Savannabits\FilamentModules\ContextServiceProvider;
+=======
+use Filament\Facades\Filament;
+use Filament\Navigation\NavigationItem;
+use Modules\Xot\Actions\Filament\PrepareDefaultNavigation;
+use Savannabits\FilamentModules\ContextServiceProvider;
+use Savannabits\FilamentModules\FilamentModules;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
 class XotBaseContextServiceProvider extends ContextServiceProvider
 {
     public static string $name = 'xot-filament';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public static string $module = 'Xot';
 
     public function packageRegistered(): void
     {
+<<<<<<< HEAD
         $this->app->booting(
             function (): void {
                 $this->registerConfigs();
             }
         );
+=======
+        $this->app->booting(function () {
+            $this->registerConfigs();
+        });
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         parent::packageRegistered();
     }
 
@@ -37,7 +57,10 @@ class XotBaseContextServiceProvider extends ContextServiceProvider
     public function boot(): void
     {
         parent::boot();
+<<<<<<< HEAD
         // --- savanna is for filament 3.
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         // app(FilamentModules::class)->prepareDefaultNavigation(static::$module, static::$name);
 
         app(PrepareDefaultNavigation::class)->execute(static::$module, static::$name);

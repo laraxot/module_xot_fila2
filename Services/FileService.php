@@ -9,7 +9,14 @@ use const DIRECTORY_SEPARATOR;
 use Exception;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\File;
+<<<<<<< HEAD
 use Illuminate\Support\Facades\Vite;
+=======
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\NamespacedItemResolver;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Illuminate\Support\Str;
 use Nwidart\Modules\Facades\Module;
 
@@ -609,13 +616,29 @@ class FileService
         $str = 'theme/bc/';
         // if (\mb_substr($path, 0, \mb_strlen($str)) == $str) {
         if (Str::startsWith($path, $str)) {
+<<<<<<< HEAD
             return public_path('bc/'.mb_substr($path, mb_strlen($str)));
+=======
+            $filename = public_path('bc/'.mb_substr($path, mb_strlen($str)));
+
+            // $filename=str_replace('\\/','/',$filename);
+            // $filename=realpath($filename);
+            return $filename;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         }
         $str = 'theme/pub/';
         $theme = config('xra.pub_theme');
         // if (\mb_substr($path, 0, \mb_strlen($str)) == $str) {
         if (Str::startsWith($path, $str)) {
+<<<<<<< HEAD
             return public_path('themes/'.$theme.'/'.mb_substr($path, mb_strlen($str)));
+=======
+            $filename = public_path('themes/'.$theme.'/'.mb_substr($path, mb_strlen($str)));
+
+            // $filename=str_replace('\\/','/',$filename);
+            // $filename=realpath($filename);
+            return $filename;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         }
         $str = 'theme/';
         $theme = config('xra.adm_theme');

@@ -29,6 +29,11 @@ trait Getter
 
     /**
      * __getStatic function.
+<<<<<<< HEAD
+=======
+     *
+     * @return mixed|void
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      */
     public static function __getStatic(string $index): mixed
     {
@@ -2007,7 +2012,15 @@ trait Getter
         return $this->vars[$index] ?? null;
     }
 
+<<<<<<< HEAD
     public function __concatBefore(string $index, string $value): void
+=======
+    /**
+     * @param string $index
+     * @param string $value
+     */
+    public function __concatBefore($index, $value): void
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $tmp = $this->__get($index);
         $tmp = $value.$tmp;

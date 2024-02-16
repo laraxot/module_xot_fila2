@@ -46,6 +46,20 @@ abstract class BaseMorphPivot extends MorphPivot
      */
     protected $primaryKey = 'id';
 
+<<<<<<< HEAD
+=======
+    // protected $attributes = ['related_type' => 'cuisine_cat'];
+    /**
+     * @var string[]
+     */
+    protected $dates = [
+        'created_at',
+        'updated_at',
+        'deleted_at',
+        // 'published_at',
+    ];
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     /**
      * @var string[]
      */

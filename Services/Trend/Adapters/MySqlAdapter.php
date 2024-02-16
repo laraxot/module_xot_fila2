@@ -17,6 +17,10 @@ class MySqlAdapter extends AbstractAdapter
             default => throw new \Error('Invalid interval.'),
         };
 
+<<<<<<< HEAD
         return sprintf('date_format(%s, \'%s\')', $column, $format);
+=======
+        return "date_format({$column}, '{$format}')";
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

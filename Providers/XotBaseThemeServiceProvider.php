@@ -17,9 +17,13 @@ use Modules\Xot\Services\LivewireService;
 abstract class XotBaseThemeServiceProvider
 {
     public string $dir = '';
+<<<<<<< HEAD
 
     public string $name = '';
 
+=======
+    public string $name = '';
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public string $ns = '';
 
     public function bootCallback(): void
@@ -42,12 +46,24 @@ abstract class XotBaseThemeServiceProvider
     {
         Blade::directive(
             'md',
+<<<<<<< HEAD
             fn ($expression): string => '<'.sprintf('?php echo md_to_html(%s); ?', $expression).'>'
+=======
+            function ($expression) {
+                return '<'."?php echo md_to_html({$expression}); ?".'>';
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         );
 
         Blade::directive(
             'formGroup',
+<<<<<<< HEAD
             fn ($expression): string => '<div class="form-group<'.sprintf('?php echo $errors->has(%s) ? \' has-error\' : \'\' ?', $expression).'>">'
+=======
+            function ($expression) {
+                return '<div class="form-group<'."?php echo \$errors->has({$expression}) ? ' has-error' : '' ?".'>">';
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         );
 
         Blade::directive(
@@ -57,17 +73,35 @@ abstract class XotBaseThemeServiceProvider
 
         Blade::directive(
             'title',
+<<<<<<< HEAD
             fn ($expression): string => '<'.sprintf('?php $title = %s ?', $expression).'>'
+=======
+            function ($expression) {
+                return '<'."?php \$title = {$expression} ?".'>';
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         );
 
         Blade::directive(
             'shareImage',
+<<<<<<< HEAD
             fn ($expression): string => '<'.sprintf('?php $shareImage = %s ?', $expression).'>'
+=======
+            function ($expression) {
+                return '<'."?php \$shareImage = {$expression} ?".'>';
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         );
 
         Blade::directive(
             'canonical',
+<<<<<<< HEAD
             fn ($expression): string => '<'.sprintf('?php $canonical = %s ?', $expression).'>'
+=======
+            function ($expression) {
+                return '<'."?php \$canonical = {$expression} ?".'>';
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         );
     }
 

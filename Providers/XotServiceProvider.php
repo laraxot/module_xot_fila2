@@ -23,10 +23,16 @@ use Modules\Xot\View\Composers\XotComposer;
 class XotServiceProvider extends XotBaseServiceProvider
 {
     // use Traits\PresenterTrait;
+<<<<<<< HEAD
     use TranslatorTrait;
 
     public string $module_name = 'xot';
 
+=======
+    use Traits\TranslatorTrait;
+
+    public string $module_name = 'xot';
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     /**
      * The module directory.
      */
@@ -75,6 +81,7 @@ class XotServiceProvider extends XotBaseServiceProvider
         // });
         // $this->app->bind('profile', \Modules\Xot\Services\ProfileTest::class);
 
+<<<<<<< HEAD
         $this->app->bind(
             'profile',
             fn (): ProfileTest => new ProfileTest()
@@ -154,6 +161,72 @@ class XotServiceProvider extends XotBaseServiceProvider
         );
     }
 
+=======
+        $this->app->bind('profile', function () {
+            return new \Modules\Xot\Services\ProfileTest();
+        });
+    }
+
+    /*
+    public function mergeConfigs(): void {
+        $configs = ['database', 'filesystems', 'auth', 'metatag', 'services', 'xra', 'social'];
+        foreach ($configs as $v) {
+            $tmp = Tenant::config($v);
+            //dddx($tmp);
+        }
+        //DB::purge('mysql');//Call to a member function prepare() on null
+        //DB::purge('liveuser_general');
+        //DB::reconnect();
+    }
+
+    //end mergeConfigs
+    //*/
+    public function loadHelpersFrom(string $path): void
+    {
+        $files = File::files($path);
+        foreach ($files as $file) {
+            if ('php' === $file->getExtension() && false !== $file->getRealPath()) {
+                include_once $file->getRealPath();
+            }
+        }
+    }
+
+    private function redirectSSL(): void
+    {
+        if (config('xra.forcessl')) {
+            // --- meglio ficcare un controllo anche sull'env
+            if (isset($_SERVER['SERVER_NAME']) && 'localhost' !== $_SERVER['SERVER_NAME']
+                && isset($_SERVER['REQUEST_SCHEME']) && 'http' === $_SERVER['REQUEST_SCHEME']
+            ) {
+                URL::forceScheme('https');
+                /*
+                 * da fare in htaccess
+                 **/
+                if (! request()->secure() /* && in_array(env('APP_ENV'), ['stage', 'production']) */) {
+                    exit(redirect()->secure(request()->getRequestUri()));
+                }
+            }
+        }
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @see https://medium.com/@dobron/running-laravel-ide-helper-generator-automatically-b909e75849d0
+     *
+     * @return void
+     */
+    private function registerEvents()
+    {
+        Event::listen(
+            MigrationsEnded::class,
+            function () {
+                Artisan::call('ide-helper:models -r -W');
+            }
+        );
+    }
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     /**
      * Undocumented function.
      */
@@ -164,7 +237,11 @@ class XotServiceProvider extends XotBaseServiceProvider
                 // \Modules\Xot\Console\CreateAllRepositoriesCommand::class,
                 // \Modules\Xot\Console\PanelMakeCommand::class,
                 // \Modules\Xot\Console\FixProvidersCommand::class,
+<<<<<<< HEAD
                 DatabaseBackUpCommand::class,
+=======
+                \Modules\Xot\Console\Commands\DatabaseBackUpCommand::class,
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 // \Modules\Xot\Console\Commands\WorkerCheck::class,
                 // \Modules\Xot\Console\Commands\WorkerRetry::class,
                 // \Modules\Xot\Console\Commands\WorkerStop::class,

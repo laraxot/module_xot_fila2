@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "name": "laraxot/module_xot_fila",
     "description": "xot module, heart of the laraxot repository",
     "keywords": [
@@ -8,6 +9,16 @@
         "filament"
     ],
     "homepage": "https://github.com/laraxot/module_xot_fila",
+=======
+    "name": "laraxot/module_xot",
+    "description": ":package_description",
+    "keywords": [
+        "laraxot",
+        "laravel",
+        "module_xot"
+    ],
+    "homepage": "https://github.com/laraxot/module_xot",
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     "license": "MIT",
     "authors": [{
         "name": "marco sottana",

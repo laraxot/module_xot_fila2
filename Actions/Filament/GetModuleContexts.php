@@ -22,6 +22,10 @@ class GetModuleContexts
 
         return collect(Filament::getContexts())
             ->keys()
+<<<<<<< HEAD
             ->filter(fn ($item) => Str::of($item)->contains($prefix));
+=======
+            ->filter(fn ($item) => Str::of($item)->contains("{$prefix}"));
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

@@ -14,6 +14,7 @@ use Jurosh\PDFMerge\PDFMerger;
 class PdfService
 {
     private static ?self $instance = null;
+    public array $filenames = [];
 
     public array $filenames = [];
 

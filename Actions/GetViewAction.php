@@ -22,7 +22,10 @@ class GetViewAction
             $backtrace = debug_backtrace();
             $file0 = FileService::fixpath($backtrace[0]['file'] ?? '');
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $file0 = Str::after($file0, base_path());
         $arr = explode(DIRECTORY_SEPARATOR, $file0);
 
@@ -35,10 +38,18 @@ class GetViewAction
         $tmp = array_slice($arr, 3);
 
         $tmp = collect($tmp)->map(
+<<<<<<< HEAD
             static function ($item) {
                 $item = str_replace('.php', '', $item);
 
                 return Str::slug(Str::snake($item));
+=======
+            function ($item) {
+                $item = str_replace('.php', '', $item);
+                $item = Str::slug(Str::snake($item));
+
+                return $item;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             }
         )->implode('.');
 
@@ -53,7 +64,10 @@ class GetViewAction
             $view = Str::replace('::panels.actions.', $to, $view);
             $view = Str::replace('-action', '', $view);
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         // }
         Assert::string($view);
         if (! view()->exists($view)) {

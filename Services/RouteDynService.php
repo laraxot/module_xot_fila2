@@ -214,7 +214,19 @@ class RouteDynService
 
     public static function getUri(array $v, ?string $namespace): string
     {
+<<<<<<< HEAD
         return mb_strtolower((string) $v['name']);
+=======
+        $uri = mb_strtolower($v['name']);
+
+        /*
+        $v['prefix']=self::getPrefix($v,$namespace);
+        if(isset($v['prefix'])){ //------------ !!!!! da verificare che non faccia danni
+        $uri=$v['prefix'].'/'.$uri;
+        }
+         */
+        return $uri;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     public static function getMethod(array $v, ?string $namespace): array
@@ -282,7 +294,11 @@ class RouteDynService
 
         $opts = self::getResourceOpts($v, $namespace);
         $controller = self::getController($v, $namespace);
+<<<<<<< HEAD
         $name = mb_strtolower((string) $v['name']);
+=======
+        $name = mb_strtolower($v['name']);
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         \Route::resource($name, $controller, $opts);
         // ->where(['container1' => "^((?!create|edit).)*$"])  //BadMethodCallException Method Illuminate\Routing\PendingResourceRegistration::where does not exist.
         //  ->middleware('manageContainer','container1')// ->where(['id_'.$v['name'] => '[0-9]+']);

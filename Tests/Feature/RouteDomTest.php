@@ -18,8 +18,13 @@ class RouteDomTest extends TestCase
 {
     /**
      * A basic test example.
+     *
+     * @test
      */
+<<<<<<< HEAD
     #[Test]
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public function routes(): void
     {
         $urls = [
@@ -80,9 +85,17 @@ class RouteDomTest extends TestCase
                 fn ($node) => $node->attr('href')
             );
             $links = collect($links)->filter(
+<<<<<<< HEAD
                 fn ($item): bool => ! Str::startsWith($item, 'mailto:')
                     && ! Str::startsWith($item, 'https://mail.')
                     && Str::startsWith($item, '/')
+=======
+                function ($item) {
+                    return ! Str::startsWith($item, 'mailto:')
+                        && ! Str::startsWith($item, 'https://mail.')
+                        && Str::startsWith($item, '/');
+                }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             )->all();
 
             $this->checkLinks($links, $depth + 1);

@@ -1,7 +1,10 @@
 <?php
 
 declare(strict_types=1);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 /**
  * @see https://medium.com/@sliusarchyn/value-objects-in-laravel-use-it-12ba71b00281
  */

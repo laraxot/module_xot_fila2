@@ -26,8 +26,26 @@ use Illuminate\Database\Eloquent\Relations\Relation;
  * @method static Builder where($column, $operator = null, $value = null, $boolean = 'and')
  */
 class CustomRelation extends Relation
-{
+{ /* implements BuilderContract */
     /**
+<<<<<<< HEAD
+=======
+     * The baseConstraints callback.
+     */
+    protected \Closure $baseConstraints;
+
+    /**
+     * The eagerConstraints callback.
+     */
+    protected ?\Closure $eagerConstraints;
+
+    /**
+     * The eager constraints model matcher.
+     */
+    protected ?\Closure $eagerMatcher;
+
+    /**
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      * Create a new belongs to relationship instance.
      */
     public function __construct(Builder $builder, Model $model, /* implements BuilderContract */

@@ -7,19 +7,30 @@ namespace Modules\Xot\Http\Middleware;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
 use Nwidart\Modules\Laravel\Module;
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Webmozart\Assert\Assert;
 
 abstract class XotBaseFilamentMiddleware extends Middleware
 {
     public static string $module = 'EWall';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public static string $context = 'filament';
 
     protected function authenticate($request, array $guards): void
     {
+<<<<<<< HEAD
         $contextName = $this->getContextName();
         Assert::string($guardName = config($contextName.'.auth.guard'), 'fix config ['.$contextName.'.auth.guard]');
+=======
+        $context = $this->getContextName();
+        Assert::string($guardName = config("{$context}.auth.guard"), 'fix config ['.$context.'.auth.guard]');
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $guard = $this->auth->guard($guardName);
 
         if (! $guard->check()) {
@@ -43,6 +54,7 @@ abstract class XotBaseFilamentMiddleware extends Middleware
 
     protected function redirectTo($request): string
     {
+<<<<<<< HEAD
         $contextName = $this->getContextName();
 
         return route($contextName.'.auth.login');
@@ -50,6 +62,15 @@ abstract class XotBaseFilamentMiddleware extends Middleware
 
     /**
      * @return Module|\Nwidart\Modules\Module
+=======
+        $context = $this->getContextName();
+
+        return route("{$context}.auth.login");
+    }
+
+    /**
+     * @return \Nwidart\Modules\Laravel\Module|\Nwidart\Modules\Module
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      */
     private function getModule()
     {
@@ -61,8 +82,13 @@ abstract class XotBaseFilamentMiddleware extends Middleware
      */
     private function getContextName(): string
     {
+<<<<<<< HEAD
         $this->getModule();
         if ('' === static::$context || '0' === static::$context) {
+=======
+        $module = $this->getModule();
+        if (! static::$context) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             throw new \Exception('Context has to be defined in your class');
         }
 

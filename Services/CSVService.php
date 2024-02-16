@@ -9,12 +9,15 @@ namespace Modules\Xot\Services;
 
 use function Safe\file;
 
+use function Safe\file;
+
 /**
  * Class CSVService.
  */
 class CSVService
 {
     private static ?self $instance = null;
+    protected Collection $data;
 
     public function __construct()
     {

@@ -182,6 +182,11 @@ class ImportService
 
     /**
      * ---.
+<<<<<<< HEAD
+=======
+     *
+     * @return mixed|void
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      */
     public function getConfig(string $x): mixed
     {
@@ -190,7 +195,14 @@ class ImportService
         return $this->client->getConfig($x);
     }
 
+<<<<<<< HEAD
     public function getEffectiveUrl(string $method, string $url, array $attrs = []): string
+=======
+    /**
+     * @return string
+     */
+    public function getEffectiveUrl(string $method, string $url, array $attrs = [])
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $attrs['allow_redirects'] = [
             'max' => 10,        // allow at most 10 redirects.
@@ -280,7 +292,14 @@ class ImportService
         return $this->res->getStatusCode();
     }
 
+<<<<<<< HEAD
     public function getRedirectHistory(): string
+=======
+    /**
+     * @return string
+     */
+    public function getRedirectHistory()
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         return $this->res->getHeaderLine('X-Guzzle-Redirect-History'); // http://first-redirect, http://second-redirect, etc...
         // echo $res->getHeaderLine('X-Guzzle-Redirect-Status-History');// 301, 302, etc...

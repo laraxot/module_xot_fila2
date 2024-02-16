@@ -16,6 +16,7 @@ class PrepareDefaultNavigation
      */
     public function execute(string $module, string $context): void
     {
+<<<<<<< HEAD
         Filament::serving(
             static function () use ($module, $context): void {
                 Filament::forContext(
@@ -32,5 +33,15 @@ class PrepareDefaultNavigation
                 );
             }
         );
+=======
+        Filament::serving(function () use ($module, $context) {
+            Filament::forContext('filament', function () use ($module, $context) {
+                app(RegisterFilamentNavigationItem::class)->execute($module, $context);
+            });
+            Filament::forContext($context, function () use ($module, $context) {
+                app(RenderContextNavigation::class)->execute($module, $context);
+            });
+        });
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

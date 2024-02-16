@@ -31,7 +31,10 @@ class TranslatorService extends BaseTranslator
 
             return [];
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $translator = app('translator');
         $tmp = $translator->parseKey($key);
         $namespace = $tmp[0];
@@ -41,11 +44,18 @@ class TranslatorService extends BaseTranslator
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
         $filename = $path.'/'.$lang.'/'.$group.'.php';
         $filename = str_replace(['/', '\\'], [\DIRECTORY_SEPARATOR, \DIRECTORY_SEPARATOR], $filename);
+<<<<<<< HEAD
 
         $lang_dir = \dirname($filename, 2);
 
         return [
             'key' => str_replace(['[', ']'], ['.', ''], (string) $key),
+=======
+        $lang_dir = \dirname($filename, 2);
+
+        return [
+            'key' => str_replace(['[', ']'], ['.', ''], $key),
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             'namespace' => $namespace,
             'group' => $group,
             'ns_group' => $namespace.'::'.$group,
@@ -57,10 +67,20 @@ class TranslatorService extends BaseTranslator
         ];
     }
 
+<<<<<<< HEAD
     public static function store(array $data): void
     {
         $data = collect($data)->map(
             static function ($v, $k) {
+=======
+    /**
+     * @return void
+     */
+    public static function store(array $data)
+    {
+        $data = collect($data)->map(
+            function ($v, $k) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 $item = self::parse(['key' => $k]);
                 $item['value'] = $v;
 
@@ -69,7 +89,13 @@ class TranslatorService extends BaseTranslator
         )
         // ->dd()
             ->filter(
+<<<<<<< HEAD
                 fn ($v, $k): bool => $v['dir_exists'] && \strlen((string) $v['lang_dir']) > 3
+=======
+                function ($v, $k) {
+                    return $v['dir_exists'] && \strlen($v['lang_dir']) > 3;
+                }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             )
             ->groupBy(['ns_group'])  // risparmio salvataggi
             ->all();
@@ -82,7 +108,11 @@ class TranslatorService extends BaseTranslator
                 $rows = [];
             }
 
+<<<<<<< HEAD
             foreach ($data0 as $v) {
+=======
+            foreach ($data0 as $k => $v) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 $key = Str::after($v['key'], $ns_group.'.');
                 Arr::set($rows, $key, $v['value']);
             }
@@ -93,14 +123,27 @@ class TranslatorService extends BaseTranslator
 
                 return;
             }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             $filename = $v['filename'];
             // echo '<h3>['.$filename.']</h3>';
             ArrayService::save(['filename' => $filename, 'data' => $data]);
         }
     }
 
+<<<<<<< HEAD
     public static function set(string $key, string $value): void
+=======
+    /**
+     * @param string $key
+     * @param string $value
+     *
+     * @return void
+     */
+    public static function set($key, $value)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $lang = app()->getLocale();
         if (trans($key) === $value) {
@@ -118,6 +161,7 @@ class TranslatorService extends BaseTranslator
 
         $trad = $namespace.'::'.$group;
         $rows = trans($trad);
+<<<<<<< HEAD
         $item_keys = explode('.', (string) $item);
         $item_keys = implode('"]["', $item_keys);
         $item_keys = '["'.$item_keys.'"]';
@@ -128,6 +172,16 @@ class TranslatorService extends BaseTranslator
         } catch (\Exception) {
         }
 
+=======
+        $item_keys = explode('.', $item);
+        $item_keys = implode('"]["', $item_keys);
+        $item_keys = '["'.$item_keys.'"]';
+        $str = '$rows'.$item_keys.'="'.$value.'";';
+        try {
+            eval($str); // fa schifo ma funziona
+        } catch (\Exception $e) {
+        }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         ArrayService::save(['data' => $rows, 'filename' => $filename]);
 
         Session::flash('status', 'Modifica Eseguita! ['.$filename.']');
@@ -152,14 +206,27 @@ class TranslatorService extends BaseTranslator
         $trans = trans();
         $path = collect($trans->getLoader()->namespaces())->flip()->search($namespace);
         $file_path = $path.\DIRECTORY_SEPARATOR.$lang.\DIRECTORY_SEPARATOR.$group.'.php';
+<<<<<<< HEAD
 
         return FileService::fixPath($file_path);
+=======
+        $file_path = FileService::fixPath($file_path);
+
+        return $file_path;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     /**
      * Undocumented function.
+<<<<<<< HEAD
      */
     public static function add(string $key, array $data): void
+=======
+     *
+     * @return void
+     */
+    public static function add(string $key, array $data)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $file_path = self::getFilePath($key);
         $original = [];
@@ -181,7 +248,10 @@ class TranslatorService extends BaseTranslator
             );
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $merged = collect($original)
             ->merge($data)
             ->all();
@@ -194,12 +264,23 @@ class TranslatorService extends BaseTranslator
 
     /**
      * Undocumented function.
+<<<<<<< HEAD
      */
     public static function addMissing(string $key, array $data): void
     {
         $missing = collect($data)
             ->filter(
                 static function (string $item) use ($key): bool {
+=======
+     *
+     * @return void
+     */
+    public static function addMissing(string $key, array $data)
+    {
+        $missing = collect($data)
+            ->filter(
+                function ($item) use ($key) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                     $k = $key.'.'.$item;
                     $v = trans($k);
 
@@ -214,6 +295,7 @@ class TranslatorService extends BaseTranslator
     {
         self::addMissing($key, $data);
 
+<<<<<<< HEAD
         return collect($data)->map(
             static function (string $item) use ($key) {
                 $k = $key.'.'.$item;
@@ -221,6 +303,18 @@ class TranslatorService extends BaseTranslator
                 return trans($k);
             }
         )->all();
+=======
+        $data = collect($data)->map(
+            function ($item) use ($key) {
+                $k = $key.'.'.$item;
+                $v = trans($k);
+
+                return $v;
+            }
+        )->all();
+
+        return $data;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     /**
@@ -242,7 +336,10 @@ class TranslatorService extends BaseTranslator
         if (null === $locale) {
             $locale = app()->getLocale();
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         // */
         $translation = parent::get($key, $replace, $locale, $fallback);
         /*

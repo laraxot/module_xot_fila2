@@ -11,7 +11,18 @@ use Illuminate\Support\Str;
 
 class TypeGuesser
 {
+<<<<<<< HEAD
     private static string $default = 'word';
+=======
+    /**
+     * @var string
+     */
+    protected static $default = 'word';
+    /**
+     * @var Faker
+     */
+    protected $generator;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
     /**
      * Create a new TypeGuesser instance.
@@ -69,6 +80,7 @@ class TypeGuesser
     {
         $typeName = $type->getName();
 
+<<<<<<< HEAD
         return match ($typeName) {
             Types::BOOLEAN => 'boolean',
             Types::BIGINT, Types::INTEGER, Types::SMALLINT => 'randomNumber'.($size ? sprintf('(%s)', $size) : ''),
@@ -79,6 +91,32 @@ class TypeGuesser
             Types::TIME_MUTABLE, Types::TIME_IMMUTABLE => 'time',
             default => self::$default,
         };
+=======
+        switch ($typeName) {
+            case Types::BOOLEAN:
+                return 'boolean';
+            case Types::BIGINT:
+            case Types::INTEGER:
+            case Types::SMALLINT:
+                return 'randomNumber'.($size ? "({$size})" : '');
+            case Types::DATE_MUTABLE:
+            case Types::DATE_IMMUTABLE:
+                return 'date';
+            case Types::DATETIME_MUTABLE:
+            case Types::DATETIME_IMMUTABLE:
+                return 'dateTime';
+            case Types::DECIMAL:
+            case Types::FLOAT:
+                return 'randomFloat'.($size ? "({$size})" : '');
+            case Types::TEXT:
+                return 'text';
+            case Types::TIME_MUTABLE:
+            case Types::TIME_IMMUTABLE:
+                return 'time';
+            default:
+                return self::$default;
+        }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 
     /**
@@ -121,6 +159,7 @@ class TypeGuesser
     /**
      * Get type guess.
      *
+<<<<<<< HEAD
      * @param string $name
      *
      * @return string
@@ -141,5 +180,45 @@ class TypeGuesser
             'title' => $this->predictTitleType($size),
             default => self::$default,
         };
+=======
+     * @param string   $name
+     * @param int|null $size
+     *
+     * @return string
+     */
+    private function guessBasedOnName($name, $size = null)
+    {
+        switch ($name) {
+            case 'login':
+                return 'userName';
+            case 'emailaddress':
+                return 'email';
+            case 'phone':
+            case 'telephone':
+            case 'telnumber':
+                return 'phoneNumber';
+            case 'town':
+                return 'city';
+            case 'zipcode':
+                return 'postcode';
+            case 'county':
+                return $this->predictCountyType();
+            case 'country':
+                // Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictCountryType() expects int, int|null  given.
+                return $this->predictCountryType($size);
+            case 'currency':
+                return 'currencyCode';
+            case 'website':
+                return 'url';
+            case 'companyname':
+            case 'employer':
+                return 'company';
+            case 'title':
+                // 91     Parameter #1 $size of method Modules\Xot\Services\TypeGuesser::predictTitleType() expects int, int|null   given.
+                return $this->predictTitleType($size);
+            default:
+                return self::$default;
+        }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

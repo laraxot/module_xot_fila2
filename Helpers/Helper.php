@@ -3,13 +3,22 @@
 declare(strict_types=1);
 // use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Database\Query\Builder;
+=======
+use Illuminate\Support\Collection;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
+<<<<<<< HEAD
+=======
+use Modules\Cms\Services\PanelService;
+use Modules\Tenant\Services\TenantService;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 use Modules\Xot\Datas\XotData;
 use Modules\Xot\Services\ArrayService;
 use Modules\Xot\Services\FileService;
@@ -135,7 +144,13 @@ if (! function_exists('debug_methods')) {
                 $value = 'Undefined';
                 try {
                     $value = $rows->{$item}();
+<<<<<<< HEAD
                 } catch (Exception|ArgumentCountError $e) {
+=======
+                } catch (Exception $e) {
+                    $value = $e->getMessage();
+                } catch (ArgumentCountError $e) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                     $value = $e->getMessage();
                 }
 
@@ -206,6 +221,7 @@ if (! function_exists('inAdmin')) {
         if ('admin' === Request::segment(1)) {
             return true;
         }
+<<<<<<< HEAD
 
         $segments = Request::segments();
         if ((is_countable($segments) ? \count($segments) : 0) <= 0) {
@@ -213,6 +229,13 @@ if (! function_exists('inAdmin')) {
         }
         if ('livewire' !== $segments[0]) {
             return false;
+=======
+        $segments = Request::segments();
+        if (\count($segments) > 0 && 'livewire' === $segments[0]) {
+            if (true === session('in_admin')) {
+                return true;
+            }
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         }
 
         return true === session('in_admin');
@@ -310,9 +333,15 @@ if (! function_exists('isItem')) {
 
 if (! function_exists('params2ContainerItem')) {
     /**
+<<<<<<< HEAD
      * @return array<array>
      */
     function params2ContainerItem(array $params = null): array
+=======
+     * @return array[]
+     */
+    function params2ContainerItem(array $params = null)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         if (null === $params) {
             // Call to static method current() on an unknown class Route.
@@ -406,7 +435,16 @@ if (! function_exists('getUserClass')) {
 }
 
 if (! function_exists('getModuleFromModel')) {
+<<<<<<< HEAD
     function getModuleFromModel(object $model): ?Nwidart\Modules\Module
+=======
+    /**
+     * @param object $model
+     *
+     * @return Nwidart\Modules\Module|null
+     */
+    function getModuleFromModel($model)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $class = $model::class;
         $module_name = Str::before(Str::after($class, 'Modules\\'), '\\Models\\');
@@ -741,7 +779,11 @@ if (! function_exists('url_queries')) {
         }
 
         // Split the URL down into an array with all the parts separated out
+<<<<<<< HEAD
         $url_parsed = parse_url((string) $url);
+=======
+        $url_parsed = parse_url($url);
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
         if (false === $url_parsed) {
             throw new Exception('error parsing url ['.$url.']');
@@ -808,6 +850,7 @@ if (! function_exists('getRelationships')) {
         foreach ($methods as $method) {
             $reflection = new ReflectionMethod($model, $method);
             $args = $reflection->getParameters();
+<<<<<<< HEAD
             if ([] !== $args) {
                 continue;
             }
@@ -827,6 +870,24 @@ if (! function_exists('getRelationships')) {
                         'model' => $related_model,
                     ];
                     $data[] = $msg;
+=======
+            if (0 === count($args) && $reflection->class === get_class($model)) {
+                try {
+                    $return = $reflection->invoke($model);
+                    $check = $return instanceof Illuminate\Database\Eloquent\Relations\Relation;
+                    if ($check) {
+                        $related_model = (new ReflectionClass($return->getRelated()))->getName();
+                        $msg = [
+                            'name' => $reflection->name,
+                            'type' => class_basename($return),
+                            // 'check'=>$check,
+                            // $msg['type']=(new \ReflectionClass($return))->getShortName();
+                            'model' => $related_model,
+                        ];
+                        $data[] = $msg;
+                    }
+                } catch (ErrorException $e) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 }
             } catch (ErrorException) {
             }
@@ -931,7 +992,10 @@ if (! function_exists('isJson')) {
         return is_string($string) && is_array(json_decode($string, true, 512, JSON_THROW_ON_ERROR));
     }
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 /*
 if (! function_exists('getExcerpt')) {
     function getExcerpt(string $str, int $length = 225): string
@@ -955,6 +1019,12 @@ if (! function_exists('getExcerpt')) {
 if (! function_exists('getRouteParameters')) {
     function getRouteParameters(): array
     {
+<<<<<<< HEAD
+=======
+        /**
+         * @var Illuminate\Routing\Route|null
+         */
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         $route = request()->route();
         if (! $route instanceof \Illuminate\Routing\Route) {
             return [];
@@ -969,7 +1039,7 @@ if (! function_exists('getRouteName')) {
     {
         // getRouteName();
         /**
-         * @var \Illuminate\Routing\Route|null
+         * @var Illuminate\Routing\Route|null
          */
         $route = request()->route();
         if (! $route instanceof \Illuminate\Routing\Route) {
@@ -1197,15 +1267,28 @@ if (! function_exists('recursive_unset')) {
 if (! function_exists('profile')) {
     function profile(): Model
     {
+<<<<<<< HEAD
         $xotData = XotData::make();
 
         return $xotData->getProfileModel();
+=======
+        $xot = XotData::make();
+        $profileModel = $xot->getProfileModel();
+
+        return $profileModel;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }
 
 if (! function_exists('cssInLine')) {
     function cssInLine(string $file): string
     {
+<<<<<<< HEAD
         return File::get(FileService::assetPath($file));
+=======
+        $content = File::get(FileService::assetPath($file));
+
+        return $content;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

@@ -16,9 +16,18 @@ class RouteTest extends TestCase
 {
     /**
      * A basic test example.
+<<<<<<< HEAD
      */
     #[Test]
     public function routes(): void
+=======
+     *
+     * @return void
+     *
+     * @test
+     */
+    public function routes()
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         // dddx('/'.App::getlocale().'/home');
 

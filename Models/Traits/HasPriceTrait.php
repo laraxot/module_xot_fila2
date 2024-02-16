@@ -21,17 +21,38 @@ use Cknow\Money\Money;
  */
 trait HasPriceTrait
 {
+<<<<<<< HEAD
     public function getPriceCurrencyAttribute($value): Money
+=======
+    /**
+     * @return \Cknow\Money\Money
+     */
+    public function getPriceCurrencyAttribute($value)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         return @money($this->price, $this->currency);
     }
 
+<<<<<<< HEAD
     public function getPriceCompleteCurrencyAttribute($value): Money
+=======
+    /**
+     * @return \Cknow\Money\Money
+     */
+    public function getPriceCompleteCurrencyAttribute($value)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         return @money($this->price_complete, $this->currency);
     }
 
+<<<<<<< HEAD
     public function getSubtotalCurrencyAttribute($value): Money
+=======
+    /**
+     * @return \Cknow\Money\Money
+     */
+    public function getSubtotalCurrencyAttribute($value)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         $value = $this->qty > 0 ? $this->qty * $this->price : $this->price;
 

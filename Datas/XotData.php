@@ -25,8 +25,12 @@ class XotData extends Data
     public string $primary_lang = 'it';
 
     // 'pub_theme' => 'DirectoryBs5',
+<<<<<<< HEAD
     public string $pub_theme;
     // ' => 'One',
+=======
+    public string $pub_theme; // ' => 'One',
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public string $search_action = 'it/videos';
 
     public bool $show_trans_key = false;
@@ -38,6 +42,7 @@ class XotData extends Data
     public bool $login_verified = false;
 
     public bool $disable_frontend_dynamic_route = false;
+<<<<<<< HEAD
 
     public bool $disable_admin_dynamic_route = false;
 
@@ -49,6 +54,14 @@ class XotData extends Data
 
     public ?string $super_admin = null;
 
+=======
+    public bool $disable_admin_dynamic_route = false;
+
+    public bool $register_adm_theme = false;
+    public bool $register_pub_theme = false;
+    public bool $register_collective = false;
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public static function make(): self
     {
         $xot = config('xra');
@@ -77,6 +90,13 @@ class XotData extends Data
         return 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
     }
 
+    public function getHomeController(): string
+    {
+        $class = 'Modules\\'.$this->main_module.'\Http\Controllers\HomeController';
+
+        return $class;
+    }
+
     public function getProfileModelByUserId(string $user_id): Model
     {
         $profileClass = $this->getProfileClass();
@@ -87,6 +107,28 @@ class XotData extends Data
     public function getProfileModel(): Model
     {
         $user_id = (string) auth()->id();
+
+        return $this->getProfileModelByUserId($user_id);
+    }
+
+    public function update(array $data): self
+    {
+        foreach ($data as $k => $v) {
+            $this->{$k} = $v;
+        }
+
+        // $this->save();
+        return $this;
+    }
+
+    public function save(): void
+    {
+        dddx('wip');
+    }
+
+    public function getProfileModel(): Model
+    {
+        $user_id = strval(auth()->id());
 
         return $this->getProfileModelByUserId($user_id);
     }

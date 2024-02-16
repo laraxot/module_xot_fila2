@@ -23,16 +23,29 @@ class FilterRelationsAction
         $methods = get_class_methods($model);
         $res = collect($data)
             ->filter(
+<<<<<<< HEAD
                 fn ($value, $item): bool => \in_array($item, $methods, true)
             )
             ->filter(
                 static function ($value, $item) use ($model): bool {
+=======
+                function ($value, $item) use ($methods) {
+                    return \in_array($item, $methods, true);
+                }
+            )
+            ->filter(
+                function ($value, $item) use ($model) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                     $rows = $model->$item();
 
                     return $rows instanceof Relation;
                 }
             )->map(
+<<<<<<< HEAD
                 static function ($value, $item) use ($model): array {
+=======
+                function ($value, $item) use ($model) {
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                     $rows = $model->$item();
                     // $related = null;
                     // if (method_exists($rows, 'getRelated')) {

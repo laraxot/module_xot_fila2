@@ -11,6 +11,7 @@ use function get_class;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Modules\Xot\Contracts\ModelContract;
@@ -21,6 +22,10 @@ use function Safe\date;
 use function Safe\shuffle;
 
 use Symfony\Component\Finder\SplFileInfo;
+<<<<<<< HEAD
+=======
+use Webmozart\Assert\Assert;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
 /**
  * Class StubService.
@@ -597,12 +602,18 @@ class StubService
         /**
          * @var SplFileInfo
          */
+<<<<<<< HEAD
         $brother_file = Arr::first(
             $models,
             function (SplFileInfo $file) {
                 return 'php' === $file->getExtension();
             }
         );
+=======
+        $brother_file = Arr::first($models, function (SplFileInfo $file) {
+            return 'php' === $file->getExtension();
+        });
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         if (null === $brother_file) {
             throw new \Exception('['.__LINE__.']['.__FILE__.']');
         }
@@ -640,12 +651,18 @@ class StubService
         /**
          * @var SplFileInfo
          */
+<<<<<<< HEAD
         $brother_file = Arr::first(
             $models,
             function (SplFileInfo $file) {
                 return 'php' === $file->getExtension();
             }
         );
+=======
+        $brother_file = Arr::first($models, function (SplFileInfo $file) {
+            return 'php' === $file->getExtension();
+        });
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
         // dddx(get_class_methods($brother_file));
         // dddx($brother_file->getFilenameWithoutExtension());
         if (null === $brother_file) {
@@ -670,6 +687,92 @@ class StubService
         return collect($fillables)
             ->except($except)
             ->all();
+    }
+
+    /**
+     * Maps properties.
+     */
+    protected function mapTableProperties(Column $column): array
+    {
+        $key = $column->getName();
+        /*
+        if (! $this->shouldBeIncluded($column)) {
+            return $this->mapToFactory($key);
+        }
+        */
+        /*
+        if ($column->isForeignKey()) {
+            return $this->mapToFactory(
+                $key,
+                $this->buildRelationFunction($key)
+            );
+        }
+        */
+
+        if ('password' === $key) {
+            return $this->mapToFactory($key, "Hash::make('password')");
+        }
+
+        /*
+        $value = $column->isUnique()
+            ? '$this->faker->unique()->'
+            : '$this->faker->';
+        */
+        $value = '$this->faker->';
+
+        return $this->mapToFactory($key, $value.$this->mapToFaker($column));
+    }
+
+    /**
+     * Checks if a given column should be included in the factory.
+     */
+    protected function shouldBeIncluded(Column $column): bool
+    {
+        $shouldBeIncluded = $column->getNotNull() /* || $this->includeNullableColumns */
+            && ! $column->getAutoincrement();
+
+        if (! $this->getModel()->usesTimestamps()) {
+            return $shouldBeIncluded;
+        }
+
+        $timestamps = [
+            $this->getModel()->getCreatedAtColumn(),
+            $this->getModel()->getUpdatedAtColumn(),
+        ];
+
+        if (method_exists($this->getModel(), 'getDeletedAtColumn')) {
+            $timestamps[] = $this->getModel()->getDeletedAtColumn();
+        }
+
+        return $shouldBeIncluded
+            && ! \in_array($column->getName(), $timestamps, true);
+    }
+
+    /**
+     * Undocumented function.
+     *
+     * @param string $key
+     * @param string $value
+     */
+    protected function mapToFactory($key, $value = null): array
+    {
+        return [
+            $key => null === $value ? $value : "'{$key}' => {$value}",
+        ];
+    }
+
+    /**
+     * Map name to faker method.
+     *
+     * @return string
+     */
+    protected function mapToFaker(Column $column)
+    {
+        return app(TypeGuesser::class)->guess(
+            $column->getName(),
+            $column->getType(),
+            $column->getLength()
+        );
     }
 
     /**

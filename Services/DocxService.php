@@ -8,12 +8,17 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
+<<<<<<< HEAD
 use PhpOffice\PhpWord\Exception\CopyFileException;
 use PhpOffice\PhpWord\Exception\CreateTemporaryFileException;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 use function Safe\json_decode;
 
+=======
+use PhpOffice\PhpWord\TemplateProcessor;
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 /*
 use PhpOffice\PhpWord\PhpWord;
 use Illuminate\Support\Facades\Storage;
@@ -27,7 +32,11 @@ https://code-boxx.com/convert-html-to-docx-using-php/
 
 */
 
+<<<<<<< HEAD
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+=======
+use function Safe\json_decode;
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
 /**
  * Class DocxService.
@@ -35,11 +44,21 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 class DocxService
 {
     private static ?self $instance = null;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public string $docx_input;
 
     public array $values;
 
+<<<<<<< HEAD
+=======
+    public function __construct()
+    {
+    }
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     public static function getInstance(): self
     {
         if (! self::$instance instanceof \Modules\Xot\Services\DocxService) {

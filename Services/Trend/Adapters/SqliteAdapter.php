@@ -17,6 +17,10 @@ class SqliteAdapter extends AbstractAdapter
             default => throw new \Error('Invalid interval.'),
         };
 
+<<<<<<< HEAD
         return sprintf('strftime(\'%s\', %s)', $format, $column);
+=======
+        return "strftime('{$format}', {$column})";
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     }
 }

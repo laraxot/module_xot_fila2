@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 namespace Modules\Xot\Providers\Traits;
 
+<<<<<<< HEAD
+=======
+use Illuminate\Contracts\Container\Container;
+use Illuminate\Support\Facades\URL;
+
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 // use Modules\Xot\Engines\FullTextSearchEngine;
 
 trait PanelTrait

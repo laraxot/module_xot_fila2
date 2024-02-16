@@ -11,7 +11,14 @@ use Intervention\Image\Image;
 
 class Small implements FilterInterface
 {
+<<<<<<< HEAD
     public function applyFilter(Image $image): Image
+=======
+    /**
+     * @return Image
+     */
+    public function applyFilter(Image $image)
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         // return $image->fit(120, 90);
         $width = 120;

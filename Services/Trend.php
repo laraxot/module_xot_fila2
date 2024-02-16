@@ -98,12 +98,19 @@ class Trend
     {
         $values = $this->builder
             ->toBase()
+<<<<<<< HEAD
             ->selectRaw(
                 "
                 {$this->getSqlDate()} as {$this->dateAlias},
                 {$aggregate}({$column}) as aggregate
             "
             )
+=======
+            ->selectRaw("
+                {$this->getSqlDate()} as {$this->dateAlias},
+                {$aggregate}({$column}) as aggregate
+            ")
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
             ->whereBetween($this->dateColumn, [$this->start, $this->end])
             ->groupBy($this->dateAlias)
             ->orderBy($this->dateAlias)
@@ -154,6 +161,7 @@ class Trend
         */
 
         // Cannot access property $aggregate on mixed.
+<<<<<<< HEAD
         $values = $values->map(
             fn ($value): TrendData => TrendData::from(
                 [
@@ -162,17 +170,31 @@ class Trend
                 ]
             )
         );
+=======
+        $values = $values->map(fn ($value) => TrendData::from([
+            'date' => $value->{$this->dateAlias},
+            'aggregate' => $value->aggregate,
+        ]
+        ));
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
 
         // Parameter #1 $callback of method Illuminate\Support\Collection<(int|string),mixed>::map()
         // expects callable(mixed, (int|string)): Modules\Xot\Datas\TrendData,
         // Closure(Illuminate\Support\Carbon): Modules\Xot\Datas\TrendData given
         $placeholders = $this->getDatePeriod()
             ->map(
+<<<<<<< HEAD
                 fn (Carbon $carbon): TrendData => TrendData::from(
                     [
                         'date' => $carbon->format($this->getCarbonDateFormat()),
                         'aggregate' => 0,
                     ]
+=======
+                fn (Carbon $date) => TrendData::from([
+                    'date' => $date->format($this->getCarbonDateFormat()),
+                    'aggregate' => 0,
+                ]
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
                 )
             );
 
@@ -183,7 +205,11 @@ class Trend
             ->flatten();
     }
 
+<<<<<<< HEAD
     private function getDatePeriod(): Collection
+=======
+    protected function getDatePeriod(): Collection
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         /*
         160    Unable to resolve the template type TKey in call to function collect
@@ -197,11 +223,19 @@ class Trend
             CarbonPeriod::between(
                 $this->start,
                 $this->end,
+<<<<<<< HEAD
             )->interval('1 '.$this->interval)
         );
     }
 
     private function getSqlDate(): string
+=======
+            )->interval("1 {$this->interval}")
+        );
+    }
+
+    protected function getSqlDate(): string
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         // Call to an undefined method Illuminate\Database\ConnectionInterface::getDriverName(
         $adapter = match ($this->builder->getConnection()->getDriverName()) {
@@ -214,7 +248,11 @@ class Trend
         return $adapter->format($this->dateColumn, $this->interval);
     }
 
+<<<<<<< HEAD
     private function getCarbonDateFormat(): string
+=======
+    protected function getCarbonDateFormat(): string
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
     {
         return match ($this->interval) {
             'minute' => 'Y-m-d H:i:00',
