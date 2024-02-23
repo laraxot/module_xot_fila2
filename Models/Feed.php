@@ -13,7 +13,8 @@ use Modules\Xot\Database\Factories\FeedFactory;
 /**
  * Modules\Xot\Models\Feed.
  *
-<<<<<<< HEAD
+ * <<<<<<< HEAD
+ *
  * @method static FeedFactory  factory($count = null, $state = [])
  * @method static Builder|Feed newModelQuery()
  * @method static Builder|Feed newQuery()
@@ -27,12 +28,12 @@ use Modules\Xot\Database\Factories\FeedFactory;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  *
- * @method static Builder|Feed whereCreatedAt($value)
- * @method static Builder|Feed whereCreatedBy($value)
- * @method static Builder|Feed whereId($value)
- * @method static Builder|Feed whereUpdatedAt($value)
- * @method static Builder|Feed whereUpdatedBy($value)
-=======
+ * @method static Builder|Feed                                whereCreatedAt($value)
+ * @method static Builder|Feed                                whereCreatedBy($value)
+ * @method static Builder|Feed                                whereId($value)
+ * @method static Builder|Feed                                whereUpdatedAt($value)
+ * @method static Builder|Feed                                whereUpdatedBy($value)
+ *                                                                                                =======
  * @method static \Modules\Xot\Database\Factories\FeedFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Feed  newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feed  newQuery()
@@ -51,7 +52,7 @@ use Modules\Xot\Database\Factories\FeedFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Feed whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feed whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feed whereUpdatedBy($value)
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ *                                                                                  >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin \Eloquent
  */

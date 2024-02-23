@@ -22,8 +22,8 @@ abstract class XotBaseComposer
 
     /**
      * Undocumented function.
-<<<<<<< HEAD
-=======
+     * <<<<<<< HEAD
+     * =======.
      */
     public function setModule(string $module_name): self
     {
@@ -62,11 +62,8 @@ abstract class XotBaseComposer
     /**
      * Undocumented function.
      *
-     * @param string $name
-     * @param array  $arguments
-     *
      * @return mixed|void
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+     *                    >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      */
     public function setModule(string $module_name): self
     {

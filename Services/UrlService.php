@@ -23,7 +23,7 @@ class UrlService
 
     public static function getInstance(): self
     {
-        if (! self::$instance instanceof \Modules\Xot\Services\UrlService) {
+        if (! self::$instance instanceof UrlService) {
             self::$instance = new self();
         }
 

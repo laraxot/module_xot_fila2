@@ -11,7 +11,8 @@ use Illuminate\Support\Carbon;
 /**
  * Modules\Xot\Models\Settings.
  *
-<<<<<<< HEAD
+ * <<<<<<< HEAD
+ *
  * @property int         $id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -26,7 +27,8 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Settings whereName($value)
  * @method static Builder|Settings whereUpdatedAt($value)
  * @method static Builder|Settings whereValue($value)
-=======
+ *                                                        =======
+ *
  * @property int                             $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -41,7 +43,7 @@ use Illuminate\Support\Carbon;
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ *                                                                                      >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin IdeHelperSettings
  * @mixin \Eloquent

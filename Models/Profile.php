@@ -23,7 +23,8 @@ use Spatie\Tags\Tag;
 /**
  * Modules\Xot\Models\Profile.
  *
-<<<<<<< HEAD
+ * <<<<<<< HEAD
+ *
  * @property int                         $id
  * @property string|null                 $post_type
  * @property Carbon|null                 $created_at
@@ -85,7 +86,8 @@ use Spatie\Tags\Tag;
  * @method static Builder|Profile withAnyTags((ArrayAccess | Tag | array | string) $tags, ?string $type = null)
  * @method static Builder|Profile withAnyTagsOfAnyType($tags)
  * @method static Builder|Profile withoutTags((ArrayAccess | Tag | array | string) $tags, ?string $type = null)
-=======
+ *                                                                                                              =======
+ *
  * @property int                                                                            $id
  * @property string|null                                                                    $post_type
  * @property \Illuminate\Support\Carbon|null                                                $created_at
@@ -147,17 +149,18 @@ use Spatie\Tags\Tag;
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withAnyTagsOfAnyType($tags)
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  withoutTags(\ArrayAccess|\Spatie\Tags\Tag|array|string $tags, ?string $type = null)
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ *                                                                                                                                                   >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin IdeHelperProfile
  *
  * @property string|null $surname
  *
-<<<<<<< HEAD
- * @method static Builder|Profile whereSurname($value)
-=======
+ * <<<<<<< HEAD
+ *
+ * @method static Builder|Profile                               whereSurname($value)
+ *                                                                                   =======
  * @method static \Illuminate\Database\Eloquent\Builder|Profile whereSurname($value)
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ *                                                                                   >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin \Eloquent
  */

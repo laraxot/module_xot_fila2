@@ -13,23 +13,24 @@ use Spatie\ModelStatus\Status;
 /**
  * Modules\Xot\Contracts\ModelWithPosContract.
  *
-<<<<<<< HEAD
- * @property int                 $id
- * @property int|null            $user_id
- * @property string|null         $post_type
- * @property Carbon|null         $created_at
- * @property Carbon|null         $updated_at
- * @property string|null         $created_by
- * @property string|null         $updated_by
- * @property string|null         $title
- * @property PivotContract|null  $pivot
- * @property string              $tennant_name
- * @property User|null           $user
- * @property string              $status
- * @property Collection|Status[] $statuses
- * @property int|null            $statuses_count
- * @property int|null            $pos
-=======
+ * <<<<<<< HEAD
+ *
+ * @property int                                                                   $id
+ * @property int|null                                                              $user_id
+ * @property string|null                                                           $post_type
+ * @property Carbon|null                                                           $created_at
+ * @property Carbon|null                                                           $updated_at
+ * @property string|null                                                           $created_by
+ * @property string|null                                                           $updated_by
+ * @property string|null                                                           $title
+ * @property PivotContract|null                                                    $pivot
+ * @property string                                                                $tennant_name
+ * @property User|null                                                             $user
+ * @property string                                                                $status
+ * @property Collection|Status[]                                                   $statuses
+ * @property int|null                                                              $statuses_count
+ * @property int|null                                                              $pos
+ *                                                                                                 =======
  * @property int                                                                   $id
  * @property int|null                                                              $user_id
  * @property string|null                                                           $post_type
@@ -45,7 +46,7 @@ use Spatie\ModelStatus\Status;
  * @property \Illuminate\Database\Eloquent\Collection|\Spatie\ModelStatus\Status[] $statuses
  * @property int|null                                                              $statuses_count
  * @property int|null                                                              $pos
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ *                                                                                                 >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @method mixed     getKey()
  * @method string    getRouteKey()

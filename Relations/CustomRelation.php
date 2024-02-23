@@ -28,8 +28,8 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 class CustomRelation extends Relation
 { /* implements BuilderContract */
     /**
-<<<<<<< HEAD
-=======
+     * <<<<<<< HEAD
+     * =======
      * The baseConstraints callback.
      */
     protected \Closure $baseConstraints;
@@ -45,7 +45,7 @@ class CustomRelation extends Relation
     protected ?\Closure $eagerMatcher;
 
     /**
->>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+     * >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
      * Create a new belongs to relationship instance.
      */
     public function __construct(Builder $builder, Model $model, /* implements BuilderContract */
