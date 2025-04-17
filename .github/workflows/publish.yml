@@ -1,0 +1,43 @@
+name: Publish
+
+on:
+  push:
+    branches:
+      - master
+
+permissions: 
+  contents: write
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@master
+
+    - name: Validate composer.json and composer.lock
+      run: cd docs && composer validate
+
+    - name: Composer
+      run: cd docs && composer install --no-progress --no-suggest
+
+    - name: Node
+      run: cd docs && npm install
+      
+    - name: Production
+      run: cd docs && npm run prod
+      
+    - name: CNAME
+      run: cd docs && echo "laraxot.github.io/module_xot" > ./build_production/CNAME
+
+    - name: gh-pages
+<<<<<<< HEAD
+      uses: JamesIves/github-pages-deploy-action@v4.4.3
+=======
+      uses: JamesIves/github-pages-deploy-action@v4.5.0
+>>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+      with:
+        branch: gh-pages
+        folder: ./docs/build_production
