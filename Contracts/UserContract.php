@@ -16,28 +16,28 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  *
  * <<<<<<< HEAD
  *
- * @property ModelProfileContract|null                                            $profile
- * @property int                                                                  $id
- * @property string                                                               $handle
- * @property string|null                                                          $first_name
- * @property string|null                                                          $last_name
- * @property string|null                                                          $full_name
- * @property string|null                                                          $phone
- * @property string|null                                                          $email
- * @property Collection|\Modules\User\Models\Area[]                               $areas
- * @property \Modules\User\Models\PermUser|null                                   $perm
- *                                                                                            =======
- * @property ModelProfileContract|null                                            $profile
- * @property int                                                                  $id
- * @property string                                                               $handle
- * @property string|null                                                          $first_name
- * @property string|null                                                          $last_name
- * @property string|null                                                          $full_name
- * @property string|null                                                          $phone
- * @property string|null                                                          $email
- * @property \Illuminate\Database\Eloquent\Collection|\Modules\User\Models\Area[] $areas
- * @property \Modules\User\Models\PermUser|null                                   $perm
- *                                                                                            >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ * @property ModelProfileContract|null              $profile
+ * @property int                                    $id
+ * @property string                                 $handle
+ * @property string|null                            $first_name
+ * @property string|null                            $last_name
+ * @property string|null                            $full_name
+ * @property string|null                            $phone
+ * @property string|null                            $email
+ * @property Collection|\Modules\User\Models\Area[] $areas
+ * @property \Modules\User\Models\PermUser|null     $perm
+ *                                                              =======
+ * @property ModelProfileContract|null              $profile
+ * @property int                                    $id
+ * @property string                                 $handle
+ * @property string|null                            $first_name
+ * @property string|null                            $last_name
+ * @property string|null                            $full_name
+ * @property string|null                            $phone
+ * @property string|null                            $email
+ * @property Collection|\Modules\User\Models\Area[] $areas
+ * @property \Modules\User\Models\PermUser|null     $perm
+ *                                                              >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin    \Eloquent
  */

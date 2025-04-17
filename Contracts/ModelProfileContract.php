@@ -15,16 +15,16 @@ use Spatie\Permission\Exceptions\PermissionDoesNotExist;
  *
  * <<<<<<< HEAD
  *
- * @property string                                                                   $id
- * @property string                                                                   $email
- * @property Collection<int, Role>                                                    $roles
- * @property int|null                                                                 $roles_count
- *                                                                                                 =======
- * @property string                                                                   $id
- * @property string                                                                   $email
- * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\User\Models\Role> $roles
- * @property int|null                                                                 $roles_count
- *                                                                                                 >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
+ * @property string                $id
+ * @property string                $email
+ * @property Collection<int, Role> $roles
+ * @property int|null              $roles_count
+ *                                              =======
+ * @property string                $id
+ * @property string                $email
+ * @property Collection<int, Role> $roles
+ * @property int|null              $roles_count
+ *                                              >>>>>>> 13f752909684a56d16bf094cd4d92fee7631b04a
  *
  * @mixin \Eloquent
  */

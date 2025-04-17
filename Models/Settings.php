@@ -29,11 +29,11 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Settings whereValue($value)
  *                                                        =======
  *
- * @property int                             $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string                          $name
- * @property string|null                     $value
+ * @property int         $id
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property string      $name
+ * @property string|null $value
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newQuery()

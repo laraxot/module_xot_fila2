@@ -88,34 +88,34 @@ use Spatie\Tags\Tag;
  * @method static Builder|Profile withoutTags((ArrayAccess | Tag | array | string) $tags, ?string $type = null)
  *                                                                                                              =======
  *
- * @property int                                                                            $id
- * @property string|null                                                                    $post_type
- * @property \Illuminate\Support\Carbon|null                                                $created_at
- * @property \Illuminate\Support\Carbon|null                                                $updated_at
- * @property string|null                                                                    $created_by
- * @property string|null                                                                    $updated_by
- * @property string|null                                                                    $deleted_by
- * @property string|null                                                                    $first_name
- * @property string|null                                                                    $last_name
- * @property string|null                                                                    $email
- * @property string|null                                                                    $phone
- * @property string|null                                                                    $address
- * @property int|null                                                                       $user_id
- * @property string|null                                                                    $bio
- * @property string|null                                                                    $emails
- * @property string|null                                                                    $mobiles
- * @property string|null                                                                    $envelope_id
- * @property int|null                                                                       $is_signed
- * @property int                                                                            $company_selected_id
- * @property string                                                                         $company_data_requests
- * @property string|null                                                                    $nexi_transaction_code
- * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\User\Models\Permission> $permissions
- * @property int|null                                                                       $permissions_count
- * @property \Illuminate\Database\Eloquent\Collection<int, \Modules\User\Models\Role>       $roles
- * @property int|null                                                                       $roles_count
- * @property \Illuminate\Database\Eloquent\Collection<int, \Spatie\Tags\Tag>                $tags
- * @property int|null                                                                       $tags_count
- * @property \Modules\User\Models\User|null                                                 $user
+ * @property int                         $id
+ * @property string|null                 $post_type
+ * @property Carbon|null                 $created_at
+ * @property Carbon|null                 $updated_at
+ * @property string|null                 $created_by
+ * @property string|null                 $updated_by
+ * @property string|null                 $deleted_by
+ * @property string|null                 $first_name
+ * @property string|null                 $last_name
+ * @property string|null                 $email
+ * @property string|null                 $phone
+ * @property string|null                 $address
+ * @property int|null                    $user_id
+ * @property string|null                 $bio
+ * @property string|null                 $emails
+ * @property string|null                 $mobiles
+ * @property string|null                 $envelope_id
+ * @property int|null                    $is_signed
+ * @property int                         $company_selected_id
+ * @property string                      $company_data_requests
+ * @property string|null                 $nexi_transaction_code
+ * @property Collection<int, Permission> $permissions
+ * @property int|null                    $permissions_count
+ * @property Collection<int, Role>       $roles
+ * @property int|null                    $roles_count
+ * @property Collection<int, Tag>        $tags
+ * @property int|null                    $tags_count
+ * @property User|null                   $user
  *
  * @method static \Modules\Xot\Database\Factories\ProfileFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Profile  newModelQuery()

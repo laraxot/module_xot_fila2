@@ -39,7 +39,7 @@ class ChainService
     /**
      * ChainService constructor.
      *
-     * @param (Collection&\iterable<Model>) $rows
+     * @param (Collection&iterable<Model>) $rows
      *
      * @return void
      */

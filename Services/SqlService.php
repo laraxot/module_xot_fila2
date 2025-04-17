@@ -16,7 +16,7 @@ class SqlService
         ?int $date_min = null,
         ?int $date_max = null,
         ?string $from_field = null,
-        ?string $to_field = null
+        ?string $to_field = null,
     ): string {
         if (null === $from_field) {
             $from_field = $model->getAttributeValue('from_field');

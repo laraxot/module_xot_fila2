@@ -41,11 +41,11 @@ use Modules\Xot\Database\Factories\FeedFactory;
  *
  * @mixin IdeHelperFeed
  *
- * @property int                             $id
- * @property string|null                     $created_by
- * @property string|null                     $updated_by
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property int         $id
+ * @property string|null $created_by
+ * @property string|null $updated_by
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Feed whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feed whereCreatedBy($value)
